@@ -1,0 +1,16 @@
+# Form & Email Configuration
+# Switch activeProfile between "test" and "production"
+activeProfile: "test"
+
+profiles:
+  test:
+    toEmail:
+      - "you@example.com"
+    fromEmail: "noreply@example.com"
+    fromName: "Your Company Name [TEST]"
+
+  production:
+    toEmail:
+      - "info@example.com"
+    fromEmail: "noreply@example.com"
+    fromName: "Your Company Name"

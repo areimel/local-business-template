@@ -1,0 +1,51 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const trustItems = [
+  {
+    icon: 'material-symbols:verified-user-outline',
+    label: 'Licensed & Insured',
+  },
+  {
+    icon: 'material-symbols:shield-person-outline',
+    label: 'Background Checked',
+  },
+  {
+    icon: 'material-symbols:family-restroom',
+    label: `Family Owned Since ${branding.yearEstablished}`,
+  },
+  {
+    icon: 'material-symbols:star-outline',
+    label: '4.9 Star Rating',
+  },
+  {
+    icon: 'material-symbols:schedule-outline',
+    label: 'Same-Day Service',
+  },
+];
+---
+
+<div class="bg-neutral-900 py-4 lg:py-5">
+  <div class="section-container">
+    <ul
+      class="flex flex-wrap justify-center gap-x-8 gap-y-3 lg:gap-x-12"
+      aria-label="Trust indicators"
+    >
+      {trustItems.map((item) => (
+        <li class="flex items-center gap-2 text-neutral-300">
+          <Icon
+            name={item.icon}
+            class="w-5 h-5 text-secondary shrink-0"
+            aria-hidden="true"
+          />
+          <span class="text-sm font-medium whitespace-nowrap">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

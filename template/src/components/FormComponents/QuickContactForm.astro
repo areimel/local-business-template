@@ -1,0 +1,127 @@
+---
+import { getBranding } from '../../utils/data';
+import TextInput from './TextInput.astro';
+import SelectInput from './SelectInput.astro';
+import FormMessage from './FormMessage.astro';
+import Checkbox from '@/components/FormComponents/Checkbox.astro';
+
+interface Props {
+  heading?: string;
+  showHeading?: boolean;
+}
+
+const {
+  heading = 'Request a Quick Quote',
+  showHeading = true,
+} = Astro.props;
+
+const branding = getBranding();
+
+const serviceOptions = [
+  { value: 'ac-repair', label: 'AC Repair' },
+  { value: 'ac-installation', label: 'AC Installation & Replacement' },
+  { value: 'ac-maintenance', label: 'AC Maintenance' },
+  { value: 'heating', label: 'Heating Services' },
+  { value: 'plumbing', label: 'Plumbing Services' },
+  { value: 'electrical', label: 'Electrical Services' },
+  { value: 'gas', label: 'Gas Services' },
+  { value: 'indoor-air-quality', label: 'Indoor Air Quality' },
+  { value: 'attic-insulation', label: 'Attic Insulation' },
+  { value: 'smart-home', label: 'Smart Home & Automation' },
+  { value: 'commercial-hvac', label: 'Commercial HVAC' },
+  { value: 'maintenance-plan', label: 'Maintenance Plan' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<div>
+  {showHeading && (
+    <h2 class="text-2xl font-heading font-bold text-text mb-6">{heading}</h2>
+  )}
+
+  <FormMessage id="quick-form-message" />
+
+  <form
+    id="quick-contact-form"
+    action="/api/contact"
+    method="POST"
+    class="mt-4 space-y-4"
+  >
+    <!-- Honeypot spam protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display:none" aria-hidden="true" />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+      <TextInput name="name" label="Name" type="text" required placeholder="Your name" />
+      <TextInput name="phone" label="Phone" type="tel" required placeholder="(555) 555-0123" />
+      <SelectInput
+        name="service"
+        label="Service"
+        options={serviceOptions}
+        placeholder="Select service"
+      />
+      <button
+        type="submit"
+        id="quick-submit-btn"
+        class="btn btn-primary w-full"
+      >
+        <span>Get Quote</span>
+      </button>
+    </div>
+
+    <Checkbox name="consent" required size="sm">
+      By submitting this form and signing up for texts, you consent to receive
+      text messages from {branding.companyName} at the number provided, including
+      messages sent by auto dialer. Consent is not a condition of purchase. Msg
+      & data rates may apply. Msg frequency varies. Unsubscribe at any time
+      by replying STOP. Reply HELP for help.
+      <a href="/privacy-policy/" class="text-primary underline hover:text-primary-dark">Privacy Policy</a>.
+    </Checkbox>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('quick-contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('quick-submit-btn') as HTMLButtonElement;
+  const messageContainer = document.getElementById('quick-form-message') as HTMLElement;
+  const successMsg = document.getElementById('quick-form-message-success') as HTMLElement;
+  const errorMsg = document.getElementById('quick-form-message-error') as HTMLElement;
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      messageContainer?.classList.add('hidden');
+      successMsg?.classList.add('hidden');
+      errorMsg?.classList.add('hidden');
+
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Sending...</span>';
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageContainer?.classList.remove('hidden');
+          successMsg?.classList.remove('hidden');
+          form.reset();
+        } else {
+          messageContainer?.classList.remove('hidden');
+          errorMsg?.classList.remove('hidden');
+        }
+      } catch {
+        messageContainer?.classList.remove('hidden');
+        errorMsg?.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+</script>

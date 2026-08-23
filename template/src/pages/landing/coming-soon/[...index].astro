@@ -1,0 +1,58 @@
+---
+/**
+ * /landing/coming-soon — minimal holding page for clients whose full site
+ * is still in progress. Logo + phone only header, single centered pitch
+ * + quick contact form. Pick one /landing/* variant, copy over index.astro,
+ * delete the rest.
+ */
+import LandingPageLayout from '@/layouts/LandingPageLayout.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import QuickContactForm from '@/components/FormComponents/QuickContactForm.astro';
+import SocialLinks from '@/components/SharedComponents/SocialLinks.astro';
+import { getBranding } from '@/utils/data';
+import { getOrganizationJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+---
+
+<LandingPageLayout
+  title="Website Coming Soon"
+  description={`${branding.companyName} is still open for business in ${branding.serviceArea.primary} while our new website is on the way. Call ${branding.phone} or send us a message.`}
+  schemaData={[getOrganizationJsonLd()]}
+  headerLinks={[]}
+>
+  <section
+    id="campaign-hero"
+    class="flex min-h-[calc(100vh-5.75rem)] items-center bg-bg-alt py-16"
+    aria-label="Coming soon"
+  >
+    <div class="section-container">
+      <div class="max-w-2xl mx-auto text-center" data-animate="fade-up">
+        <p class="font-heading font-bold text-sm uppercase tracking-wider text-primary mb-3">
+          {branding.companyName}
+        </p>
+        <h1 class="heading-display text-text mb-4">{branding.tagline}</h1>
+        <p class="text-lg text-text-muted mb-8">
+          Our new website is on the way — we're still open for business and ready to help.
+        </p>
+
+        <div class="flex justify-center mb-10">
+          <PhoneButton size="lg" variant="primary" />
+        </div>
+
+        <div class="bg-bg rounded-(--radius-card) shadow-lg p-6 sm:p-8 text-left mb-8" data-animate="fade-up">
+          <QuickContactForm heading="Get in Touch" />
+        </div>
+
+        <div class="flex justify-center">
+          <SocialLinks variant="light" size="md" />
+        </div>
+      </div>
+    </div>
+  </section>
+</LandingPageLayout>

@@ -1,0 +1,221 @@
+---
+import { getBranding } from '../../utils/data';
+import { getVisibleNavigation } from '@/utils/features';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import logoIcon from '@/assets/logos/logo-icon.svg';
+
+const branding = getBranding();
+const { mainNav } = getVisibleNavigation();
+---
+
+<!-- Mobile Header Bar -->
+<div class="lg:hidden bg-white shadow-sm">
+  <div class="section-container">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="shrink-0 flex flex-col items-start gap-0" aria-label={`${branding.companyName} - Home`}>
+        <Image src={logoIcon} alt={branding.companyName} class="h-8 w-auto" />
+        <span class="text-[9px] font-medium text-primary tracking-wide uppercase leading-none" aria-hidden="true">Family Owned &amp; Operated</span>
+      </a>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-1">
+        <!-- Search Button -->
+        <FeatureFlag name="search">
+          <button
+            type="button"
+            data-search-trigger
+            class="p-2 rounded-md text-neutral-700 hover:text-primary hover:bg-primary/5 transition-colors"
+            aria-label="Search this site"
+          >
+            <Icon name="material-symbols:search" class="w-6 h-6" />
+          </button>
+        </FeatureFlag>
+
+        <!-- Hamburger Button -->
+        <button
+          id="mobile-menu-toggle"
+          type="button"
+          class="p-2 rounded-md text-neutral-700 hover:text-primary hover:bg-primary/5 transition-colors"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu-panel"
+        >
+          <Icon name="material-symbols:menu" class="w-6 h-6" id="menu-icon-open" />
+          <Icon name="material-symbols:close" class="w-6 h-6 hidden" id="menu-icon-close" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide-out Panel -->
+<div
+  id="mobile-menu-panel"
+  class="fixed inset-0 z-50 lg:hidden hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+>
+  <!-- Overlay -->
+  <div id="mobile-menu-overlay" class="absolute inset-0 bg-black/50"></div>
+
+  <!-- Panel -->
+  <div class="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl overflow-y-auto transform translate-x-full transition-transform duration-300" id="mobile-menu-drawer">
+    <!-- Panel Header -->
+    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+      <div class="flex flex-col items-start gap-0.5">
+        <Image src={logoIcon} alt={branding.companyName} class="h-8 w-auto" />
+        <span class="text-[9px] font-medium text-primary tracking-wide uppercase leading-none" aria-hidden="true">Family Owned &amp; Operated</span>
+      </div>
+      <button
+        id="mobile-menu-close"
+        type="button"
+        class="p-2 rounded-md text-neutral-700 hover:text-primary transition-colors"
+        aria-label="Close navigation menu"
+      >
+        <Icon name="material-symbols:close" class="w-6 h-6" />
+      </button>
+    </div>
+
+    <!-- Nav Links -->
+    <nav class="p-4" aria-label="Mobile navigation">
+      <ul class="space-y-1">
+        {mainNav.map((item, index) => (
+          <li>
+            {item.children ? (
+              <div class="mobile-accordion">
+                <button
+                  type="button"
+                  class="flex items-center justify-between w-full px-3 py-3 text-base font-medium text-neutral-800 hover:text-primary hover:bg-primary/5 rounded-md transition-colors"
+                  aria-expanded="false"
+                  data-accordion-trigger={`mobile-submenu-${index}`}
+                >
+                  <span>{item.label}</span>
+                  <svg class="w-5 h-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <ul
+                  id={`mobile-submenu-${index}`}
+                  class="hidden pl-4 mt-1 space-y-1 border-l-2 border-primary/20 ml-3"
+                >
+                  <li>
+                    <a
+                      href={item.url}
+                      class="block px-3 py-2 text-sm font-semibold text-primary hover:bg-primary/5 rounded-md transition-colors"
+                    >
+                      All {item.label} Services
+                    </a>
+                  </li>
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.url}
+                        class="block px-3 py-2 text-sm text-neutral-700 hover:text-primary hover:bg-primary/5 rounded-md transition-colors"
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <a
+                href={item.url}
+                class="block px-3 py-3 text-base font-medium text-neutral-800 hover:text-primary hover:bg-primary/5 rounded-md transition-colors"
+              >
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Contact Info -->
+    <div class="p-4 mt-4 border-t border-neutral-200">
+      <a
+        href={`tel:${branding.phoneRaw}`}
+        class="flex items-center gap-3 px-3 py-3 text-base font-semibold text-secondary hover:bg-secondary/5 rounded-md transition-colors"
+      >
+        <Icon name="material-symbols:call" class="w-5 h-5" />
+        {branding.phone}
+      </a>
+      <a
+        href={`mailto:${branding.email}`}
+        class="flex items-center gap-3 px-3 py-3 text-base text-neutral-700 hover:text-primary hover:bg-primary/5 rounded-md transition-colors"
+      >
+        <Icon name="material-symbols:mail" class="w-5 h-5" />
+        {branding.email}
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const panel = document.getElementById('mobile-menu-panel');
+    const drawer = document.getElementById('mobile-menu-drawer');
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const openIcon = document.getElementById('menu-icon-open');
+    const closeIcon = document.getElementById('menu-icon-close');
+
+    function openMenu() {
+      panel?.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        drawer?.classList.remove('translate-x-full');
+        drawer?.classList.add('translate-x-0');
+      });
+      toggle?.setAttribute('aria-expanded', 'true');
+      openIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      drawer?.classList.remove('translate-x-0');
+      drawer?.classList.add('translate-x-full');
+      toggle?.setAttribute('aria-expanded', 'false');
+      openIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        panel?.classList.add('hidden');
+      }, 300);
+    }
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    closeBtn?.addEventListener('click', closeMenu);
+    overlay?.addEventListener('click', closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+      }
+    });
+
+    // Accordion sub-menus
+    document.querySelectorAll('[data-accordion-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = (btn as HTMLElement).dataset.accordionTrigger;
+        const submenu = document.getElementById(targetId!);
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+        submenu?.classList.toggle('hidden');
+
+        const chevron = btn.querySelector('svg');
+        chevron?.classList.toggle('rotate-180');
+      });
+    });
+  });
+</script>

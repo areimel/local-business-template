@@ -1,0 +1,169 @@
+---
+import { getBranding } from '../../utils/data';
+import TextInput from './TextInput.astro';
+import TextArea from './TextArea.astro';
+import SelectInput from './SelectInput.astro';
+import FormMessage from './FormMessage.astro';
+import Checkbox from '@/components/FormComponents/Checkbox.astro';
+
+interface Props {
+  heading?: string;
+  showHeading?: boolean;
+  redirectUrl?: string;
+  serviceLabel?: string;
+  serviceOptions?: { value: string; label: string }[];
+}
+
+// Default HVAC options — overridden by inner pages for other business types.
+const defaultServiceOptions = [
+  { value: 'ac-repair', label: 'AC Repair' },
+  { value: 'ac-installation', label: 'AC Installation & Replacement' },
+  { value: 'ac-maintenance', label: 'AC Maintenance' },
+  { value: 'heating', label: 'Heating Services' },
+  { value: 'plumbing', label: 'Plumbing Services' },
+  { value: 'electrical', label: 'Electrical Services' },
+  { value: 'gas', label: 'Gas Services' },
+  { value: 'indoor-air-quality', label: 'Indoor Air Quality' },
+  { value: 'attic-insulation', label: 'Attic Insulation' },
+  { value: 'smart-home', label: 'Smart Home & Automation' },
+  { value: 'commercial-hvac', label: 'Commercial HVAC' },
+  { value: 'maintenance-plan', label: 'Maintenance Plan' },
+  { value: 'other', label: 'Other' },
+];
+
+const {
+  heading = 'Get in Touch',
+  showHeading = true,
+  redirectUrl,
+  serviceLabel = 'Service Needed',
+  serviceOptions = defaultServiceOptions,
+} = Astro.props;
+
+const branding = getBranding();
+---
+
+<div>
+  {showHeading && (
+    <h2 class="text-2xl font-heading font-bold text-text mb-6">{heading}</h2>
+  )}
+
+  <FormMessage id="contact-form-message" />
+
+  <form
+    id="contact-form"
+    action="/api/contact"
+    method="POST"
+    class="space-y-5 mt-4"
+    data-redirect={redirectUrl}
+  >
+    <!-- Honeypot spam protection -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display:none" aria-hidden="true" />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <TextInput name="name" label="Full Name" type="text" required placeholder="John Smith" />
+      <TextInput name="email" label="Email Address" type="email" required placeholder="john@example.com" />
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <TextInput name="phone" label="Phone Number" type="tel" placeholder="(555) 555-0123" />
+      <SelectInput
+        name="service"
+        label={serviceLabel}
+        options={serviceOptions}
+        required
+        placeholder="Select an option"
+      />
+    </div>
+
+    <TextArea
+      name="message"
+      label="How Can We Help?"
+      rows={4}
+      placeholder="Tell us about your needs..."
+    />
+
+    <Checkbox name="consent" required size="sm">
+      By submitting this form and signing up for texts, you consent to receive
+      text messages from {branding.companyName} at the number provided, including
+      messages sent by auto dialer. Consent is not a condition of purchase. Msg
+      & data rates may apply. Msg frequency varies. Unsubscribe at any time
+      by replying STOP. Reply HELP for help.
+      <a href="/privacy-policy/" class="text-primary underline hover:text-primary-dark">Privacy Policy</a>.
+    </Checkbox>
+
+    <button
+      type="submit"
+      id="contact-submit-btn"
+      class="btn btn-primary w-full"
+    >
+      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+      </svg>
+      <span>Send Message</span>
+    </button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement;
+  const messageContainer = document.getElementById('contact-form-message') as HTMLElement;
+  const successMsg = document.getElementById('contact-form-message-success') as HTMLElement;
+  const errorMsg = document.getElementById('contact-form-message-error') as HTMLElement;
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Hide any previous messages
+      messageContainer?.classList.add('hidden');
+      successMsg?.classList.add('hidden');
+      errorMsg?.classList.add('hidden');
+
+      // Set loading state
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+          <path fill="currentColor" class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span>Sending...</span>
+      `;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          const redirectUrl = form.dataset.redirect;
+          if (redirectUrl) {
+            window.location.href = redirectUrl;
+          } else {
+            // Show success message
+            messageContainer?.classList.remove('hidden');
+            successMsg?.classList.remove('hidden');
+            form.reset();
+          }
+        } else {
+          // Show error message
+          messageContainer?.classList.remove('hidden');
+          errorMsg?.classList.remove('hidden');
+        }
+      } catch {
+        // Show error message
+        messageContainer?.classList.remove('hidden');
+        errorMsg?.classList.remove('hidden');
+      } finally {
+        // Restore button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,35 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { FAQQuestion } from '@/utils/data';
+
+interface Props {
+  faqs: FAQQuestion[];
+  categoryTitle?: string;
+}
+
+const { faqs, categoryTitle } = Astro.props;
+---
+
+{categoryTitle && (
+  <h2 class="text-2xl font-heading font-bold text-text mb-6" data-animate="fade-up">
+    {categoryTitle}
+  </h2>
+)}
+
+<div class="divide-y divide-neutral-200 border-y border-neutral-200" data-animate="fade-up">
+  {faqs.map((faq) => (
+    <details class="group">
+      <summary class="flex items-center justify-between gap-4 py-5 cursor-pointer list-none font-heading font-semibold text-text text-lg hover:text-primary transition-colors [&::-webkit-details-marker]:hidden">
+        <span>{faq.question}</span>
+        <Icon
+          name="material-symbols:expand-more"
+          class="w-6 h-6 text-neutral-400 shrink-0 transition-transform duration-300 group-open:rotate-180"
+          aria-hidden="true"
+        />
+      </summary>
+      <div class="pb-5 pr-12 text-text-muted leading-relaxed">
+        <p>{faq.answer}</p>
+      </div>
+    </details>
+  ))}
+</div>

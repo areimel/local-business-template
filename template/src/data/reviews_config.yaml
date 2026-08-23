@@ -1,0 +1,27 @@
+mode: "static_fallback"
+providerOrder:
+  - "static_fallback"
+reviewUrl: ""
+scrapeUrl: ""
+placeId: ""
+display:
+  maxReviews: 5
+cacheTtlMinutes: 60
+googlePlaces:
+  enabled: false
+outscraper:
+  enabled: false
+staticFallback:
+  enabled: true
+
+# ===== Reviews Badge Configuration =====
+# Used by ReviewsBadge.astro to display platform-specific ratings in the hero
+google:
+  overallRating: 5.0
+  totalReviewCount: 50
+  reviewUrl: ""
+
+facebook:
+  overallRating: 5.0
+  totalReviewCount: null
+  reviewUrl: ""

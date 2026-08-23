@@ -1,0 +1,83 @@
+---
+interface Props {
+  from: 'white' | 'alt' | 'primary' | 'dark';
+  to: 'white' | 'alt' | 'primary' | 'dark';
+  direction?: 'normal' | 'reverse';
+  height?: number;
+  accentLine?: boolean;
+}
+
+const {
+  from,
+  to,
+  direction = 'normal',
+  height = 80,
+  accentLine = true,
+} = Astro.props;
+
+const colorMap: Record<string, string> = {
+  white: 'var(--color-bg)',
+  alt: 'var(--color-bg-alt)',
+  primary: 'var(--color-primary)',
+  dark: 'var(--color-neutral-900)',
+};
+
+const fromColor = colorMap[from];
+const toColor = colorMap[to];
+
+/* Normal: top-left to bottom-right angle (from color covers top portion)
+   Reverse: top-right to bottom-left angle (from color covers top portion) */
+const points = direction === 'normal'
+  ? '0,0 100,0 100,100 0,50'
+  : '0,0 100,0 100,50 0,100';
+
+/* Accent line color: cyan for dark/primary surfaces, subtle blue for light */
+const darkSurfaces = ['dark', 'primary'];
+const accentLineColor = darkSurfaces.includes(from) || darkSurfaces.includes(to)
+  ? 'rgba(255,135,7,0.5)'
+  : 'rgba(0,102,204,0.15)';
+
+/* Line coordinates along the diagonal edge depend on direction */
+const lineCoords = direction === 'normal'
+  ? { x1: '0', y1: '50', x2: '100', y2: '100' }
+  : { x1: '0', y1: '100', x2: '100', y2: '50' };
+---
+
+<div
+  class="angle-divider"
+  style={`height: ${height}px; margin-top: -1px; margin-bottom: -1px;`}
+  aria-hidden="true"
+>
+  <svg
+    viewBox="0 0 100 100"
+    preserveAspectRatio="none"
+    class="block w-full h-full"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Background fills with the "to" color */}
+    <rect x="0" y="0" width="100" height="100" fill={toColor} />
+    {/* Polygon in "from" color creates the angled transition */}
+    <polygon points={points} fill={fromColor} />
+    {/* Accent line along the diagonal edge */}
+    {accentLine && (
+      <line
+        x1={lineCoords.x1}
+        y1={lineCoords.y1}
+        x2={lineCoords.x2}
+        y2={lineCoords.y2}
+        stroke={accentLineColor}
+        stroke-width="0.5"
+        vector-effect="non-scaling-stroke"
+      />
+    )}
+  </svg>
+</div>
+
+<style>
+  .angle-divider {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    overflow: hidden;
+  }
+</style>

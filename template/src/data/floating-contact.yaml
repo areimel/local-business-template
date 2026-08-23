@@ -1,0 +1,25 @@
+# Floating Contact Button Widget (on/off lives in features.yaml → floatingContactButton)
+button:
+  ariaLabel: "Open contact form"
+  icon: "material-symbols:chat-bubble-outline"
+  closeIcon: "material-symbols:close"
+
+speechBubble:
+  enabled: true
+  intervalMs: 9000
+  displayMs: 4000
+  initialDelayMs: 5000
+  messages:
+    - "Need Some Help?"
+    - "Give Us A Call!"
+    - "Request a Quote Today"
+    - "We're Here to Help!"
+    - "Have a Question?"
+
+form:
+  heading: "Send Us a Message"
+  subtitle: "We'll get back to you shortly."
+  submitText: "Send Message"
+
+hideOnPaths:
+  - "/thank-you/"

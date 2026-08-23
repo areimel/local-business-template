@@ -1,0 +1,67 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { getBranding } from '@/utils/data';
+import { isFeatureEnabled } from '@/utils/features';
+
+if (!isFeatureEnabled('reviews')) return;
+
+const branding = getBranding();
+
+const testimonials = [
+  {
+    quote: "They came out the same day our AC stopped working. The technician was professional, explained everything clearly, and had us back up and running in no time. Highly recommend!",
+    name: "Sarah M.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+  {
+    quote: "We've used them for both our AC and heating needs. Always on time, fair pricing, and quality work. They've been our go-to for years and we wouldn't trust anyone else.",
+    name: "James R.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+  {
+    quote: "From the initial call to the completed installation, every step was handled with care. The team was respectful of our home and the new system works perfectly. Five stars!",
+    name: "Linda K.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+];
+---
+
+<SectionWrapper background="white" id="testimonials">
+  <!-- Section Header -->
+  <div class="text-center mb-12" data-animate="fade-up">
+    <Badge text="Customer Reviews" variant="primary" size="md" />
+    <h2 class="heading-display text-text mt-4 mb-4">What Our Customers Say</h2>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      Don't just take our word for it — hear from the homeowners we've served
+      across {branding.serviceArea.primary}.
+    </p>
+  </div>
+
+  <!-- Testimonial Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {testimonials.map((testimonial) => (
+      <Card variant="outlined" padding="lg">
+        <div class="flex flex-col h-full">
+          <StarRating rating={testimonial.rating} size="md" />
+          <blockquote class="mt-4 flex-1">
+            <p class="text-text leading-relaxed italic">
+              &ldquo;{testimonial.quote}&rdquo;
+            </p>
+          </blockquote>
+          <footer class="mt-6 pt-4 border-t border-neutral-200">
+            <cite class="not-italic">
+              <span class="font-heading font-bold text-text block">{testimonial.name}</span>
+              <span class="text-sm text-text-muted">{testimonial.location}</span>
+            </cite>
+          </footer>
+        </div>
+      </Card>
+    ))}
+  </div>
+</SectionWrapper>

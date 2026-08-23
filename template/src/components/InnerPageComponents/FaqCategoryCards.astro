@@ -1,0 +1,73 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { FAQQuestion } from '@/utils/data';
+
+interface Props {
+  categoryTitle: string;
+  categorySlug: string;
+  questions: FAQQuestion[];
+}
+
+const { categoryTitle, categorySlug, questions } = Astro.props;
+
+const iconMap: Record<string, string> = {
+  'general': 'material-symbols:help-outline',
+  'air-conditioning': 'material-symbols:ac-unit',
+  'heating': 'material-symbols:mode-heat-outline',
+  'indoor-air-quality': 'material-symbols:air-purifier-outline',
+  'scheduling-pricing': 'material-symbols:calendar-month-outline',
+};
+
+const categoryIcon = iconMap[categorySlug] || 'material-symbols:quiz-outline';
+---
+
+<section class="faq-category" aria-labelledby={`faq-heading-${categorySlug}`}>
+  <!-- Category Header -->
+  <div class="flex items-center gap-4 mb-8" data-animate="fade-up">
+    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+      <Icon
+        name={categoryIcon}
+        class="w-6 h-6 text-primary"
+        aria-hidden="true"
+      />
+    </div>
+    <div>
+      <h2
+        id={`faq-heading-${categorySlug}`}
+        class="font-heading font-bold text-text text-(length:--font-size-2xl) leading-tight"
+      >
+        {categoryTitle}
+      </h2>
+      <div class="mt-1.5 h-0.5 w-16 rounded-full bg-gradient-to-r from-primary to-accent" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- FAQ Cards Grid -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 gap-5"
+  >
+    {questions.map((faq, index) => (
+      <article class="group relative bg-bg rounded-(--radius-card) border border-neutral-200 border-l-4 border-l-primary shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 overflow-hidden">
+        <div class="p-5 sm:p-6">
+          <!-- Number Badge + Question -->
+          <div class="flex items-start gap-3 mb-3">
+            <span
+              class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-bold font-heading shrink-0 mt-0.5"
+              aria-hidden="true"
+            >
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <h3 class="font-heading font-semibold text-text text-(length:--font-size-base) leading-snug">
+              {faq.question}
+            </h3>
+          </div>
+
+          <!-- Answer (always visible for SEO / AEO) -->
+          <p class="text-text-muted text-(length:--font-size-sm) leading-relaxed pl-10">
+            {faq.answer}
+          </p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

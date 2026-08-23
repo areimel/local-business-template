@@ -1,0 +1,29 @@
+---
+import { Icon } from 'astro-icon/components';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+---
+
+<div class="border-t border-neutral-200 bg-bg-alt py-8 mt-2" data-animate="fade-up">
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+    <div class="flex items-center gap-2">
+      <Icon
+        name="material-symbols:help-outline"
+        class="w-5 h-5 text-primary shrink-0"
+        aria-hidden="true"
+      />
+      <p class="text-text font-heading font-semibold">
+        Still have questions? We're happy to help.
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <PhoneButton size="sm" />
+      <span class="text-text-muted text-sm">or</span>
+      <a
+        href="/contact/"
+        class="text-primary font-medium text-sm hover:text-primary-dark transition-colors underline underline-offset-2"
+      >
+        Contact Us Online
+      </a>
+    </div>
+  </div>
+</div>

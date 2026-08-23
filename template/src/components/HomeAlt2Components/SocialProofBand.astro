@@ -1,0 +1,280 @@
+---
+import { getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import { Image } from 'astro:assets';
+import teamVan from '@/assets/images/team/installer-smiling.jpg';
+
+const branding = getBranding();
+
+const testimonials = [
+  {
+    name: 'Maria D.',
+    location: `${branding.serviceArea.primary}, ${branding.address.state}`,
+    rating: 5,
+    text: `Our AC went out during a summer heatwave — 95 degrees and climbing. I called ${branding.companyNameShort} and they had a tech at our house within an hour. Turned out the compressor capacitor had failed. He had the part on the truck and we had cold air again before dinner. Can't thank them enough.`,
+  },
+  {
+    name: 'Robert H.',
+    location: `${branding.serviceArea.regions[0]}, ${branding.address.state}`,
+    rating: 5,
+    text: `We've been customers of ${branding.companyName} since they serviced our first home back in 2012. What I appreciate most is you always feel like you're dealing with a family, not some big corporate outfit. They remember our system, they're upfront about costs, and they never try to upsell us on things we don't need. That kind of trust is hard to find.`,
+  },
+  {
+    name: 'Jennifer P.',
+    location: `${branding.serviceArea.regions[1]}, ${branding.address.state}`,
+    rating: 5,
+    text: `Had ${branding.companyNameShort} install a new AC system in our home last month. The crew was professional from start to finish — they showed up on time, kept everything clean, and walked us through the new thermostat before they left. The difference in our electric bill is already noticeable. Really glad our neighbor recommended them.`,
+  },
+];
+---
+
+<SectionWrapper id="social-proof" background="primary">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+    <!-- Left Column: Photo -->
+    <div class="lg:col-span-4 hidden lg:block" data-animate="fade-up">
+      <div class="relative">
+        <Image
+          src={teamVan}
+          alt={`${branding.companyName} team with service van`}
+          width={400}
+          height={500}
+          class="rounded-(--radius-card) shadow-xl object-cover w-full"
+          loading="lazy"
+        />
+        <!-- Decorative accent border -->
+        <div
+          class="absolute -bottom-3 -right-3 w-full h-full rounded-(--radius-card) border-2 border-accent/50 -z-10"
+          aria-hidden="true"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Right Column: Reviews -->
+    <div class="lg:col-span-8">
+      <div class="mb-6" data-animate="fade-up">
+        <Badge text="Real Reviews" variant="light" size="md" />
+        <h2 class="heading-display text-white mt-4 mb-3">
+          What {branding.serviceArea.primary} Homeowners Are Saying
+        </h2>
+
+        <!-- Google badge + rating summary -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <div class="flex items-center gap-2 bg-white/15 rounded-full px-4 py-2">
+            <Icon name="material-symbols:star" class="w-5 h-5 text-warning" aria-hidden="true" />
+            <span class="text-white font-bold text-sm">4.9 Stars</span>
+            <span class="text-white/90 text-sm">|</span>
+            <span class="text-white/90 text-sm">200+ Reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial Carousel -->
+      <div class="relative" data-animate="fade-up">
+        <div
+          id="review-carousel"
+          class="overflow-hidden rounded-(--radius-card)"
+          role="region"
+          aria-label="Customer reviews"
+          aria-roledescription="carousel"
+        >
+          <div id="review-track" class="flex transition-transform duration-500 ease-in-out">
+            {testimonials.map((review, index) => (
+              <div
+                class="w-full shrink-0 bg-white/10 backdrop-blur-sm rounded-(--radius-card) p-6 sm:p-8"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Review ${index + 1} of ${testimonials.length}`}
+              >
+                <div class="mb-4">
+                  <StarRating rating={review.rating} size="md" />
+                </div>
+                <blockquote class="text-white/95 text-base sm:text-lg leading-relaxed mb-6">
+                  &ldquo;{review.text}&rdquo;
+                </blockquote>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
+                    <Icon name="material-symbols:person" class="w-6 h-6 text-white" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p class="text-white font-heading font-bold text-sm">{review.name}</p>
+                    <p class="text-white/80 text-xs">{review.location}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="flex items-center justify-between mt-6">
+          <!-- Pagination Dots -->
+          <div class="flex items-center gap-2" role="tablist" aria-label="Review slides">
+            {testimonials.map((_, index) => (
+              <button
+                type="button"
+                class:list={[
+                  'review-dot w-3 h-3 rounded-full transition-all duration-300',
+                  index === 0 ? 'bg-white scale-110' : 'bg-white/55 hover:bg-white/75',
+                ]}
+                role="tab"
+                aria-selected={index === 0 ? 'true' : 'false'}
+                aria-label={`Go to review ${index + 1}`}
+                data-slide={index}
+              ></button>
+            ))}
+          </div>
+
+          <!-- Prev / Next Buttons -->
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              id="review-prev"
+              class="w-10 h-10 rounded-full border-2 border-white/60 bg-white/20 flex items-center justify-center text-white hover:bg-white/35 transition-all duration-200 focus-visible:outline-white"
+              aria-label="Previous review"
+            >
+              <Icon name="material-symbols:chevron-left" class="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              id="review-next"
+              class="w-10 h-10 rounded-full border-2 border-white/60 bg-white/20 flex items-center justify-center text-white hover:bg-white/35 transition-all duration-200 focus-visible:outline-white"
+              aria-label="Next review"
+            >
+              <Icon name="material-symbols:chevron-right" class="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Read All Reviews Link -->
+      <div class="mt-8" data-animate="fade-up">
+        <a
+          href={branding.googleReviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn border-2 border-white text-white hover:bg-white hover:text-primary transition-colors focus-visible:outline-white"
+          aria-label="Read all reviews on Google"
+        >
+          <Icon name="material-symbols:reviews-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+          <span>Read All Reviews</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>
+
+<script>
+  function initReviewCarousel() {
+    const track = document.getElementById('review-track') as HTMLElement;
+    const dots = document.querySelectorAll('.review-dot') as NodeListOf<HTMLButtonElement>;
+    const prevBtn = document.getElementById('review-prev') as HTMLButtonElement;
+    const nextBtn = document.getElementById('review-next') as HTMLButtonElement;
+
+    if (!track || !dots.length || !prevBtn || !nextBtn) return;
+
+    const totalSlides = dots.length;
+    let currentSlide = 0;
+    let autoAdvanceTimer: ReturnType<typeof setInterval> | null = null;
+
+    function goToSlide(index: number) {
+      currentSlide = ((index % totalSlides) + totalSlides) % totalSlides;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      dots.forEach((dot, i) => {
+        const isActive = i === currentSlide;
+        dot.classList.toggle('bg-white', isActive);
+        dot.classList.toggle('scale-110', isActive);
+        dot.classList.toggle('bg-white/55', !isActive);
+        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function startAutoAdvance() {
+      stopAutoAdvance();
+      autoAdvanceTimer = setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 5000);
+    }
+
+    function stopAutoAdvance() {
+      if (autoAdvanceTimer) {
+        clearInterval(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentSlide - 1);
+      startAutoAdvance();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentSlide + 1);
+      startAutoAdvance();
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const slideIndex = parseInt(dot.dataset.slide || '0', 10);
+        goToSlide(slideIndex);
+        startAutoAdvance();
+      });
+    });
+
+    // Arrow key navigation for tablist (WCAG 2.1)
+    const tablist = dots[0]?.parentElement;
+    if (tablist) {
+      tablist.addEventListener('keydown', (e: KeyboardEvent) => {
+        let nextIndex = currentSlide;
+        if (e.key === 'ArrowRight') {
+          nextIndex = (currentSlide + 1) % totalSlides;
+        } else if (e.key === 'ArrowLeft') {
+          nextIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+        } else if (e.key === 'Home') {
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          nextIndex = totalSlides - 1;
+        } else {
+          return;
+        }
+        e.preventDefault();
+        goToSlide(nextIndex);
+        (dots[nextIndex] as HTMLElement).focus();
+        startAutoAdvance();
+      });
+    }
+
+    // Pause auto-advance on hover/focus
+    const carousel = document.getElementById('review-carousel');
+    if (carousel) {
+      carousel.addEventListener('mouseenter', stopAutoAdvance);
+      carousel.addEventListener('mouseleave', startAutoAdvance);
+      carousel.addEventListener('focusin', stopAutoAdvance);
+      carousel.addEventListener('focusout', startAutoAdvance);
+    }
+
+    // Respect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!prefersReducedMotion.matches) {
+      startAutoAdvance();
+    }
+
+    prefersReducedMotion.addEventListener('change', (e) => {
+      if (e.matches) {
+        stopAutoAdvance();
+      } else {
+        startAutoAdvance();
+      }
+    });
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', initReviewCarousel);
+  // Also handle Astro view transitions
+  document.addEventListener('astro:page-load', initReviewCarousel);
+</script>

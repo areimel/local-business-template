@@ -1,0 +1,41 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import type { GalleryItem } from '@/utils/data';
+
+interface Props {
+  heading: string;
+  subheading?: string;
+  items: GalleryItem[];
+}
+
+const { heading, subheading, items } = Astro.props;
+
+const gradients = [
+  'linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))',
+  'linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark))',
+  'linear-gradient(135deg, var(--color-accent), var(--color-accent-dark))',
+];
+---
+
+<SectionWrapper background="alt">
+  <div class="text-center max-w-2xl mx-auto mb-12" data-animate="fade-up">
+    <h2 class="heading-display text-text mb-3">{heading}</h2>
+    {subheading && <p class="text-text-muted text-lg">{subheading}</p>}
+  </div>
+
+  <!-- ponytail: placeholder tiles; swap to <Image> grid when real photos exist -->
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+    {items.map((item, i) => (
+      <div
+        class="relative aspect-square rounded-(--radius-card) overflow-hidden flex items-center justify-center"
+        style={`background: ${gradients[i % gradients.length]};`}
+      >
+        <Icon name={item.icon} class="w-12 h-12 text-white/70" aria-hidden="true" />
+        <div class="absolute inset-x-0 bottom-0 bg-black/40 backdrop-blur-sm px-3 py-2">
+          <p class="text-white text-xs font-medium text-center">{item.caption}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</SectionWrapper>

@@ -1,0 +1,44 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getActiveCoupons, getFeaturedCoupons } from '@/utils/data';
+
+interface Props {
+  category?: string;
+}
+
+const { category } = Astro.props;
+
+const featuredCoupons = getFeaturedCoupons();
+
+// Find a matching coupon for the category, or fall back to any featured coupon
+const matchingCoupon = category
+  ? featuredCoupons.find((c) => c.category === category) ?? featuredCoupons[0]
+  : featuredCoupons[0];
+---
+
+{matchingCoupon && (
+  <div class="bg-primary-dark/5 border-l-4 border-primary rounded-(--radius-md) px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="flex items-start gap-3 min-w-0">
+      <Icon
+        name="material-symbols:sell-outline"
+        class="w-5 h-5 text-primary shrink-0 mt-0.5"
+        aria-hidden="true"
+      />
+      <div class="min-w-0">
+        <p class="font-heading font-bold text-text text-sm leading-snug">
+          {matchingCoupon.title}
+        </p>
+        <p class="text-xs text-text-muted mt-0.5 leading-relaxed">
+          {matchingCoupon.description}
+        </p>
+      </div>
+    </div>
+    <a
+      href="/coupons/"
+      class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors whitespace-nowrap shrink-0"
+    >
+      View All Specials
+      <Icon name="material-symbols:arrow-forward" class="w-4 h-4" aria-hidden="true" />
+    </a>
+  </div>
+)}

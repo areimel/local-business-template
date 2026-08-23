@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/LayoutComponents/Header.astro';
+import Footer from '@/components/LayoutComponents/Footer.astro';
+import Breadcrumbs from '@/components/LayoutComponents/Breadcrumbs.astro';
+import StickyPhoneBar from '@/components/PopUpComponents/StickyPhoneBar.astro';
+import FloatingContactButton from '@/components/PopUpComponents/FloatingContactButton.astro';
+import ExitIntentModal from '@/components/PopUpComponents/ExitIntentModal.astro';
+import ThankYouModal from '@/components/PopUpComponents/ThankYouModal.astro';
+import SearchModal from '@/components/SearchComponents/SearchModal.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  ogType?: string;
+  articleMeta?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    section?: string;
+    tag?: string[];
+  };
+  noindex?: boolean;
+  schemaData?: object | object[];
+  rawSchema?: string;
+  showBreadcrumbs?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalUrl,
+  ogType,
+  articleMeta,
+  noindex,
+  schemaData,
+  rawSchema,
+  showBreadcrumbs = true,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonicalUrl={canonicalUrl}
+  ogType={ogType}
+  articleMeta={articleMeta}
+  noindex={noindex}
+  schemaData={schemaData}
+  rawSchema={rawSchema}
+>
+  <Header />
+  <main id="main-content">
+    {showBreadcrumbs && <Breadcrumbs />}
+    <slot />
+  </main>
+  <Footer />
+  <FeatureFlag name="stickyPhoneBar"><StickyPhoneBar /></FeatureFlag>
+  <FeatureFlag name="floatingContactButton"><FloatingContactButton /></FeatureFlag>
+  <FeatureFlag name="exitIntentModal"><ExitIntentModal /></FeatureFlag>
+  <ThankYouModal />
+  <FeatureFlag name="search"><SearchModal /></FeatureFlag>
+</BaseLayout>

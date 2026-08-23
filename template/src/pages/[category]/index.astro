@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import ServiceHubLayout from '@/layouts/ServiceHubLayout.astro';
+
+export async function getStaticPaths() {
+  const allServices = await getCollection('services');
+  const hubs = allServices.filter(s => s.data.type === 'hub');
+  return hubs.map(hub => ({
+    params: { category: hub.data.category },
+    props: { hub },
+  }));
+}
+
+const { hub } = Astro.props;
+const { Content } = await render(hub);
+---
+
+<ServiceHubLayout frontmatter={hub.data}>
+  <Content />
+</ServiceHubLayout>

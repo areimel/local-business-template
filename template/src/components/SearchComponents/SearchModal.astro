@@ -1,0 +1,82 @@
+---
+import Modal from '@/components/PopUpComponents/Modal.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Modal id="search-modal" labelledBy="search-modal-heading" size="lg">
+  <!-- Visually hidden heading -->
+  <h2 id="search-modal-heading" class="sr-only">Search this site</h2>
+
+  <!-- Search Input Row -->
+  <div class="flex items-center gap-3 px-4 py-3 border-b border-neutral-200">
+    <Icon name="material-symbols:search" class="w-5 h-5 text-neutral-400 shrink-0" />
+    <input
+      id="search-input"
+      type="text"
+      placeholder="Search services, locations, articles..."
+      class="w-full bg-transparent text-text text-base outline-none placeholder:text-neutral-400 font-body"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls="search-results"
+      aria-autocomplete="list"
+      autocomplete="off"
+    />
+    <kbd class="px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-200 text-neutral-500 font-mono text-[0.7rem] shrink-0">⌘K</kbd>
+  </div>
+
+  <!-- States Container -->
+
+  <!-- Empty State (shown by default) -->
+  <div id="search-empty-state" class="py-12 px-4 text-center text-neutral-400">
+    Start typing to search...
+  </div>
+
+  <!-- Loading State -->
+  <div id="search-loading" class="py-12 px-4 text-center text-neutral-400 hidden">
+    <span class="animate-pulse">Loading search index...</span>
+  </div>
+
+  <!-- No Results State -->
+  <div id="search-no-results" class="py-12 px-4 text-center text-neutral-400 hidden">
+    No results found. Try a different search term.
+  </div>
+
+  <!-- Results List -->
+  <ul id="search-results" role="listbox" class="py-2 hidden max-h-[60vh] overflow-y-auto"></ul>
+
+  <!-- Result Template (cloned by JS, not rendered) -->
+  <template id="search-result-template">
+    <li role="option" tabindex="-1" class="search-result">
+      <a class="flex flex-col gap-1 px-4 py-3 cursor-pointer transition-colors hover:bg-neutral-50 focus:bg-neutral-50 focus:outline-none" href="#">
+        <div class="flex items-center gap-2">
+          <span class="search-result-badge inline-flex items-center rounded-full text-xs font-medium px-2 py-0.5"></span>
+          <span class="search-result-title text-sm font-semibold font-heading text-text"></span>
+        </div>
+        <span class="search-result-excerpt text-sm text-text-muted line-clamp-1"></span>
+      </a>
+    </li>
+  </template>
+
+  <!-- Footer / Keyboard Hints -->
+  <div class="border-t border-neutral-200 px-4 py-2.5 flex items-center gap-4 text-xs text-neutral-400">
+    <span>
+      <kbd class="px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-200 text-neutral-500 font-mono text-[0.7rem]">↑↓</kbd>
+      Navigate
+    </span>
+    <span>
+      <kbd class="px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-200 text-neutral-500 font-mono text-[0.7rem]">↵</kbd>
+      Open
+    </span>
+    <span>
+      <kbd class="px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-200 text-neutral-500 font-mono text-[0.7rem]">esc</kbd>
+      Close
+    </span>
+  </div>
+
+  <!-- Screen Reader Live Region -->
+  <div id="search-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+</Modal>
+
+<script>
+  import '@/scripts/search';
+</script>

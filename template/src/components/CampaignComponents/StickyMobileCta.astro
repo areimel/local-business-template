@@ -1,0 +1,81 @@
+---
+/**
+ * StickyMobileCta.astro
+ *
+ * Persistent bottom bar (mobile only) that appears when the campaign hero
+ * scrolls out of viewport. Tapping the button smooth-scrolls to the target section.
+ */
+
+interface Props {
+  stickyBar: {
+    text: string;
+    subtext?: string;
+    ctaText: string;
+    scrollTarget: string;
+  };
+}
+
+const { stickyBar } = Astro.props;
+---
+
+<!-- Fixed bottom bar — mobile only -->
+<div
+  id="sticky-mobile-cta"
+  class="fixed bottom-0 left-0 right-0 z-50 lg:hidden translate-y-full opacity-0 transition-all duration-300 ease-in-out bg-bg border-t border-neutral-200 shadow-xl"
+  aria-label="Quick contact"
+>
+  <div class="flex items-center justify-between gap-3 px-4 py-3">
+    <div class="min-w-0">
+      <p class="text-sm font-heading font-bold text-text truncate">{stickyBar.text}</p>
+      {stickyBar.subtext && (
+        <p class="text-xs text-text-muted truncate">{stickyBar.subtext}</p>
+      )}
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary shrink-0 text-sm px-4 py-2.5"
+      data-scroll-target={stickyBar.scrollTarget}
+      aria-label={stickyBar.ctaText}
+    >
+      {stickyBar.ctaText}
+    </button>
+  </div>
+</div>
+
+<!-- Spacer to prevent content overlap on mobile -->
+<div class="h-14 lg:hidden" aria-hidden="true"></div>
+
+<script>
+  const bar = document.getElementById('sticky-mobile-cta');
+  const hero = document.getElementById('campaign-hero');
+
+  if (bar && hero) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            bar.classList.add('translate-y-full', 'opacity-0');
+            bar.classList.remove('translate-y-0', 'opacity-100');
+          } else {
+            bar.classList.remove('translate-y-full', 'opacity-0');
+            bar.classList.add('translate-y-0', 'opacity-100');
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(hero);
+
+    const scrollBtn = bar.querySelector('[data-scroll-target]') as HTMLButtonElement | null;
+    if (scrollBtn) {
+      scrollBtn.addEventListener('click', () => {
+        const targetId = scrollBtn.dataset.scrollTarget;
+        if (targetId) {
+          const target = document.getElementById(targetId);
+          target?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  }
+</script>

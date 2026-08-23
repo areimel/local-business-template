@@ -1,0 +1,69 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import VariantHero from '@/components/HomeVariantComponents/VariantHero.astro';
+import PricingTable from '@/components/HomeVariantComponents/PricingTable.astro';
+import ShowcaseGallery from '@/components/HomeVariantComponents/ShowcaseGallery.astro';
+import TeamIntro from '@/components/HomeVariantComponents/TeamIntro.astro';
+import FeatureCards from '@/components/InnerPageComponents/FeatureCards.astro';
+import TestimonialHighlight from '@/components/InnerPageComponents/TestimonialHighlight.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import Alt1ContactSection from '@/components/HomeAlt1Components/Alt1ContactSection.astro';
+import { getHomeVariant } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getHomeVariant('restaurant');
+---
+
+<PageLayout title={v.meta.title} description={v.meta.description} noindex={true} showBreadcrumbs={false}>
+  <VariantHero
+    eyebrow={v.hero.eyebrow}
+    heading={v.hero.heading}
+    headingAccent={v.hero.headingAccent}
+    subheading={v.hero.subheading}
+    primaryCta={v.hero.primaryCta}
+    secondaryCta={v.hero.secondaryCta}
+    trustPills={v.hero.trustPills}
+  />
+
+  {v.pricing && (
+    <div id="menu">
+      <PricingTable
+        badge={v.pricing.badge}
+        heading={v.pricing.heading}
+        subheading={v.pricing.subheading}
+        layout={v.pricing.layout}
+        groups={v.pricing.groups}
+      />
+    </div>
+  )}
+
+  {v.gallery && (
+    <ShowcaseGallery heading={v.gallery.heading} subheading={v.gallery.subheading} items={v.gallery.items} />
+  )}
+
+  {v.team && (
+    <TeamIntro badge={v.team.badge} heading={v.team.heading} subheading={v.team.subheading} members={v.team.members} />
+  )}
+
+  {v.features && (
+    <FeatureCards features={v.features} heading={v.featuresHeading} />
+  )}
+
+  <TestimonialHighlight testimonial={v.testimonial} />
+
+  {v.cta && (
+    <CtaBanner
+      heading={v.cta.heading}
+      body={v.cta.body}
+      buttonText={v.cta.buttonText}
+      buttonUrl={v.cta.buttonUrl}
+      variant={v.cta.variant as 'primary' | 'dark' | undefined}
+    />
+  )}
+
+  <Alt1ContactSection />
+</PageLayout>

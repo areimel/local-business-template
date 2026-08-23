@@ -1,0 +1,120 @@
+---
+/**
+ * /landing/brochure — digital business-card / informational one-pager:
+ * about, services, reviews, hours, contact. Pick one /landing/* variant,
+ * copy over index.astro, delete the rest.
+ */
+import LandingPageLayout from '@/layouts/LandingPageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import SplitSection from '@/components/SharedComponents/SplitSection.astro';
+import FeatureCards from '@/components/InnerPageComponents/FeatureCards.astro';
+import TestimonialHighlight from '@/components/InnerPageComponents/TestimonialHighlight.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import BusinessHoursCard from '@/components/SharedComponents/BusinessHoursCard.astro';
+import SocialLinks from '@/components/SharedComponents/SocialLinks.astro';
+import LocationMap from '@/components/InnerPageComponents/LocationMap.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import aboutImage from '@/assets/images/team/staff-building.jpg';
+import { getBranding } from '@/utils/data';
+import { getOrganizationJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+
+const headerLinks = [
+  { label: 'About', anchor: '#about' },
+  { label: 'Services', anchor: '#services' },
+  { label: 'Reviews', anchor: '#reviews' },
+  { label: 'Hours', anchor: '#hours' },
+  { label: 'Contact', anchor: '#contact' },
+];
+
+const mapQuery = encodeURIComponent(
+  `${branding.address.street}, ${branding.address.city}, ${branding.address.state} ${branding.address.zip}`
+);
+
+const services = [
+  { title: 'AC Repair & Service', description: 'Fast, reliable repairs to get your cooling back on track.', icon: 'material-symbols:ac-unit' },
+  { title: 'Heating Services', description: 'Furnace and heat pump repair, tune-ups, and installs.', icon: 'material-symbols:heat' },
+  { title: 'Plumbing', description: 'Leaks, fixtures, water heaters, and everyday plumbing repairs.', icon: 'material-symbols:plumbing' },
+  { title: 'Electrical', description: 'Panel upgrades, wiring, and electrical safety inspections.', icon: 'material-symbols:electric-bolt-outline' },
+  { title: 'Indoor Air Quality', description: 'Filtration and purification for cleaner, healthier air.', icon: 'material-symbols:air-purifier-outline' },
+  { title: 'Maintenance Plans', description: 'Seasonal tune-ups that catch problems before they start.', icon: 'material-symbols:hvac-outline' },
+];
+---
+
+<LandingPageLayout
+  title="About, Services & Contact"
+  description={`Learn about ${branding.companyName}, see our services, read reviews, and get in touch — proudly serving ${branding.serviceArea.primary}.`}
+  schemaData={[getOrganizationJsonLd()]}
+  headerLinks={headerLinks}
+  ctaAnchor="#contact"
+>
+  <InnerHero
+    heading={`${branding.companyName} — ${branding.serviceArea.primary}'s Trusted Home Service Team`}
+    subheading="Everything you need to know about who we are, what we do, and how to reach us."
+    badge={`Serving ${branding.serviceArea.primary} since ${branding.yearEstablished}`}
+  />
+
+  <SectionWrapper id="about" background="white">
+    <SplitSection imageSrc={aboutImage} imageAlt={`${branding.companyName} team at work`}>
+      <h2 class="heading-display text-text mb-4">About Us</h2>
+      <p class="text-text-muted mb-4">
+        Since {branding.yearEstablished}, {branding.companyName} has been a trusted name in
+        {branding.serviceArea.primary}, delivering honest, dependable home services backed by
+        licensed, background-checked technicians.
+      </p>
+      <p class="text-text-muted mb-4">
+        We treat every home like our own — clear pricing up front, respectful techs, and work
+        that's done right the first time.
+      </p>
+      {branding.licenses?.ac && (
+        <p class="text-sm text-text-muted">Licensed &amp; insured — {branding.licenses.ac}</p>
+      )}
+    </SplitSection>
+  </SectionWrapper>
+
+  <div id="services">
+    <FeatureCards heading="Our Services" features={services} />
+  </div>
+
+  <div id="reviews">
+    <TestimonialHighlight />
+  </div>
+
+  <SectionWrapper id="hours" background="alt">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+      <BusinessHoursCard />
+
+      <div class="bg-bg rounded-(--radius-card) p-6 text-center shadow-md" data-animate="fade-up">
+        <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted mb-3">Visit or Call</p>
+        <a href={branding.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="block font-heading font-semibold text-text mb-1 hover:text-primary">
+          {branding.address.street}, {branding.address.city}, {branding.address.state} {branding.address.zip}
+        </a>
+        <a href={`tel:${branding.phoneRaw}`} class="block text-text-muted hover:text-primary mb-1">{branding.phone}</a>
+        <a href={`mailto:${branding.email}`} class="block text-text-muted hover:text-primary break-all">{branding.email}</a>
+      </div>
+
+      <div class="bg-bg rounded-(--radius-card) p-6 text-center shadow-md flex flex-col items-center justify-center gap-3" data-animate="fade-up">
+        <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted">Follow Us</p>
+        <SocialLinks variant="light" size="md" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- LocationMap renders its own SectionWrapper — kept as a sibling, not nested. -->
+  <LocationMap mapQuery={mapQuery} city={branding.address.city} />
+
+  <SectionWrapper id="contact" background="white">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="heading-display text-text text-center mb-8">Get In Touch</h2>
+      <div class="bg-bg-alt rounded-(--radius-card) shadow-lg p-6 sm:p-8">
+        <ContactForm showHeading={false} redirectUrl="/thank-you/" />
+      </div>
+    </div>
+  </SectionWrapper>
+</LandingPageLayout>

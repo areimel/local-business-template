@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/LayoutComponents/Header.astro';
+import Footer from '@/components/LayoutComponents/Footer.astro';
+import { gatedPaths } from '@/utils/features';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  return gatedPaths('devPages', () => [{ params: { index: undefined } }]);
+}
+
+const docs = await getCollection('documentation');
+const sortedDocs = docs.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Documentation" noindex={true}>
+  <Header />
+  <main id="main-content" class="px-6 py-12 lg:px-12 max-w-4xl mx-auto">
+    <h1 class="font-heading text-3xl lg:text-4xl font-bold mb-2">Documentation</h1>
+    <p class="text-text-muted text-lg mb-10">Guides and references for working with this project.</p>
+    <div class="space-y-4">
+      {sortedDocs.map((doc, i) => (
+        <a
+          href={`/docs/${doc.id}/`}
+          class="block p-5 rounded-lg border border-neutral-200 hover:border-primary/30 hover:shadow-md transition-all group"
+        >
+          <div class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center">
+              {i + 1}
+            </span>
+            <div>
+              <h2 class="font-heading font-semibold text-lg group-hover:text-primary transition-colors">
+                {doc.data.title}
+              </h2>
+              <p class="text-text-muted text-sm mt-1">{doc.data.description}</p>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div class="mt-10 pt-6 border-t border-neutral-200">
+      <a href="/styleguide/" class="text-sm text-primary hover:text-primary-dark">
+        &larr; Back to Styleguide
+      </a>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

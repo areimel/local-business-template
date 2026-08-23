@@ -1,0 +1,131 @@
+---
+/**
+ * LandingHeader.astro
+ *
+ * Simplified sticky header for single-page landing sites.
+ * Logo + optional anchor-link nav (smooth-scrolls to on-page sections)
+ * + phone CTA. Shrinks on scroll. No dropdowns, no hamburger.
+ */
+import { getBranding } from '@/utils/data';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import logoFull from '@/assets/logos/logo-full.svg';
+
+interface Props {
+  links?: { label: string; anchor: string }[];
+  /** Mobile "Contact" button target. */
+  ctaAnchor?: string;
+}
+
+const { links = [], ctaAnchor = '#contact' } = Astro.props;
+const branding = getBranding();
+---
+
+<header class="sticky top-0 z-50 bg-bg border-b border-neutral-200">
+  <div
+    id="landing-header-row"
+    class="section-container flex min-h-[5.75rem] items-center justify-between gap-6 transition-all duration-300 xl:min-h-[6.5rem]"
+  >
+    <!-- Logo -->
+    <a href="/" aria-label={`${branding.companyName} - Home`}>
+      <Image
+        src={logoFull}
+        alt={branding.companyName}
+        id="landing-header-logo"
+        class="h-18 w-auto transition-all duration-300 xl:h-[5.5rem]"
+      />
+    </a>
+
+    <!-- Desktop: anchor nav -->
+    {links.length > 0 && (
+      <nav class="hidden lg:flex items-center gap-8" aria-label="Page sections">
+        {links.map((link) => (
+          <a
+            href={link.anchor}
+            class="font-heading font-semibold text-sm text-text hover:text-primary transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    )}
+
+    <!-- Desktop: phone link -->
+    <a
+      href={`tel:${branding.phoneRaw}`}
+      class="hidden lg:inline-flex items-center gap-2 font-heading font-semibold text-base text-primary hover:text-primary-dark transition-colors"
+      aria-label={`Call ${branding.phone}`}
+    >
+      <Icon name="material-symbols:call-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+      {branding.phone}
+    </a>
+
+    <!-- Mobile: call + contact buttons -->
+    <div class="flex items-center gap-2 lg:hidden">
+      <a
+        href={`tel:${branding.phoneRaw}`}
+        class="inline-flex items-center gap-1.5 btn btn-primary text-xs px-3 py-2"
+        aria-label={`Call ${branding.phone}`}
+      >
+        <Icon name="material-symbols:call-outline" class="w-4 h-4 shrink-0" aria-hidden="true" />
+        Call Now
+      </a>
+      <a
+        href={ctaAnchor}
+        class="inline-flex items-center gap-1.5 btn btn-outline text-xs px-3 py-2"
+        aria-label="Contact us — scroll to form"
+      >
+        <Icon name="material-symbols:mail-outline" class="w-4 h-4 shrink-0" aria-hidden="true" />
+        Contact Us
+      </a>
+    </div>
+  </div>
+  <div
+    class="h-px bg-[linear-gradient(to_right,transparent,var(--color-primary),var(--color-secondary),transparent)]"
+    aria-hidden="true"
+  ></div>
+</header>
+
+<script>
+  function initLandingNavScroll() {
+    const logo = document.getElementById('landing-header-logo')!;
+    const navRow = document.getElementById('landing-header-row')!;
+    if (!logo || !navRow) return;
+
+    const THRESHOLD = 50;
+    let isCompact = false;
+
+    function clearWillChange() {
+      logo.style.willChange = '';
+      navRow.style.willChange = '';
+    }
+
+    function update() {
+      const scrolled = window.scrollY > THRESHOLD;
+      if (scrolled === isCompact) return;
+      isCompact = scrolled;
+
+      logo.style.willChange = 'height';
+      navRow.style.willChange = 'min-height';
+      logo.addEventListener('transitionend', clearWillChange, { once: true });
+
+      if (isCompact) {
+        logo.classList.remove('h-18', 'xl:h-[5.5rem]');
+        logo.classList.add('h-14', 'xl:h-[4rem]');
+        navRow.classList.remove('min-h-[5.75rem]', 'xl:min-h-[6.5rem]');
+        navRow.classList.add('min-h-[4.5rem]', 'xl:min-h-[5rem]');
+      } else {
+        logo.classList.remove('h-14', 'xl:h-[4rem]');
+        logo.classList.add('h-18', 'xl:h-[5.5rem]');
+        navRow.classList.remove('min-h-[4.5rem]', 'xl:min-h-[5rem]');
+        navRow.classList.add('min-h-[5.75rem]', 'xl:min-h-[6.5rem]');
+      }
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  initLandingNavScroll();
+  document.addEventListener('astro:after-swap', initLandingNavScroll);
+</script>

@@ -1,0 +1,112 @@
+---
+import { getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import SecondaryButton from '@/components/ButtonComponents/SecondaryButton.astro';
+import { Image } from 'astro:assets';
+// Cloners: swap this for your own team/company photo.
+import teamVan from '@/assets/images/hero/team-van.jpg';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const features = [
+  {
+    icon: 'material-symbols:family-home-outline',
+    title: 'Family Owned',
+    description: `Serving neighbors since ${branding.yearEstablished}`,
+  },
+  {
+    icon: 'material-symbols:verified-user-outline',
+    title: 'Licensed & Insured',
+    description: 'Fully bonded technicians',
+  },
+  {
+    icon: 'material-symbols:speed-outline',
+    title: 'Same-Day Service',
+    description: 'Available 7 days a week',
+  },
+  {
+    icon: 'material-symbols:receipt-long-outline',
+    title: 'Transparent Pricing',
+    description: 'No hidden fees, guaranteed',
+  },
+];
+---
+
+<SectionWrapper id="who-we-are" background="alt">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+    <!-- Left Column: Compact text -->
+    <div class="lg:col-span-4" data-animate="fade-up">
+      <Badge text="Who We Are" variant="primary" size="md" />
+
+      <h2 class="heading-display text-text mt-4 mb-4">
+        Get To Know {branding.companyNameShort}
+      </h2>
+
+      <p class="text-text-muted text-sm font-medium tracking-wide mb-4">
+        Est. {branding.yearEstablished} &middot; {yearsInBusiness}+ Years of Service
+      </p>
+
+      <p class="text-text-muted leading-relaxed mb-8 text-balance">
+        At {branding.companyName}, our team is the heart of everything we do. We've spent
+        over {yearsInBusiness} years earning the trust of {branding.serviceArea.primary} families
+        through honest work, fair pricing, and genuine care for every home we service.
+      </p>
+
+      <!-- Tight 2x2 Feature Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {features.map((feature) => (
+          <div class="bg-white/80 rounded-(--radius-md) p-3 border-l-4 border-primary shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div class="flex items-center gap-2.5 mb-1">
+              <Icon name={feature.icon} class="w-5 h-5 text-primary shrink-0" aria-hidden="true" />
+              <h3 class="text-sm font-heading font-bold text-text">{feature.title}</h3>
+            </div>
+            <p class="text-sm text-text-muted leading-relaxed pl-8">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right Column: Dominant image + buttons -->
+    <div class="lg:col-span-8" data-animate="fade-up">
+      <div class="who-we-are-image-wrap relative">
+        <Image
+          src={teamVan}
+          alt={`${branding.companyName} service van`}
+          widths={[600, 900, 1200]}
+          sizes="(max-width: 1024px) 100vw, 66vw"
+          class="rounded-(--radius-card) shadow-lg object-cover w-full relative z-10"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="mt-6">
+        <ButtonGroup>
+          <PrimaryButton text="Learn More" href="/about/" icon="material-symbols:arrow-forward" />
+          <SecondaryButton text="Contact Us" href="/contact/" icon="material-symbols:arrow-forward" />
+        </ButtonGroup>
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>
+
+<style>
+  .who-we-are-image-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -10px -10px auto auto;
+    width: 60%;
+    height: 60%;
+    background: var(--color-primary);
+    opacity: 0.1;
+    border-radius: var(--radius-card);
+    z-index: 0;
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import FeatureCards from '@/components/InnerPageComponents/FeatureCards.astro';
+import TeamIntro from '@/components/HomeVariantComponents/TeamIntro.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import Alt2ContactSection from '@/components/HomeAlt2Components/Alt2ContactSection.astro';
+import { Icon } from 'astro-icon/components';
+import { getInnerPage } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getInnerPage('autorepair');
+
+const yearsStat = v.stats?.find((s) => s.label.toLowerCase().includes('year'));
+const estYear = new Date().getFullYear() - (yearsStat?.value ?? 20);
+---
+
+<PageLayout title={v.meta.title} description={v.meta.description} noindex={true} showBreadcrumbs={false}>
+  <InnerHero heading={v.hero.heading} subheading={v.hero.subheading} badge={v.hero.badge} />
+
+  {v.story && (
+    <SectionWrapper background="white">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div data-animate="fade-up">
+          {v.story.badge && <Badge text={v.story.badge} variant="primary" size="md" />}
+          <h2 class="heading-display text-text mt-4 mb-6">{v.story.heading}</h2>
+          {v.story.paragraphs.map((p) => (
+            <p class="text-text-muted text-lg leading-relaxed mb-4">{p}</p>
+          ))}
+        </div>
+        <div class="flex justify-center lg:justify-end" data-animate="fade-up">
+          <div class="relative w-full max-w-sm">
+            <div class="absolute inset-0 rounded-3xl bg-primary/5 -rotate-3 scale-105" aria-hidden="true"></div>
+            <div class="relative bg-bg rounded-3xl border border-neutral-200 p-10 text-center shadow-lg">
+              <div class="text-primary font-heading font-extrabold leading-none mb-2" style="font-size: clamp(4rem, 8vw, 6rem);">
+                <span data-animate="counter" data-count-to={String(yearsStat?.value ?? 20)}>0</span>{yearsStat?.suffix ?? '+'}
+              </div>
+              <p class="text-xl font-heading font-bold text-text mb-1">{yearsStat?.label ?? 'Years in Business'}</p>
+              <div class="mt-6 pt-6 border-t border-neutral-200 flex items-center justify-center gap-3">
+                <Icon name="material-symbols:calendar-month-outline" class="w-5 h-5 text-text-muted" />
+                <span class="text-sm text-text-muted font-medium">Est. {estYear}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </SectionWrapper>
+  )}
+
+  {v.stats && <StatCounterBar background={v.statsBackground} stats={v.stats} />}
+
+  {v.values && <FeatureCards heading={v.valuesHeading} features={v.values} freeEstimate={true} />}
+
+  {v.team && (
+    <TeamIntro badge={v.team.badge} heading={v.team.heading} subheading={v.team.subheading} members={v.team.members} />
+  )}
+
+  {v.cta && (
+    <CtaBanner
+      heading={v.cta.heading}
+      body={v.cta.body}
+      buttonText={v.cta.buttonText}
+      buttonUrl={v.cta.buttonUrl}
+      variant={v.cta.variant as 'primary' | 'dark' | undefined}
+    />
+  )}
+
+  <Alt2ContactSection />
+</PageLayout>

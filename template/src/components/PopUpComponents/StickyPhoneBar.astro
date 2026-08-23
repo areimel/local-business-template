@@ -1,0 +1,22 @@
+---
+import { getBranding } from '../../utils/data';
+import { Icon } from 'astro-icon/components';
+
+const branding = getBranding();
+---
+
+<div class="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-secondary shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
+  <div class="flex items-center justify-center">
+    <a
+      href={`tel:${branding.phoneRaw}`}
+      class="flex items-center justify-center gap-2 w-full py-3.5 px-4 text-white font-heading font-bold text-base transition-colors hover:bg-secondary-dark active:bg-secondary-dark"
+      aria-label={`Call ${branding.companyNameShort} at ${branding.phone}`}
+    >
+      <Icon name="material-symbols:phone-in-talk-outline" class="w-5 h-5" />
+      <span>Call {branding.phone}</span>
+    </a>
+  </div>
+</div>
+
+<!-- Spacer to prevent content from being hidden behind sticky bar on mobile -->
+<div class="h-14 lg:hidden" aria-hidden="true"></div>

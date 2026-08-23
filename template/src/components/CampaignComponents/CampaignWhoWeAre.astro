@@ -1,0 +1,170 @@
+---
+/**
+ * CampaignWhoWeAre.astro
+ *
+ * Benefits/trust section for campaign landing pages.
+ * When `benefits` prop is provided, renders a centered card grid.
+ * When omitted, renders a default split-layout with company image
+ * and generic trust signals drawn from branding data.
+ */
+import { getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import teamVan from '@/assets/images/hero/team-van.jpg';
+
+interface BenefitItem {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  benefits?: {
+    eyebrow?: string;
+    headline: string;
+    items: BenefitItem[];
+  };
+}
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const defaultFeatures = [
+  {
+    icon: 'material-symbols:family-home-outline',
+    title: 'Family Owned',
+    description: `Serving neighbors since ${branding.yearEstablished}`,
+  },
+  {
+    icon: 'material-symbols:verified-user-outline',
+    title: 'Licensed & Insured',
+    description: 'Fully bonded technicians',
+  },
+  {
+    icon: 'material-symbols:speed-outline',
+    title: 'Same-Day Service',
+    description: 'Available 7 days a week',
+  },
+  {
+    icon: 'material-symbols:receipt-long-outline',
+    title: 'Transparent Pricing',
+    description: 'No hidden fees, guaranteed',
+  },
+];
+
+const useCustomBenefits = Astro.props.benefits !== undefined;
+const featuresContent = useCustomBenefits ? Astro.props.benefits!.items : defaultFeatures;
+const badgeText = useCustomBenefits ? Astro.props.benefits?.eyebrow : 'Who We Are';
+const headlineText = useCustomBenefits ? Astro.props.benefits!.headline : `Get To Know ${branding.companyNameShort}`;
+---
+
+<SectionWrapper id="who-we-are" background="alt">
+  {useCustomBenefits ? (
+    <!-- Custom benefits: full-width centered layout -->
+    <div data-animate="fade-up">
+      <div class="text-center mb-8">
+        <Badge text={badgeText || 'Who We Are'} variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4">
+          {headlineText}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        {featuresContent.map((feature) => (
+          <div class="bg-bg rounded-(--radius-card) p-5 border border-neutral-200 shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div class="flex items-center gap-3 mb-2">
+              {feature.icon && (
+                <span class="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full shrink-0">
+                  <Icon name={feature.icon} class="w-4.5 h-4.5 text-primary" aria-hidden="true" />
+                </span>
+              )}
+              <h3 class="text-sm font-heading font-bold text-text">{feature.title}</h3>
+            </div>
+            <p class="text-sm text-text-muted leading-relaxed pl-11">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 text-center">
+        <ButtonGroup align="center">
+          <PrimaryButton text="Get Started" href="#hero-form" icon="material-symbols:arrow-forward" />
+        </ButtonGroup>
+      </div>
+    </div>
+  ) : (
+    <!-- Default: image + text grid layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div class="lg:col-span-4" data-animate="fade-up">
+        <Badge text={badgeText || 'Who We Are'} variant="primary" size="md" />
+
+        <h2 class="heading-display text-text mt-4 mb-4">
+          {headlineText}
+        </h2>
+
+        <p class="text-text-muted text-sm font-medium tracking-wide mb-4">
+          Est. {branding.yearEstablished} &middot; {yearsInBusiness}+ Years of Service
+        </p>
+
+        <p class="text-text-muted leading-relaxed mb-8 text-balance">
+          At {branding.companyName}, our team is the heart of everything we do. We've spent
+          over {yearsInBusiness} years earning the trust of {branding.serviceArea.primary} families
+          through honest work, fair pricing, and genuine care for every home we service.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {featuresContent.map((feature) => (
+            <div class="bg-bg rounded-(--radius-card) p-4 border border-neutral-200 shadow-md hover:shadow-lg transition-shadow duration-300">
+              <div class="flex items-center gap-3 mb-1.5">
+                {feature.icon && (
+                  <span class="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full shrink-0">
+                    <Icon name={feature.icon} class="w-4.5 h-4.5 text-primary" aria-hidden="true" />
+                  </span>
+                )}
+                <h3 class="text-sm font-heading font-bold text-text">{feature.title}</h3>
+              </div>
+              <p class="text-sm text-text-muted leading-relaxed pl-11">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="lg:col-span-8" data-animate="fade-up">
+        <div class="who-we-are-image-wrap relative">
+          <Image
+            src={teamVan}
+            alt={`${branding.companyName} service van`}
+            widths={[600, 900, 1200]}
+            sizes="(max-width: 1024px) 100vw, 66vw"
+            class="rounded-(--radius-card) shadow-lg object-cover w-full relative z-10"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="mt-6">
+          <ButtonGroup align="center">
+            <PrimaryButton text="Get Started" href="#hero-form" icon="material-symbols:arrow-forward" />
+          </ButtonGroup>
+        </div>
+      </div>
+    </div>
+  )}
+</SectionWrapper>
+
+<style>
+  .who-we-are-image-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -10px -10px auto auto;
+    width: 60%;
+    height: 60%;
+    background: var(--color-primary);
+    opacity: 0.1;
+    border-radius: var(--radius-card);
+    z-index: 0;
+  }
+</style>

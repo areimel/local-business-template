@@ -1,0 +1,30 @@
+---
+interface Props {
+  text: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'light';
+  size?: 'sm' | 'md';
+}
+
+const {
+  text,
+  variant = 'primary',
+  size = 'sm',
+} = Astro.props;
+
+const variantClasses: Record<string, string> = {
+  primary: 'bg-primary/10 text-primary',
+  secondary: 'bg-secondary/10 text-secondary',
+  success: 'bg-success/10 text-success',
+  warning: 'bg-warning/10 text-warning',
+  light: 'bg-white/20 text-white border border-white/40',
+};
+
+const sizeClasses: Record<string, string> = {
+  sm: 'text-xs px-2 py-0.5',
+  md: 'text-sm px-3 py-1',
+};
+---
+
+<span class:list={['inline-flex items-center rounded-full font-medium', variantClasses[variant], sizeClasses[size]]}>
+  {text}
+</span>

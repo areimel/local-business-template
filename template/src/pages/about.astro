@@ -1,0 +1,231 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const coreValues = [
+  {
+    icon: 'material-symbols:groups-outline',
+    title: 'Customer Focus',
+    description: 'Everything we do starts and ends with you. We listen, we respond, and we deliver solutions tailored to your home and budget.',
+  },
+  {
+    icon: 'material-symbols:handshake-outline',
+    title: 'Honesty & Integrity',
+    description: 'Upfront pricing, straightforward diagnoses, and no hidden fees. We earn your trust by telling you what you need to hear, not what sells.',
+  },
+  {
+    icon: 'material-symbols:favorite-outline',
+    title: 'Empathy',
+    description: 'We understand how stressful a broken AC can be in our region. We treat every call with urgency and every customer like family.',
+  },
+  {
+    icon: 'material-symbols:workspace-premium-outline',
+    title: 'Service Excellence',
+    description: 'Our technicians are trained to the highest standards. Clean, professional, courteous — every visit, every time.',
+  },
+  {
+    icon: 'material-symbols:ac-unit',
+    title: 'Customer Comfort First',
+    description: 'Your comfort is not just our tagline — it is our operating principle. We will not leave until you are completely satisfied.',
+  },
+  {
+    icon: 'material-symbols:speed-outline',
+    title: 'Responsiveness',
+    description: 'We are there now, even when others are too busy. Same-day service, prompt arrivals, and fast resolutions are our standard.',
+  },
+  {
+    icon: 'material-symbols:person-pin-outline',
+    title: 'Personal Touch',
+    description: 'As a family-owned business, we know every customer by name. You are not a ticket number — you are our neighbor.',
+  },
+];
+
+const philosophyPoints = [
+  {
+    icon: 'material-symbols:build-outline',
+    title: 'Solve, Don\'t Sell',
+    description: 'Our technicians diagnose problems honestly and recommend only what is truly needed. We would rather earn your trust with a repair than push a replacement you do not need.',
+  },
+  {
+    icon: 'material-symbols:volunteer-activism-outline',
+    title: 'Customers Come First',
+    description: 'Putting customers first is at the heart of everything we do. It is not just a motto; it is how we train, hire, and operate every single day.',
+  },
+  {
+    icon: 'material-symbols:location-on-outline',
+    title: `${yearsInBusiness}+ Years in the Local Community`,
+    description: `Since ${branding.yearEstablished}, we have been part of the ${branding.serviceArea.primary} community. We understand the unique challenges of our region and design solutions that keep your home comfortable year-round.`,
+  },
+];
+---
+
+<PageLayout title="About Us" description={`Learn about ${branding.companyName} — proudly serving ${branding.serviceArea.primary} and the surrounding area since ${branding.yearEstablished}. Family-owned, licensed, and insured. 10,000+ homes served.`}>
+  <InnerHero
+    heading="About Us"
+    subheading={`Meet the family behind the area's trusted comfort team`}
+  />
+
+  <!-- ========== OUR STORY — 2-column with stat feature ========== -->
+  <SectionWrapper background="white">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Text column -->
+      <div data-animate="fade-up">
+        <Badge text="Our Story" variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4 mb-6">A Family Business Built on Trust</h2>
+        <p class="text-text-muted text-lg leading-relaxed mb-4">
+          {branding.companyName} was founded in {branding.yearEstablished} by a local family
+          with a simple goal: provide honest, dependable HVAC service to the {branding.serviceArea.primary}
+          community. That same family still owns and operates the business today,
+          carrying forward the same values the company was built on.
+        </p>
+        <p class="text-text-muted text-lg leading-relaxed mb-4">
+          Today, {branding.companyName} is a true family affair. Multiple generations work
+          side-by-side in the field and in the office, ensuring every customer interaction reflects the
+          personal care and attention that has defined us for over {yearsInBusiness} years.
+        </p>
+        <p class="text-text-muted text-lg leading-relaxed">
+          From a small local operation to one of the area's most trusted HVAC companies,
+          we have served more than 10,000 homes — and we treat every single one like family.
+        </p>
+      </div>
+
+      <!-- Stat / decorative column -->
+      <div class="flex justify-center lg:justify-end" data-animate="fade-up">
+        <div class="relative w-full max-w-sm">
+          <!-- Background decorative shape -->
+          <div class="absolute inset-0 rounded-3xl bg-primary/5 -rotate-3 scale-105" aria-hidden="true"></div>
+          <!-- Main stat card -->
+          <div class="relative bg-bg rounded-3xl border border-neutral-200 p-10 text-center shadow-lg">
+            <div class="text-primary font-heading font-extrabold leading-none mb-2" style="font-size: clamp(4rem, 8vw, 6rem);">
+              <span data-animate="counter" data-count-to={String(yearsInBusiness)}>0</span>+
+            </div>
+            <p class="text-xl font-heading font-bold text-text mb-1">Years Serving</p>
+            <p class="text-lg font-heading font-semibold text-primary">{branding.serviceArea.primary} & Surrounding Areas</p>
+            <div class="mt-6 pt-6 border-t border-neutral-200 flex items-center justify-center gap-3">
+              <Icon name="material-symbols:calendar-month-outline" class="w-5 h-5 text-text-muted" />
+              <span class="text-sm text-text-muted font-medium">Est. {branding.yearEstablished}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ========== OUR MISSION — Full-width manifesto style ========== -->
+  <SectionWrapper background="alt">
+    <div class="max-w-4xl mx-auto" data-animate="fade-up">
+      <div class="text-center mb-8">
+        <Badge text="Our Mission" variant="secondary" size="md" />
+      </div>
+      <div class="relative pl-8 lg:pl-12 border-l-4 border-primary">
+        <!-- Large quotation mark -->
+        <div class="absolute -top-4 -left-1 lg:-left-2 text-primary/15 font-heading select-none" aria-hidden="true" style="font-size: clamp(5rem, 10vw, 8rem); line-height: 1;">
+          &ldquo;
+        </div>
+        <p class="text-xl lg:text-2xl font-heading font-semibold text-text leading-snug mb-6 relative">
+          Our mission is to become every customer's HVAC contractor of choice. We put your comfort
+          first — always. When you call {branding.companyNameShort}, we are there now, even when
+          others are too busy.
+        </p>
+        <p class="text-lg text-text-muted leading-relaxed relative mb-6">
+          We built this company on a simple philosophy: treat every customer like family.
+          That means taking the time to diagnose problems correctly, recommending only what is truly
+          needed, and standing behind every job we complete. It means answering the phone when you
+          need us most, and treating your home like it is our own.
+        </p>
+        <p class="text-lg text-text-muted leading-relaxed relative">
+          After {yearsInBusiness}+ years and 10,000+ homes served across the area, our
+          commitment has never wavered: honest service, responsive teams, and your comfort above all else.
+        </p>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ========== CORE VALUES — 7-item grid (2-col mobile, 3-col/4-col desktop) ========== -->
+  <SectionWrapper background="white">
+    <div class="text-center mb-12" data-animate="fade-up">
+      <Badge text="Our Values" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-4">What Drives Us Every Day</h2>
+      <p class="text-text-muted text-lg max-w-2xl mx-auto">
+        For more than {yearsInBusiness} years, these seven core values have guided every decision,
+        every service call, and every customer interaction.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-6xl mx-auto">
+      {coreValues.map((value) => (
+        <Card variant="outlined" padding="md">
+          <div class="flex flex-col items-center text-center gap-3">
+            <div class="shrink-0 w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Icon name={value.icon} class="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h3 class="text-base font-heading font-bold text-text mb-1.5">{value.title}</h3>
+              <p class="text-sm text-text-muted leading-relaxed">{value.description}</p>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </SectionWrapper>
+
+  <!-- ========== SERVICE PHILOSOPHY — Icon list with highlighted callout ========== -->
+  <SectionWrapper background="alt">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
+      <!-- Main content — icon-separated list -->
+      <div class="lg:col-span-3" data-animate="fade-up">
+        <Badge text="Our Approach" variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4 mb-8">Our Service Philosophy</h2>
+
+        <div class="space-y-0">
+          {philosophyPoints.map((point, index) => (
+            <div class:list={[
+              'flex items-start gap-5 py-6',
+              index < philosophyPoints.length - 1 ? 'border-b border-neutral-200' : '',
+            ]}>
+              <div class="shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mt-0.5">
+                <Icon name={point.icon} class="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 class="text-lg font-heading font-bold text-text mb-1">{point.title}</h3>
+                <p class="text-text-muted leading-relaxed">{point.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Highlighted callout box -->
+      <div class="lg:col-span-2" data-animate="fade-up">
+        <div class="rounded-2xl p-8 lg:p-10 text-text-on-primary relative overflow-hidden" style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);">
+          <!-- Subtle decorative circle -->
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-white/5" aria-hidden="true"></div>
+
+          <Icon name="material-symbols:home-outline" class="w-10 h-10 text-white/90 mb-5" />
+          <h3 class="text-xl font-heading font-bold text-white mb-3">10,000+ Homes Served</h3>
+          <p class="text-white/90 leading-relaxed mb-6">
+            From {branding.serviceArea.primary} and across the surrounding area, thousands of
+            families trust {branding.companyNameShort} to keep their homes comfortable. That is
+            {yearsInBusiness}+ years of showing up, solving problems, and earning trust — one home at a time.
+          </p>
+          <div class="flex items-center gap-3 pt-5 border-t border-white/25">
+            <Icon name="material-symbols:shield-outline" class="w-5 h-5 text-white/90" />
+            <span class="text-sm text-white/90 font-medium">Licensed, Bonded & Insured</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <CtaBanner />
+</PageLayout>

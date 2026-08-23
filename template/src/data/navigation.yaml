@@ -1,0 +1,136 @@
+# Main Navigation
+mainNav:
+  - label: "Air Conditioning"
+    url: "/air-conditioning/"
+    children:
+      - label: "AC Repair"
+        url: "/air-conditioning/ac-repair/"
+      - label: "Emergency AC Repair"
+        url: "/air-conditioning/emergency-ac-repair/"
+      - label: "AC Installation & Replacement"
+        url: "/air-conditioning/ac-installation-replacement/"
+      - label: "AC Maintenance"
+        url: "/air-conditioning/ac-maintenance/"
+      - label: "Coastal AC Systems"
+        url: "/air-conditioning/coastal-ac-systems/"
+      - label: "Ductless Mini-Split Systems"
+        url: "/air-conditioning/ductless-mini-split-systems/"
+      - label: "Air Filters"
+        url: "/air-conditioning/air-filters/"
+      - label: "Thermostats"
+        url: "/air-conditioning/thermostats/"
+      - label: "Whole Home Dehumidifiers"
+        url: "/air-conditioning/whole-home-dehumidifiers/"
+      - label: "Indoor Air Quality"
+        url: "/air-conditioning/indoor-air-quality/"
+
+  - label: "Heating"
+    url: "/heating/"
+    children:
+      - label: "Heating Repair"
+        url: "/heating/heating-repair/"
+      - label: "Heating Installation & Replacement"
+        url: "/heating/heating-installation-replacement/"
+      - label: "Heating Maintenance"
+        url: "/heating/heating-maintenance/"
+      - label: "Heat Pump Heating Services"
+        url: "/heating/heat-pump-heating-services/"
+      - label: "Heating System Safety"
+        url: "/heating/heating-system-safety/"
+
+  - label: "Plumbing"
+    url: "/plumbing/"
+    children:
+      - label: "Leak Detection"
+        url: "/plumbing/leak-detection/"
+      - label: "Water Heater Services"
+        url: "/plumbing/water-heater-services/"
+      - label: "Water Heater Installation"
+        url: "/plumbing/water-heater-installation/"
+      - label: "Water Heater Maintenance"
+        url: "/plumbing/water-heater-maintenance/"
+      - label: "Water Heater Repair"
+        url: "/plumbing/water-heater-repair/"
+      - label: "Tankless Water Heaters"
+        url: "/plumbing/tankless-water-heaters/"
+      - label: "Hybrid Water Heaters"
+        url: "/plumbing/hybrid-water-heaters/"
+      - label: "Plumbing Fixtures"
+        url: "/plumbing/plumbing-fixtures/"
+      - label: "Repiping Services"
+        url: "/plumbing/repiping-services/"
+      - label: "Drain Cleaning & Clog Repair"
+        url: "/plumbing/drain-cleaning-clog-repair/"
+      - label: "Water Filtration Installation"
+        url: "/plumbing/water-filtration-installation/"
+      - label: "Water Treatment Services"
+        url: "/plumbing/water-treatment-services/"
+      - label: "Water Line Services"
+        url: "/plumbing/water-line-services/"
+
+  - label: "Electrical Services"
+    url: "/electrical-services/"
+    children:
+      - label: "Electrical Installation & Repairs"
+        url: "/electrical-services/electrical-installation-repairs/"
+      - label: "Lighting Installation"
+        url: "/electrical-services/lighting-installation/"
+      - label: "Ceiling Fan Installation"
+        url: "/electrical-services/ceiling-fan-installation/"
+      - label: "Home Surge Protection"
+        url: "/electrical-services/home-surge-protection/"
+      - label: "Electrical Panel Replacement"
+        url: "/electrical-services/electrical-panel-replacement/"
+      - label: "Switch & Outlet Services"
+        url: "/electrical-services/electrical-switch-outlet-services/"
+      - label: "Smart Home Electrical Upgrades"
+        url: "/electrical-services/smart-home-electrical-upgrades/"
+      - label: "EV Charger Installation"
+        url: "/electrical-services/ev-charger-installation/"
+
+  - label: "Gas Services"
+    url: "/gas/"
+    children:
+      - label: "Natural Gas & Propane Services"
+        url: "/gas/natural-gas-propane-services/"
+      - label: "Gas Leak Detection"
+        url: "/gas/leak-detection/"
+      - label: "Gas Safety Inspections"
+        url: "/gas/gas-safety-inspections/"
+      - label: "Gas Installations & Repairs"
+        url: "/gas/gas-installations-repairs/"
+
+  - label: "Service Areas"
+    url: "/service-areas/"
+    flag: serviceAreas
+
+  - label: "Specials"
+    url: "/coupons/"
+    flag: coupons
+
+  - label: "About"
+    url: "/about/"
+
+  - label: "Blog"
+    url: "/blog/"
+    flag: blog
+
+  - label: "Careers"
+    url: "/careers/"
+    flag: careers
+
+  - label: "FAQs"
+    url: "/faqs/"
+    flag: faqs
+
+  - label: "Contact"
+    url: "/contact/"
+
+# Utility Navigation (top bar)
+utilityNav:
+  - label: "(555) 555-5555"
+    url: "tel:5555555555"
+    icon: "material-symbols:call"
+  - label: "info@example.com"
+    url: "mailto:info@example.com"
+    icon: "material-symbols:mail-outline"

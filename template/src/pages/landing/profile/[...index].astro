@@ -1,0 +1,148 @@
+---
+/**
+ * /landing/profile — "Business Profile" hub, like a rich Google Business
+ * Profile page: hero, hours/NAP, map, services, reviews, contact. Pick one
+ * /landing/* variant, copy over index.astro, delete the rest.
+ */
+import LandingPageLayout from '@/layouts/LandingPageLayout.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import ReviewsBadge from '@/components/SharedComponents/ReviewsBadge.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import SecondaryButton from '@/components/ButtonComponents/SecondaryButton.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import BusinessHoursCard from '@/components/SharedComponents/BusinessHoursCard.astro';
+import SocialLinks from '@/components/SharedComponents/SocialLinks.astro';
+import LocationMap from '@/components/InnerPageComponents/LocationMap.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import HomeReviews from '@/components/HomePageComponents/HomeReviews.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import QuickContactForm from '@/components/FormComponents/QuickContactForm.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import { getOrganizationJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+
+const headerLinks = [
+  { label: 'Services', anchor: '#services' },
+  { label: 'Reviews', anchor: '#reviews' },
+  { label: 'Hours', anchor: '#hours' },
+  { label: 'Contact', anchor: '#contact' },
+];
+
+const mapQuery = encodeURIComponent(
+  `${branding.address.street}, ${branding.address.city}, ${branding.address.state} ${branding.address.zip}`
+);
+
+const services = [
+  { title: 'AC Repair & Service', description: 'Fast, reliable repairs to get your cooling back on track.', icon: 'material-symbols:ac-unit' },
+  { title: 'Heating Services', description: 'Furnace and heat pump repair, tune-ups, and installs.', icon: 'material-symbols:heat' },
+  { title: 'Plumbing', description: 'Leaks, fixtures, water heaters, and everyday plumbing repairs.', icon: 'material-symbols:plumbing' },
+  { title: 'Electrical', description: 'Panel upgrades, wiring, and electrical safety inspections.', icon: 'material-symbols:electric-bolt-outline' },
+  { title: 'Indoor Air Quality', description: 'Filtration and purification for cleaner, healthier air.', icon: 'material-symbols:air-purifier-outline' },
+  { title: 'Maintenance Plans', description: 'Seasonal tune-ups that catch problems before they start.', icon: 'material-symbols:hvac-outline' },
+];
+---
+
+<LandingPageLayout
+  title="Business Profile"
+  description={`${branding.companyName} — hours, location, services, and reviews for our ${branding.serviceArea.primary} location. Call ${branding.phone} or request a quote online.`}
+  schemaData={[getOrganizationJsonLd()]}
+  headerLinks={headerLinks}
+  ctaAnchor="#contact"
+>
+  <!-- Profile hero -->
+  <section id="campaign-hero" class="bg-bg-alt py-16 lg:py-20" aria-label="Business profile">
+    <div class="section-container text-center max-w-2xl mx-auto" data-animate="fade-up">
+      <h1 class="heading-display text-text mb-2">{branding.companyName}</h1>
+      <p class="text-lg text-text-muted mb-5">{branding.tagline}</p>
+
+      <div class="flex justify-center mb-8">
+        <ReviewsBadge />
+      </div>
+
+      <ButtonGroup align="center" stack="mobile">
+        <PhoneButton size="lg" variant="primary" />
+        <SecondaryButton text="Get Directions" href={branding.googleMapsUrl} icon="material-symbols:location-on-outline" size="lg" />
+        <PrimaryButton text="Contact Us" href="#contact" icon="material-symbols:mail-outline" size="lg" />
+      </ButtonGroup>
+    </div>
+  </section>
+
+  <!-- Hours + NAP -->
+  <SectionWrapper id="hours" background="white">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-bg-alt rounded-(--radius-card) p-6 text-center shadow-md" data-animate="fade-up">
+        <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted mb-3">Location</p>
+        <a href={branding.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="block font-heading font-semibold text-text mb-1 hover:text-primary">
+          {branding.address.street}, {branding.address.city}, {branding.address.state} {branding.address.zip}
+        </a>
+        <a href={`tel:${branding.phoneRaw}`} class="block text-text-muted hover:text-primary mb-1">{branding.phone}</a>
+        <a href={`mailto:${branding.email}`} class="block text-text-muted hover:text-primary break-all">{branding.email}</a>
+      </div>
+
+      <BusinessHoursCard />
+
+      <div class="bg-bg-alt rounded-(--radius-card) p-6 text-center shadow-md flex flex-col items-center justify-center gap-3" data-animate="fade-up">
+        <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted">Follow Us</p>
+        <SocialLinks variant="light" size="md" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- LocationMap renders its own SectionWrapper — kept as a sibling, not nested. -->
+  <LocationMap mapQuery={mapQuery} city={branding.address.city} />
+
+  <!-- Services -->
+  <SectionWrapper id="services" background="alt">
+    <h2 class="heading-display text-text text-center mb-10" data-animate="fade-up">What We Do</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((service) => (
+        <Card variant="elevated" padding="lg">
+          <div class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <Icon name={service.icon} class="w-7 h-7 text-primary" aria-hidden="true" />
+            </div>
+            <h3 class="text-lg font-heading font-bold text-text mb-2">{service.title}</h3>
+            <p class="text-text-muted text-sm">{service.description}</p>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </SectionWrapper>
+
+  <!-- Reviews -->
+  <div id="reviews">
+    <FeatureFlag name="reviews">
+      <HomeReviews />
+    </FeatureFlag>
+
+    {branding.googleReviewUrl && (
+      <div class="bg-bg py-8 text-center">
+        <SecondaryButton
+          text="Read more reviews on Google"
+          href={branding.googleReviewUrl}
+          icon="material-symbols:open-in-new"
+        />
+      </div>
+    )}
+  </div>
+
+  <!-- Contact -->
+  <SectionWrapper id="contact" background="white">
+    <div class="max-w-xl mx-auto mb-12">
+      <div class="bg-bg-alt rounded-(--radius-card) shadow-lg p-6 sm:p-8">
+        <QuickContactForm heading="Request a Quote" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <CtaBanner />
+</LandingPageLayout>

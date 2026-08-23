@@ -1,0 +1,133 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import JobDetailMeta from '@/components/CareersComponents/JobDetailMeta.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import { getJobPostingJsonLd } from '@/utils/seo';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    slug: string;
+    seoTitle?: string;
+    seoDescription: string;
+    department: string;
+    jobType: string;
+    location: string;
+    salary?: string;
+    publishDate: Date;
+    closingDate?: Date;
+    excerpt: string;
+    heroHeading?: string;
+    heroSubheading?: string;
+    ctaHeading?: string;
+    ctaBody?: string;
+    ctaButtonText?: string;
+    applyUrl?: string;
+    schemaData?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const branding = getBranding();
+
+const schemaData = [
+  getJobPostingJsonLd({
+    title: frontmatter.title,
+    description: frontmatter.seoDescription || frontmatter.excerpt,
+    jobType: frontmatter.jobType,
+    location: frontmatter.location,
+    salary: frontmatter.salary,
+    publishDate: frontmatter.publishDate,
+    closingDate: frontmatter.closingDate,
+  }),
+];
+---
+
+<PageLayout
+  title={frontmatter.seoTitle || `${frontmatter.title} | ${branding.companyName} Careers`}
+  description={frontmatter.seoDescription}
+  schemaData={schemaData}
+  rawSchema={frontmatter.schemaData}
+>
+  <!-- Compact inline header -->
+  <SectionWrapper background="alt" padding="tight">
+    <div class="max-w-4xl">
+      <Badge text={frontmatter.department} variant="primary" size="md" />
+      <h1 class="font-heading font-bold text-(--font-size-2xl) text-text mt-3 mb-2">
+        {frontmatter.heroHeading || frontmatter.title}
+      </h1>
+      {frontmatter.heroSubheading && (
+        <p class="text-text-muted text-lg">{frontmatter.heroSubheading}</p>
+      )}
+      <!-- Compact meta summary for quick scanning -->
+      <div class="flex flex-wrap items-center gap-3 mt-4 text-sm text-text-muted">
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="material-symbols:work-outline" style="width: 16px; height: 16px;" aria-hidden="true" />
+          {frontmatter.jobType}
+        </span>
+        <span aria-hidden="true">·</span>
+        <span class="inline-flex items-center gap-1.5">
+          <Icon name="material-symbols:location-on-outline" style="width: 16px; height: 16px;" aria-hidden="true" />
+          {frontmatter.location}
+        </span>
+        {frontmatter.salary && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="material-symbols:payments-outline" style="width: 16px; height: 16px;" aria-hidden="true" />
+              {frontmatter.salary}
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- Two-column layout: content + sticky sidebar -->
+  <SectionWrapper background="white">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-12 items-start">
+
+      <!-- Left column: Markdown content -->
+      <div class="prose max-w-none" data-animate="fade-up">
+        <slot />
+      </div>
+
+      <!-- Right column: Sticky sidebar (desktop only) -->
+      <aside class="hidden lg:block" aria-label="Job details and apply">
+        <JobDetailMeta
+          department={frontmatter.department}
+          jobType={frontmatter.jobType}
+          location={frontmatter.location}
+          salary={frontmatter.salary}
+          publishDate={frontmatter.publishDate}
+          closingDate={frontmatter.closingDate}
+          applyUrl={frontmatter.applyUrl}
+        />
+      </aside>
+    </div>
+
+    <!-- Mobile: Show meta below content -->
+    <div class="lg:hidden mt-8">
+      <JobDetailMeta
+        department={frontmatter.department}
+        jobType={frontmatter.jobType}
+        location={frontmatter.location}
+        salary={frontmatter.salary}
+        publishDate={frontmatter.publishDate}
+        closingDate={frontmatter.closingDate}
+        applyUrl={frontmatter.applyUrl}
+      />
+    </div>
+  </SectionWrapper>
+
+  <!-- CTA Banner -->
+  <CtaBanner
+    heading={frontmatter.ctaHeading}
+    body={frontmatter.ctaBody}
+    buttonText={frontmatter.ctaButtonText}
+  />
+</PageLayout>

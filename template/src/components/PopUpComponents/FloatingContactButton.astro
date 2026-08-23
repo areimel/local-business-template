@@ -1,0 +1,342 @@
+---
+import { getFloatingContact, getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import TextInput from '@/components/FormComponents/TextInput.astro';
+import TextArea from '@/components/FormComponents/TextArea.astro';
+import Checkbox from '@/components/FormComponents/Checkbox.astro';
+
+const config = getFloatingContact();
+
+const currentPath = Astro.url.pathname;
+const isExcluded = config.hideOnPaths?.some((p: string) => currentPath.startsWith(p));
+if (isExcluded) return;
+
+const { button, speechBubble, form } = config;
+const branding = getBranding();
+const disclaimerHtml = `By submitting, you consent to receive a response from ${branding.companyName} via phone, email, or text.`;
+---
+
+<div data-floating-contact class="contents">
+  {speechBubble.enabled && (
+    <div
+      class="fixed bottom-[8.5rem] right-4 lg:bottom-[5.5rem] lg:right-6 z-50 pointer-events-none"
+      data-floating-speech-wrapper
+    >
+      <div
+        class="floating-speech-bubble relative bg-bg rounded-full shadow-lg px-4 py-2.5 text-sm font-medium text-text whitespace-nowrap"
+        data-floating-speech
+        aria-live="polite"
+      >
+        <span data-floating-speech-text></span>
+        <div class="absolute -bottom-1.5 right-5 w-3 h-3 bg-bg shadow-lg rotate-45"></div>
+      </div>
+    </div>
+  )}
+
+  <div
+    class="fixed bottom-[8.5rem] right-4 lg:bottom-[5.5rem] lg:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96"
+    data-floating-panel
+    role="dialog"
+    aria-label="Quick contact form"
+  >
+    <div class="bg-bg rounded-[var(--radius-card)] shadow-xl overflow-hidden">
+      <div class="bg-secondary px-5 py-4 flex items-center justify-between">
+        <div>
+          <h3 class="font-heading font-bold text-text-on-secondary text-base">{form.heading}</h3>
+          <p class="text-text-on-secondary/80 text-xs mt-0.5">{form.subtitle}</p>
+        </div>
+        <button
+          type="button"
+          class="p-1 rounded-full text-text-on-secondary/80 hover:text-text-on-secondary hover:bg-white/10 transition-colors"
+          data-floating-close
+          aria-label="Close contact form"
+        >
+          <Icon name="material-symbols:close" class="w-5 h-5" />
+        </button>
+      </div>
+
+      <div class="p-5 max-h-[60vh] overflow-y-auto">
+        <div
+          id="floating-form-error"
+          class="hidden mb-4 p-3 bg-error/10 border border-error/20 rounded-[var(--radius-sm)] text-sm text-error"
+        >
+          Something went wrong. Please try again or call us directly.
+        </div>
+
+        <form data-floating-contact-form class="space-y-3">
+          <div class="hidden" aria-hidden="true">
+            <input type="checkbox" name="botcheck" />
+          </div>
+
+          <TextInput
+            name="name"
+            label="Full Name"
+            required
+            placeholder="John Smith"
+            id="floating-name"
+          />
+          <TextInput
+            name="email"
+            label="Email Address"
+            type="email"
+            placeholder="john@example.com"
+            id="floating-email"
+          />
+          <TextInput
+            name="phone"
+            label="Phone Number"
+            type="tel"
+            placeholder="(555) 123-4567"
+            id="floating-phone"
+          />
+          <TextArea
+            name="message"
+            label="Message"
+            placeholder="How can we help?"
+            rows={3}
+            id="floating-message"
+          />
+
+          <Checkbox name="consent" required size="sm">
+            <Fragment set:html={disclaimerHtml} />
+          </Checkbox>
+
+          <button type="submit" data-floating-submit class="btn btn-primary w-full mt-2">
+            <Icon name="material-symbols:send-outline" class="w-4 h-4 shrink-0" />
+            <span data-floating-submit-label>{form.submitText}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="fixed bottom-[4.5rem] right-4 lg:bottom-6 lg:right-6 z-50 w-14 h-14 rounded-full bg-secondary text-text-on-secondary shadow-btn flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+    data-floating-toggle
+    aria-label={button.ariaLabel}
+    aria-expanded="false"
+    aria-controls="floating-contact-panel"
+  >
+    <span class="floating-icon-chat">
+      <Icon name={button.icon} class="w-6 h-6" />
+    </span>
+    <span class="floating-icon-close">
+      <Icon name={button.closeIcon} class="w-6 h-6" />
+    </span>
+  </button>
+</div>
+
+<style>
+  [data-floating-panel] {
+    transform: translateY(1rem);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 400ms ease, opacity 400ms ease, visibility 0s 400ms;
+  }
+
+  [data-floating-contact][data-open="true"] [data-floating-panel] {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 400ms ease, opacity 400ms ease, visibility 0s 0s;
+  }
+
+  [data-floating-speech] {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.9);
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+
+  [data-floating-speech].visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  [data-floating-contact][data-open="true"] [data-floating-speech-wrapper] {
+    display: none;
+  }
+
+  .floating-icon-chat { display: flex; }
+  .floating-icon-close { display: none; }
+  [data-floating-contact][data-open="true"] .floating-icon-chat { display: none; }
+  [data-floating-contact][data-open="true"] .floating-icon-close { display: flex; }
+
+  .floating-spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 9999px;
+    animation: floating-spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  @keyframes floating-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script define:vars={{
+  speechMessages: speechBubble.messages,
+  intervalMs: speechBubble.intervalMs,
+  displayMs: speechBubble.displayMs,
+  initialDelayMs: speechBubble.initialDelayMs,
+  speechEnabled: speechBubble.enabled,
+  sendingText: 'Sending...',
+}}>
+  (function () {
+    const wrapper = document.querySelector('[data-floating-contact]');
+    const toggle = document.querySelector('[data-floating-toggle]');
+    const panel = document.querySelector('[data-floating-panel]');
+    const closeBtn = document.querySelector('[data-floating-close]');
+    const speechEl = document.querySelector('[data-floating-speech]');
+    const speechText = document.querySelector('[data-floating-speech-text]');
+    const form = document.querySelector('[data-floating-contact-form]');
+    const errorEl = document.getElementById('floating-form-error');
+
+    if (!wrapper || !toggle || !panel) return;
+
+    let isOpen = false;
+    let speechInterval = null;
+    let speechTimeout = null;
+    let messageIndex = 0;
+
+    function open() {
+      isOpen = true;
+      wrapper.setAttribute('data-open', 'true');
+      toggle.setAttribute('aria-expanded', 'true');
+
+      setTimeout(function () {
+        var firstInput = panel.querySelector('input, textarea');
+        if (firstInput) firstInput.focus();
+      }, 400);
+
+      pauseSpeechBubble();
+    }
+
+    function close() {
+      isOpen = false;
+      wrapper.removeAttribute('data-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+      errorEl && errorEl.classList.add('hidden');
+    }
+
+    toggle.addEventListener('click', function () {
+      if (isOpen) {
+        close();
+      } else {
+        open();
+      }
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', close);
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen) {
+        close();
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!isOpen) return;
+      var target = e.target;
+      if (!panel.contains(target) && !toggle.contains(target)) {
+        close();
+      }
+    });
+
+    function showSpeechBubble() {
+      if (!speechEl || !speechText || isOpen) return;
+
+      speechText.textContent = speechMessages[messageIndex];
+      speechEl.classList.add('visible');
+
+      speechTimeout = setTimeout(function () {
+        speechEl.classList.remove('visible');
+      }, displayMs);
+
+      messageIndex = (messageIndex + 1) % speechMessages.length;
+    }
+
+    function startSpeechBubble() {
+      if (!speechEnabled || !speechEl) return;
+
+      setTimeout(function () {
+        showSpeechBubble();
+        speechInterval = setInterval(showSpeechBubble, intervalMs);
+      }, initialDelayMs);
+    }
+
+    function pauseSpeechBubble() {
+      if (speechTimeout) {
+        clearTimeout(speechTimeout);
+        speechTimeout = null;
+      }
+      if (speechEl) {
+        speechEl.classList.remove('visible');
+      }
+    }
+
+    startSpeechBubble();
+
+    function setSubmitLoading(submitBtn, label, loading) {
+      if (loading) {
+        submitBtn.disabled = true;
+        label.dataset.originalText = label.textContent || '';
+        label.textContent = sendingText;
+        if (!submitBtn.querySelector('.floating-spinner')) {
+          var spinner = document.createElement('span');
+          spinner.className = 'floating-spinner';
+          spinner.setAttribute('aria-hidden', 'true');
+          submitBtn.insertBefore(spinner, label);
+        }
+      } else {
+        submitBtn.disabled = false;
+        if (label.dataset.originalText) {
+          label.textContent = label.dataset.originalText;
+        }
+        var existing = submitBtn.querySelector('.floating-spinner');
+        if (existing) existing.remove();
+      }
+    }
+
+    if (form) {
+      var submitBtn = form.querySelector('[data-floating-submit]');
+      var submitLabel = form.querySelector('[data-floating-submit-label]');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        errorEl && errorEl.classList.add('hidden');
+        setSubmitLoading(submitBtn, submitLabel, true);
+
+        try {
+          var formData = new FormData(form);
+          var response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData,
+          });
+
+          var result = await response.json();
+
+          if (response.ok && result.success) {
+            form.reset();
+            close();
+            window.dispatchEvent(new CustomEvent('modal:open:thank-you-modal'));
+          } else {
+            errorEl && errorEl.classList.remove('hidden');
+          }
+        } catch (_err) {
+          errorEl && errorEl.classList.remove('hidden');
+        } finally {
+          setSubmitLoading(submitBtn, submitLabel, false);
+        }
+      });
+    }
+  })();
+</script>

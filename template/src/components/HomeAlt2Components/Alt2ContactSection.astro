@@ -1,0 +1,119 @@
+---
+import { getBranding, getCtas } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+
+const branding = getBranding();
+const { servicesCta } = getCtas();
+
+const contactLinks = [
+  {
+    icon: 'material-symbols:call-outline',
+    label: 'Phone',
+    value: branding.phone,
+    href: `tel:${branding.phoneRaw}`,
+    ariaLabel: `Call us at ${branding.phone}`,
+  },
+  {
+    icon: 'material-symbols:mail-outline',
+    label: 'Email',
+    value: branding.email,
+    href: `mailto:${branding.email}`,
+    ariaLabel: `Email us at ${branding.email}`,
+  },
+  {
+    icon: 'material-symbols:location-on-outline',
+    label: 'Address',
+    value: branding.address.full,
+    href: branding.googleMapsUrl,
+    ariaLabel: `View our location: ${branding.address.full}`,
+  },
+];
+
+const trustIndicators = [
+  { icon: 'material-symbols:check-circle-outline', text: 'Free Estimates' },
+  { icon: 'material-symbols:check-circle-outline', text: 'No Hidden Fees' },
+  { icon: 'material-symbols:check-circle-outline', text: 'Licensed & Insured' },
+  { icon: 'material-symbols:check-circle-outline', text: 'Same-Day Availability' },
+  { icon: 'material-symbols:check-circle-outline', text: 'Satisfaction Guaranteed' },
+];
+
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+---
+
+<SectionWrapper id="contact-alt2" background="alt">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+    <!-- Left Column: Contact Info -->
+    <div data-animate="fade-up">
+      <Badge text="Contact Us" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-4">
+        {servicesCta.heading}
+      </h2>
+      <p class="text-lg text-text-muted mb-8 max-w-lg leading-relaxed">
+        {servicesCta.body} With {yearsInBusiness}+ years of experience serving
+        {branding.serviceArea.primary}, our team is ready to help with any home
+        comfort need.
+      </p>
+
+      <!-- Contact Links -->
+      <div class="space-y-4 mb-8">
+        {contactLinks.map((contact) => (
+          <a
+            href={contact.href}
+            target={contact.label === 'Address' ? '_blank' : undefined}
+            rel={contact.label === 'Address' ? 'noopener noreferrer' : undefined}
+            class="flex items-center gap-4 group text-text hover:text-primary transition-all p-3 -mx-3 rounded-(--radius-lg) hover:bg-primary/5"
+            aria-label={contact.ariaLabel}
+          >
+            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+              <Icon name={contact.icon} class="w-6 h-6 text-primary" aria-hidden="true" />
+            </div>
+            <div>
+              <p class="text-xs text-text-muted font-medium uppercase tracking-wider">{contact.label}</p>
+              <p class="text-base font-heading font-semibold">{contact.value}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="bg-secondary/5 border border-secondary/20 rounded-(--radius-card) p-5">
+        <p class="text-sm font-medium text-text mb-3">Why homeowners trust us:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+          {trustIndicators.map((indicator) => (
+            <span class="flex items-center gap-2 text-sm text-text-muted">
+              <Icon
+                name={indicator.icon}
+                class="w-5 h-5 text-success shrink-0"
+                aria-hidden="true"
+              />
+              <span>{indicator.text}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form Card -->
+    <div
+      class="bg-bg rounded-(--radius-card) shadow-lg overflow-hidden"
+      data-animate="fade-up"
+    >
+      <div class="bg-primary px-6 sm:px-8 py-4 flex items-center gap-3">
+        <Icon name="material-symbols:request-quote-outline" class="w-6 h-6 text-white shrink-0" />
+        <div class="flex-1">
+          <h3 class="font-heading font-bold text-white text-lg">Request Service</h3>
+        </div>
+        <span class="text-xs bg-white/20 text-white px-2 py-1 rounded-full font-medium">Free Estimate</span>
+      </div>
+      <div class="p-6 sm:p-8">
+        <ContactForm heading="Request Service" showHeading={false} />
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>

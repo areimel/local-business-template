@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import { getBranding, getServiceAreas } from '@/utils/data';
+
+interface Props {
+  mapQuery: string;
+  city: string;
+}
+
+const { mapQuery, city } = Astro.props;
+const branding = getBranding();
+const serviceAreas = getServiceAreas();
+const coverageRadius = serviceAreas.coverageRadius ?? 45;
+const coverageUnit = serviceAreas.coverageUnit ?? 'miles';
+const radiusUnitLabel = coverageUnit === 'miles' ? 'mile' : coverageUnit;
+---
+
+<SectionWrapper background="alt">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8" data-animate="fade-up">
+      <h2 class="heading-display text-text mb-3">
+        Serving {city} &amp; Surrounding Areas
+      </h2>
+      <p class="text-text-muted text-lg">
+        Our technicians are always nearby, with fast response times across {city} and the greater {branding.serviceArea.primary} area.
+      </p>
+    </div>
+
+    <div class="relative" data-animate="fade-up">
+      <div class="map-wrapper relative rounded-2xl overflow-hidden shadow-xl border border-neutral-200">
+        <iframe
+          src={`https://maps.google.com/maps?q=${mapQuery}&t=&z=12&ie=UTF8&iwloc=&output=embed`}
+          width="640"
+          height="400"
+          style="border:0; width:100%; height:auto; aspect-ratio:640/400; display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title={`Map of ${city}, FL service area`}
+        ></iframe>
+
+        <!-- Coverage radius badge -->
+        <div class="absolute bottom-4 left-4 flex items-center gap-2 px-4 py-2 rounded-full glass-dark">
+          <Icon name="material-symbols:my-location-outline" class="w-4 h-4 text-accent" />
+          <span class="text-sm text-white font-medium">
+            {coverageRadius}-{radiusUnitLabel} service radius
+          </span>
+        </div>
+      </div>
+
+      <!-- Decorative shape behind map -->
+      <div class="absolute -inset-3 rounded-3xl bg-primary/5 -z-10 -rotate-1" aria-hidden="true"></div>
+    </div>
+  </div>
+</SectionWrapper>

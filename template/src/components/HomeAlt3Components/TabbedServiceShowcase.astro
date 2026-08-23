@@ -1,0 +1,213 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+
+const allServices = await getCollection('services');
+const hubs = allServices
+  .filter((s) => s.data.type === 'hub')
+  .sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0));
+
+/* Map category slugs to Material Symbols icon names */
+const categoryIcons: Record<string, string> = {
+  'air-conditioning': 'material-symbols:ac-unit',
+  'heating': 'material-symbols:heat',
+  'plumbing': 'material-symbols:plumbing',
+  'electrical-services': 'material-symbols:electric-bolt',
+  'gas': 'material-symbols:gas-meter',
+};
+---
+
+<SectionWrapper id="services-tabs" background="white">
+  <div class="text-center mb-10" data-animate="fade-up">
+    <Badge text="Our Services" variant="primary" size="md" />
+    <h2 class="heading-display mt-4">
+      Full-Service Home Comfort Experts
+    </h2>
+    <p class="text-text-muted mt-3 max-w-2xl mx-auto text-lg">
+      From air conditioning to heating — we handle it all under one roof.
+    </p>
+  </div>
+
+  {/* Tab bar */}
+  <div
+    class="flex flex-wrap justify-center gap-2 mb-10"
+    role="tablist"
+    aria-label="Service categories"
+  >
+    {hubs.map((hub, index) => {
+      const iconName = categoryIcons[hub.data.category] || 'material-symbols:home-repair-service-outline';
+      return (
+        <button
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-controls={`panel-${hub.data.category}`}
+          id={`tab-${hub.data.category}`}
+          class:list={[
+            'service-tab relative flex items-center gap-2 px-5 py-3 rounded-(--radius-btn) font-heading font-semibold text-sm cursor-pointer',
+            index === 0
+              ? 'bg-primary text-white shadow-md'
+              : 'bg-bg-alt text-text-muted hover:text-text hover:bg-neutral-200',
+          ]}
+          data-tab={hub.data.category}
+        >
+          <span class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-secondary tab-active-dot" aria-hidden="true"></span>
+          <Icon name={iconName} class="w-5 h-5 shrink-0" />
+          <span class="hidden sm:inline">{hub.data.categoryLabel}</span>
+        </button>
+      );
+    })}
+  </div>
+
+  {/* Tab panels */}
+  {hubs.map((hub, index) => {
+    const iconName = categoryIcons[hub.data.category] || 'material-symbols:home-repair-service-outline';
+    const subServices = hub.data.subServices ?? [];
+
+    return (
+      <div
+        role="tabpanel"
+        id={`panel-${hub.data.category}`}
+        aria-labelledby={`tab-${hub.data.category}`}
+        class:list={[
+          'service-panel',
+          index !== 0 && 'hidden',
+        ]}
+        data-panel={hub.data.category}
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left: Category info */}
+          <div>
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-(--radius-lg) bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <Icon name={iconName} class="w-8 h-8 text-primary" />
+              </div>
+              <h3 class="text-2xl font-heading font-bold">
+                {hub.data.title}
+              </h3>
+            </div>
+
+            <p class="text-text-muted leading-relaxed mb-6">
+              {hub.data.intro}
+            </p>
+
+            <PrimaryButton
+              text={`Explore ${hub.data.categoryLabel} Services`}
+              href={`/${hub.data.category}/`}
+              icon="material-symbols:arrow-forward"
+            />
+          </div>
+
+          {/* Right: Sub-services list */}
+          <div class="space-y-2">
+            {subServices.slice(0, 6).map((service) => (
+              <a
+                href={`/${hub.data.category}/${service.slug}/`}
+                class="group relative overflow-hidden flex items-center justify-between p-3.5 rounded-(--radius-md) border border-neutral-200 hover:border-primary/40 hover:bg-primary/5 transition-all"
+              >
+                <span class="absolute left-0 top-0 h-full w-0.5 bg-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-200 origin-center rounded-r-full" aria-hidden="true"></span>
+                <div class="flex items-center gap-3">
+                  {service.icon && (
+                    <Icon name={service.icon} class="w-5 h-5 text-primary shrink-0" />
+                  )}
+                  <span class="font-medium text-text group-hover:text-primary transition-colors">
+                    {service.title}
+                  </span>
+                </div>
+                <Icon
+                  name="material-symbols:arrow-forward"
+                  class="w-4 h-4 text-text-muted group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
+                />
+              </a>
+            ))}
+
+            {subServices.length > 6 && (
+              <a
+                href={`/${hub.data.category}/`}
+                class="inline-flex items-center gap-1 text-sm text-primary font-medium mt-2 hover:text-primary-dark transition-colors"
+              >
+                View all {subServices.length} services
+                <Icon name="material-symbols:arrow-forward" class="w-4 h-4" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</SectionWrapper>
+
+<style>
+  .service-tab {
+    transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .tab-active-dot {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .service-tab[aria-selected="true"] .tab-active-dot {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  function initServiceTabs() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.service-tab');
+    const panels = document.querySelectorAll<HTMLElement>('.service-panel');
+
+    if (!tabs.length || !panels.length) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetCategory = tab.dataset.tab;
+        if (!targetCategory) return;
+
+        // Update tab states
+        tabs.forEach((t) => {
+          const isActive = t.dataset.tab === targetCategory;
+          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          t.classList.toggle('bg-primary', isActive);
+          t.classList.toggle('text-white', isActive);
+          t.classList.toggle('shadow-md', isActive);
+          t.classList.toggle('bg-bg-alt', !isActive);
+          t.classList.toggle('text-text-muted', !isActive);
+        });
+
+        // Update panel visibility
+        panels.forEach((panel) => {
+          const isTarget = panel.dataset.panel === targetCategory;
+          panel.classList.toggle('hidden', !isTarget);
+        });
+      });
+    });
+
+    // Keyboard navigation for tabs
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('keydown', (e: KeyboardEvent) => {
+        let nextIndex = index;
+        if (e.key === 'ArrowRight') {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (e.key === 'ArrowLeft') {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (e.key === 'Home') {
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          nextIndex = tabs.length - 1;
+        } else {
+          return;
+        }
+        e.preventDefault();
+        tabs[nextIndex].focus();
+        tabs[nextIndex].click();
+      });
+    });
+  }
+
+  // Initialize on page load and view transitions
+  initServiceTabs();
+  document.addEventListener('astro:after-swap', initServiceTabs);
+</script>

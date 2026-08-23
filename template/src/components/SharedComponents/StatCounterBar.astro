@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import type { VariantStat } from '@/utils/data';
+
+interface Props {
+  background?: 'dark' | 'primary';
+  stats?: VariantStat[];
+}
+
+const { background = 'dark', stats } = Astro.props;
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const defaultStats: VariantStat[] = [
+  { value: yearsInBusiness, suffix: '+', label: 'Years of Experience', icon: 'material-symbols:workspace-premium-outline', counter: true },
+  { value: 5000, suffix: '+', label: 'Homes Served', icon: 'material-symbols:home-outline', counter: true },
+  { value: 4.9, suffix: '', label: 'Star Rating', icon: 'material-symbols:star-outline', counter: false },
+  { value: 24, suffix: '/7', label: 'Emergency Service', icon: 'material-symbols:schedule-outline', counter: true },
+];
+
+const displayStats = stats ?? defaultStats;
+
+const bgClass = background === 'primary'
+  ? 'bg-primary text-text-on-primary'
+  : 'bg-neutral-900 text-neutral-100';
+---
+
+<section class:list={[bgClass, 'py-12 lg:py-16 relative overflow-hidden']}>
+  <!-- Gradient top line -->
+  <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(to right, transparent, var(--color-accent), transparent);" aria-hidden="true"></div>
+  <div class="section-container">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      {displayStats.map((stat) => (
+        <div class="text-center">
+          <div class="flex items-center justify-center mb-3">
+            <div class="w-12 h-12 rounded-full bg-white/15 border border-white/25 flex items-center justify-center">
+              <Icon name={stat.icon} class="w-6 h-6" />
+            </div>
+          </div>
+          <div class="text-3xl lg:text-4xl font-heading font-bold">
+            {stat.counter ? (
+              <span data-animate="counter" data-count-to={stat.value}>0</span>
+            ) : (
+              <span>{stat.value}</span>
+            )}
+            {stat.suffix && <span>{stat.suffix}</span>}
+          </div>
+          <div class="text-sm opacity-90 mt-1">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

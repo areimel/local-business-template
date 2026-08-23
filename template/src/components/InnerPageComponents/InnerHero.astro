@@ -1,0 +1,69 @@
+---
+import Badge from '@/components/SharedComponents/Badge.astro';
+
+interface Props {
+  heading: string;
+  subheading?: string;
+  badge?: string;
+}
+
+const { heading, subheading, badge } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden pt-20 pb-24 lg:pt-28 lg:pb-32"
+  style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);"
+  aria-label="Page header"
+>
+  <!-- Radial gradient overlay for depth -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Dot-grid overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0); background-size: 32px 32px;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative orange blob (top right) -->
+  <div
+    class="absolute -top-10 -right-10 w-48 h-48 lg:w-72 lg:h-72 rounded-full bg-secondary/15 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative accent blob (bottom left) -->
+  <div
+    class="absolute -bottom-16 -left-16 w-40 h-40 lg:w-56 lg:h-56 rounded-full bg-accent/10 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10 text-center">
+    {badge && (
+      <div class="mb-5" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+        <Badge text={badge} variant="light" size="md" />
+      </div>
+    )}
+
+    <h1
+      class="heading-display text-white mb-4"
+      data-animate="fade-up" data-on="load" data-distance="30" data-duration="600"
+    >
+      {heading}
+    </h1>
+
+    {subheading && (
+      <p
+        class="text-lg lg:text-xl text-white/85 max-w-2xl mx-auto"
+        data-animate="fade-up" data-on="load" data-delay="200" data-distance="20" data-duration="500"
+      >
+        {subheading}
+      </p>
+    )}
+  </div>
+
+</section>

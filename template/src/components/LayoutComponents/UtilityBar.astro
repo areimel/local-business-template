@@ -1,0 +1,36 @@
+---
+import { getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import GoogleTranslateWidget from '@/components/LayoutComponents/GoogleTranslateWidget.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+
+const branding = getBranding();
+---
+
+<div class="bg-primary-dark text-text-on-primary hidden md:block">
+  <div class="section-container">
+    <div class="flex items-center justify-end gap-4 py-2 text-sm">
+      <FeatureFlag name="translate">
+        <GoogleTranslateWidget />
+        <span class="text-white/30">|</span>
+      </FeatureFlag>
+      <a
+        href={`tel:${branding.phoneRaw}`}
+        class="flex items-center gap-1.5 text-white hover:text-accent-light transition-colors"
+        aria-label={`Call us at ${branding.phone}`}
+      >
+        <Icon name="material-symbols:call" class="w-4 h-4" />
+        <span>{branding.phone}</span>
+      </a>
+      <span class="text-white/30">|</span>
+      <a
+        href={`mailto:${branding.email}`}
+        class="flex items-center gap-1.5 text-white hover:text-accent-light transition-colors"
+        aria-label={`Email us at ${branding.email}`}
+      >
+        <Icon name="material-symbols:mail-outline" class="w-4 h-4" />
+        <span>{branding.email}</span>
+      </a>
+    </div>
+  </div>
+</div>

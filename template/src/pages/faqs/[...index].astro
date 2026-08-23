@@ -1,0 +1,116 @@
+---
+import { Icon } from 'astro-icon/components';
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import FaqCategoryCards from '@/components/InnerPageComponents/FaqCategoryCards.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import QuickContactForm from '@/components/FormComponents/QuickContactForm.astro';
+import { getFaqs, getBranding } from '@/utils/data';
+import { getFaqPageJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+// Rest-param route so the page can be flag-gated: when 'faqs' is off,
+// no paths are returned and /faqs/ is never built.
+export async function getStaticPaths() {
+  return gatedPaths('faqs', () => [{ params: { index: undefined } }]);
+}
+
+const { categories } = getFaqs();
+const branding = getBranding();
+
+// Icon map for category nav pills
+const categoryIcons: Record<string, string> = {
+  'general': 'material-symbols:help-outline',
+  'air-conditioning': 'material-symbols:ac-unit',
+  'heating': 'material-symbols:mode-heat-outline',
+  'indoor-air-quality': 'material-symbols:air-purifier-outline',
+  'scheduling-pricing': 'material-symbols:calendar-month-outline',
+};
+const defaultIcon = 'material-symbols:quiz-outline';
+
+// Build FAQ structured data for SEO (shared helper — DRY with inner pages)
+const faqSchema = getFaqPageJsonLd(categories.flatMap((cat) => cat.questions));
+---
+
+<PageLayout
+  title="FAQs"
+  description={`Frequently asked questions about ${branding.companyName} services in ${branding.serviceArea.primary}. Find answers about AC and heating services.`}
+>
+  <InnerHero
+    heading="Frequently Asked Questions"
+    subheading="Find answers to common questions about our services"
+  />
+
+  <!-- Category Navigation Bar -->
+  <div class="bg-bg border-b border-neutral-200 sticky top-0 z-30">
+    <div class="section-container">
+      <nav
+        class="flex flex-wrap items-center justify-center gap-3 py-4"
+        aria-label="FAQ categories"
+        data-animate="fade-up"
+      >
+        {categories.map((category) => (
+          <a
+            href={`#${category.slug}`}
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-heading font-semibold text-sm
+                   bg-neutral-100 text-text-muted border border-neutral-200
+                   hover:bg-primary hover:text-white hover:border-primary
+                   transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <Icon
+              name={categoryIcons[category.slug] || defaultIcon}
+              class="w-5 h-5"
+              aria-hidden="true"
+            />
+            {category.name}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+
+  <!-- FAQ Category Sections -->
+  {categories.map((category, index) => (
+    <SectionWrapper
+      id={category.slug}
+      background={index % 2 === 0 ? 'white' : 'alt'}
+    >
+      <FaqCategoryCards
+        categoryTitle={category.name}
+        categorySlug={category.slug}
+        questions={category.questions}
+      />
+    </SectionWrapper>
+  ))}
+
+  <!-- Still Have Questions? -->
+  <SectionWrapper background={categories.length % 2 === 0 ? 'white' : 'alt'}>
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="heading-display text-text mb-4" data-animate="fade-up">
+        Still Have Questions?
+      </h2>
+      <p class="text-lg text-text-muted mb-8" data-animate="fade-up">
+        Can't find what you're looking for? We're happy to help.
+        Send us a quick message or call us at{' '}
+        <a
+          href={`tel:${branding.phoneRaw}`}
+          class="text-primary font-semibold hover:text-primary-dark"
+        >
+          {branding.phone}
+        </a>.
+      </p>
+      <div
+        class="bg-bg rounded-(--radius-card) shadow-lg p-6 sm:p-8"
+        data-animate="fade-up"
+      >
+        <QuickContactForm heading="Send Us a Quick Message" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <CtaBanner />
+</PageLayout>
+
+<!-- FAQ Structured Data (JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />

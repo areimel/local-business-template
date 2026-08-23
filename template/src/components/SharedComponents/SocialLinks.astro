@@ -1,0 +1,50 @@
+---
+/**
+ * SocialLinks.astro
+ *
+ * Icon row for the social profiles configured in branding.yaml.
+ * Empty/missing URLs are skipped automatically.
+ */
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+
+interface Props {
+  variant?: 'light' | 'dark';
+  size?: 'sm' | 'md';
+}
+
+const { variant = 'light', size = 'md' } = Astro.props;
+const { socialMedia } = getBranding();
+
+const platforms = [
+  { key: 'facebook', label: 'Facebook', icon: 'mdi:facebook' },
+  { key: 'instagram', label: 'Instagram', icon: 'mdi:instagram' },
+  { key: 'youtube', label: 'YouTube', icon: 'mdi:youtube' },
+  { key: 'nextdoor', label: 'Nextdoor', icon: 'material-symbols:link' },
+] as const;
+
+const links = platforms.filter((p) => socialMedia?.[p.key]);
+
+const wrapperClass =
+  variant === 'dark'
+    ? 'bg-white/10 text-white/70 hover:bg-primary hover:text-white'
+    : 'bg-neutral-100 text-neutral-500 hover:bg-primary hover:text-white';
+const boxSize = size === 'sm' ? 'w-9 h-9' : 'w-10 h-10';
+const iconSize = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
+---
+
+{links.length > 0 && (
+  <div class="flex gap-3" aria-label="Social media links">
+    {links.map((p) => (
+      <a
+        href={socialMedia[p.key]}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={`${boxSize} flex items-center justify-center rounded-full transition-colors ${wrapperClass}`}
+        aria-label={`Visit us on ${p.label}`}
+      >
+        <Icon name={p.icon} class={iconSize} aria-hidden="true" />
+      </a>
+    ))}
+  </div>
+)}

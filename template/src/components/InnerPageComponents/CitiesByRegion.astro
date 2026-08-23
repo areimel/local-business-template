@@ -1,0 +1,119 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+import { getServiceAreas, getBranding, cityToSlug } from '@/utils/data';
+import { getCollection } from 'astro:content';
+
+const serviceAreas = getServiceAreas();
+const branding = getBranding();
+
+const totalCities = serviceAreas.cities.length;
+const regions = serviceAreas.regions ?? [];
+
+// Resolve which cities have a location page so we can link them
+const allLocations = await getCollection('locations');
+const locationSlugs = new Set(allLocations.map(l => l.data.slug));
+---
+
+<SectionWrapper background="alt">
+  <div class="text-center mb-14" data-animate="fade-up">
+    <Badge text="Cities We Serve" variant="primary" size="md" />
+    <h2 class="heading-display text-text mt-4 mb-4">
+      {totalCities}+ Communities Across {branding.serviceArea.primary}
+    </h2>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      No matter where you are in the greater {branding.serviceArea.primary} area, quality home services are just a phone call away.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    {regions.map((region) => (
+      <div class="region-card" data-animate="fade-up">
+        <!-- Region header -->
+        <div class="flex items-center gap-3 mb-4 pb-4 border-b border-neutral-200">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <Icon name="material-symbols:pin-drop-outline" class="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h3 class="text-lg font-heading font-bold text-text">{region.name}</h3>
+            <p class="text-sm text-text-muted">{region.description}</p>
+          </div>
+        </div>
+
+        <!-- City list — linked if location page exists, otherwise plain chip -->
+        <div class="flex flex-wrap gap-2">
+          {region.cities.map((city) => {
+            const slug = cityToSlug(city);
+            const hasPage = locationSlugs.has(slug);
+            return hasPage ? (
+              <a href={`/service-areas/${slug}/`} class="city-chip city-chip--link">
+                <Icon name="material-symbols:location-on-outline" class="w-3.5 h-3.5 text-primary/60" />
+                {city}
+              </a>
+            ) : (
+              <span class="city-chip">
+                <Icon name="material-symbols:location-on-outline" class="w-3.5 h-3.5 text-primary/60" />
+                {city}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- "Don't see your city?" callout -->
+  <div class="mt-12 text-center" data-animate="fade-up">
+    <div class="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-bg border border-neutral-200 shadow-sm">
+      <Icon name="material-symbols:help-outline" class="w-6 h-6 text-primary shrink-0" />
+      <p class="text-text text-sm">
+        <span class="font-semibold">Don't see your city?</span> We may still be able to help.
+        <a href="/contact/" class="text-primary font-semibold hover:text-primary-dark ml-1">Contact us</a> or call
+        <a href={`tel:${branding.phoneRaw}`} class="text-primary font-semibold hover:text-primary-dark">{branding.phone}</a>.
+      </p>
+    </div>
+  </div>
+</SectionWrapper>
+
+<style>
+  .region-card {
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-card);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .region-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .city-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-neutral-200);
+    transition: all 0.25s ease;
+    text-decoration: none;
+  }
+
+  .city-chip--link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .city-chip--link:hover {
+      transform: none;
+    }
+  }
+</style>

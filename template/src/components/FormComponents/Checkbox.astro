@@ -1,0 +1,34 @@
+---
+interface Props {
+  name: string;
+  label?: string;
+  required?: boolean;
+  checked?: boolean;
+  size?: 'default' | 'sm';
+}
+
+const {
+  name,
+  label,
+  required = false,
+  checked = false,
+  size = 'default',
+} = Astro.props;
+
+const hasSlotContent = Astro.slots.has('default');
+const textSize = size === 'sm' ? 'text-xs' : 'text-sm';
+---
+
+<label class="flex items-start gap-3 cursor-pointer">
+  <input
+    type="checkbox"
+    name={name}
+    required={required}
+    checked={checked}
+    class="mt-0.5 w-5 h-5 shrink-0 rounded border-neutral-300 text-primary accent-primary cursor-pointer"
+  />
+  <span class:list={[textSize, 'text-text']}>
+    {hasSlotContent ? <slot /> : label}
+    {required && <span class="text-error ml-0.5">*</span>}
+  </span>
+</label>

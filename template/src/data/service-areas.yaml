@@ -1,0 +1,73 @@
+# Areas We Serve — Homepage Section
+badge: "Service Area"
+heading: "Proudly Serving the Local Area"
+subheading: "From our home base in Anytown, we provide reliable HVAC, heating, and home comfort services across the surrounding region. Quality comfort is always just a call away."
+
+# Flat city list — used by homepage component
+cities:
+  - "Anytown"
+  - "Springfield"
+  - "Riverside"
+  - "Fairview"
+  - "Lakeside"
+  - "Hillcrest"
+  - "Oakdale"
+  - "Maplewood"
+  - "Centerville"
+
+# CTA
+ctaText: "Check Availability in Your Area"
+ctaUrl: "/contact/"
+
+# ===== Full Service Areas Page Content =====
+
+pageHeading: "Areas We Serve"
+pageSubheading: "Delivering trusted HVAC, heating, and home comfort services across the surrounding region"
+
+pageIntro: "For over 35 years, Your Company Name has been the name local homeowners trust for reliable, honest home comfort services. Headquartered in Anytown, we've proudly served 10,000+ homes across the surrounding region. Our technicians know the unique challenges of local living — from seasonal humidity to summer heat — and we're equipped to keep your home comfortable no matter what."
+
+coverageRadius: 45
+coverageUnit: "miles"
+
+# Headquarters coordinates (used for map centering and service radius)
+headquarters:
+  lat: 39.8283
+  lng: -98.5795
+  label: "Your Company Name Headquarters"
+
+# Cities organized by region — for full page layout
+regions:
+  - name: "Anytown Area"
+    description: "Our home base and the heart of our service area."
+    cities:
+      - "Anytown"
+      - "Springfield"
+      - "Riverside"
+      - "Fairview"
+
+  - name: "Surrounding Communities"
+    description: "Full coverage across the surrounding region."
+    cities:
+      - "Lakeside"
+      - "Hillcrest"
+      - "Oakdale"
+      - "Maplewood"
+      - "Centerville"
+
+# Why choose local section
+localBenefits:
+  - icon: "material-symbols:speed-outline"
+    title: "Faster Response Times"
+    description: "We're already in your neighborhood. When your AC goes out in July, you won't be waiting for a company three counties away."
+
+  - icon: "material-symbols:handyman-outline"
+    title: "We Know Local Homes"
+    description: "Seasonal humidity, storms, intense heat — our techs understand the unique demands of local living and know how to keep your home comfortable."
+
+  - icon: "material-symbols:groups-outline"
+    title: "Community Reputation"
+    description: "We don't just work here, we live here. Since 1990, our family-owned reputation in this community is everything to us."
+
+  - icon: "material-symbols:verified-outline"
+    title: "Consistent Service Team"
+    description: "You'll see the same familiar faces, not rotating strangers. Our team builds relationships, not just invoices."

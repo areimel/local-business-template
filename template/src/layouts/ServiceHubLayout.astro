@@ -1,0 +1,116 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ServiceHero from '@/components/InnerPageComponents/ServiceHero.astro';
+import TrustBar from '@/components/InnerPageComponents/TrustBar.astro';
+import ServiceIntro from '@/components/InnerPageComponents/ServiceIntro.astro';
+import ServiceGrid from '@/components/InnerPageComponents/ServiceGrid.astro';
+import TestimonialHighlight from '@/components/InnerPageComponents/TestimonialHighlight.astro';
+import FaqAccordion from '@/components/InnerPageComponents/FaqAccordion.astro';
+import FaqCtaFooter from '@/components/InnerPageComponents/FaqCtaFooter.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import ContentSection from '@/components/InnerPageComponents/ContentSection.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import EmergencyCtaBanner from '@/components/SharedComponents/EmergencyCtaBanner.astro';
+import { getServiceJsonLd, getFaqPageJsonLd } from '@/utils/seo';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    category: string;
+    categoryLabel: string;
+    seoDescription: string;
+    seoTitle?: string;
+    heroHeading: string;
+    heroSubheading?: string;
+    intro: string;
+    subServices?: Array<{ title: string; slug: string; description: string; icon?: string }>;
+    faqs?: Array<{ question: string; answer: string }>;
+    showContactForm: boolean;
+    showEmergencyCta: boolean;
+    freeEstimate?: boolean;
+    ctaHeading?: string;
+    ctaBody?: string;
+    ctaButtonText?: string;
+    schemaData?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+
+const schemaData = [
+  getServiceJsonLd({
+    name: `${frontmatter.categoryLabel} Services`,
+    description: frontmatter.seoDescription,
+    url: `/${frontmatter.category}/`,
+    serviceType: frontmatter.categoryLabel,
+  }),
+  ...(frontmatter.faqs?.length ? [getFaqPageJsonLd(frontmatter.faqs)] : []),
+];
+---
+
+<PageLayout
+  title={frontmatter.seoTitle || frontmatter.title}
+  description={frontmatter.seoDescription}
+  schemaData={schemaData}
+  rawSchema={frontmatter.schemaData}
+>
+  <!-- Hero with Contact Form -->
+  <ServiceHero
+    heading={frontmatter.heroHeading}
+    subheading={frontmatter.heroSubheading}
+    badge={frontmatter.categoryLabel}
+    freeEstimate={frontmatter.freeEstimate}
+  />
+
+  <!-- Trust Bar -->
+  <TrustBar />
+
+  <!-- Service Intro (replaces plain paragraph) -->
+  <ServiceIntro
+    intro={frontmatter.intro}
+    categoryLabel={frontmatter.categoryLabel}
+    freeEstimate={frontmatter.freeEstimate}
+  />
+
+  <!-- Service Grid -->
+  {frontmatter.subServices && frontmatter.subServices.length > 0 && (
+    <ServiceGrid
+      services={frontmatter.subServices}
+      category={frontmatter.category}
+      heading={`Our ${frontmatter.categoryLabel} Services`}
+    />
+  )}
+
+  <!-- Testimonial Highlight -->
+  <TestimonialHighlight />
+
+  <!-- Markdown Body Content -->
+  <ContentSection>
+    <slot />
+  </ContentSection>
+
+  <!-- FAQs -->
+  {frontmatter.faqs && frontmatter.faqs.length > 0 && (
+    <SectionWrapper background="alt">
+      <h2 class="heading-display text-text text-center mb-12" data-animate="fade-up">
+        Frequently Asked Questions
+      </h2>
+      <div class="max-w-3xl mx-auto">
+        <FaqAccordion faqs={frontmatter.faqs} />
+        <FaqCtaFooter />
+      </div>
+    </SectionWrapper>
+  )}
+
+  <!-- Emergency CTA -->
+  {frontmatter.showEmergencyCta && (
+    <EmergencyCtaBanner />
+  )}
+
+  <!-- Final CTA Banner -->
+  <CtaBanner
+    heading={frontmatter.ctaHeading}
+    body={frontmatter.ctaBody}
+    buttonText={frontmatter.ctaButtonText}
+  />
+</PageLayout>

@@ -1,0 +1,176 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import BoldSplitHero from '@/components/HomeAlt3Components/BoldSplitHero.astro';
+import AngleDivider from '@/components/HomeAlt3Components/AngleDivider.astro';
+import TabbedServiceShowcase from '@/components/HomeAlt3Components/TabbedServiceShowcase.astro';
+import BrandPartnersTrust from '@/components/HomeAlt3Components/BrandPartnersTrust.astro';
+import PhotoCtaSection from '@/components/HomeAlt3Components/PhotoCtaSection.astro';
+import Alt3ContactSection from '@/components/HomeAlt3Components/Alt3ContactSection.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+import reviewsBadge from '@/assets/images/logos/reviews-badge.png';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+
+const testimonials = [
+  {
+    name: 'Sarah M.',
+    rating: 5,
+    text: 'Incredible service from start to finish. The technician arrived on time, explained every step, and had our AC running perfectly within the hour. Truly the best HVAC experience we\'ve ever had.',
+    service: 'AC Repair',
+  },
+  {
+    name: 'James R.',
+    rating: 5,
+    text: 'We needed a full system replacement and they made the whole process stress-free. Fair pricing, professional crew, and the new unit has already cut our energy bills. Highly recommend!',
+    service: 'AC Installation',
+  },
+  {
+    name: 'Linda K.',
+    rating: 5,
+    text: 'Called at 10 PM on a Saturday with a broken heater and they had someone at our door within 45 minutes. That kind of commitment to customers is rare. We won\'t call anyone else.',
+    service: 'Emergency Heating Repair',
+  },
+];
+---
+
+<PageLayout
+  title="Home"
+  description={branding.seo.defaultDescription}
+  showBreadcrumbs={false}
+  noindex={true}
+>
+  {/* Hero */}
+  <BoldSplitHero />
+
+  {/* Angle: dark -> white */}
+  <AngleDivider from="dark" to="white" direction="normal" />
+
+  {/* Tabbed Services */}
+  <TabbedServiceShowcase />
+
+  {/* Angle: white -> alt (reverse) */}
+  <AngleDivider from="white" to="alt" direction="reverse" />
+
+  {/* Brand Partners & Trust */}
+  <BrandPartnersTrust />
+
+  {/* Angle: alt -> primary */}
+  <AngleDivider from="alt" to="primary" direction="normal" />
+
+  {/* Inline Testimonials Section */}
+  <section id="testimonials" class="bg-primary py-(--spacing-section) relative overflow-hidden">
+    {/* Geometric background decorations */}
+    <div
+      class="absolute top-0 right-0 w-64 h-64 bg-white/5 pointer-events-none"
+      style="clip-path: polygon(100% 0, 0 0, 100% 100%);"
+      aria-hidden="true"
+    />
+    <div
+      class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 pointer-events-none"
+      style="clip-path: polygon(0 100%, 100% 100%, 0 0);"
+      aria-hidden="true"
+    />
+    {/* Dot grid on right half */}
+    <div
+      class="absolute top-0 right-0 w-1/2 h-full pointer-events-none"
+      style="background-image: radial-gradient(circle, rgba(255,255,255,0.10) 1px, transparent 1px); background-size: 28px 28px;"
+      aria-hidden="true"
+    />
+    {/* Small accent ring */}
+    <div
+      class="absolute top-12 right-16 w-8 h-8 border-2 border-accent/30 rounded-full pointer-events-none"
+      aria-hidden="true"
+    />
+
+    <div class="section-container relative z-10">
+      <div class="text-center mb-10" data-animate="fade-up">
+        <Badge text="Customer Reviews" variant="secondary" size="md" />
+        <h2 class="heading-display text-white mt-4">
+          What Our Customers Say
+        </h2>
+        <p class="text-white/80 mt-3 max-w-xl mx-auto text-lg">
+          Don't just take our word for it. Hear from homeowners across {branding.serviceArea.primary}.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {testimonials.map((testimonial, index) => (
+          <div class="bg-white rounded-(--radius-card) p-6 shadow-xl relative overflow-hidden group hover:-translate-y-1 hover:shadow-2xl transition-all duration-300">
+            {/* Colored top accent bar - alternating secondary/accent */}
+            <div
+              class={index % 2 === 0 ? 'absolute top-0 left-0 right-0 h-1 bg-secondary' : 'absolute top-0 left-0 right-0 h-1 bg-accent'}
+              aria-hidden="true"
+            />
+            {/* Corner triangle decoration */}
+            <div
+              class="absolute top-0 right-0 w-8 h-8 bg-primary/5"
+              style="clip-path: polygon(100% 0, 0 0, 100% 100%);"
+              aria-hidden="true"
+            />
+
+            <div class="flex items-center justify-between mb-4">
+              <StarRating rating={testimonial.rating} size="md" />
+              <Image
+                src={reviewsBadge}
+                alt="Customer reviews badge"
+                class="h-5 w-auto"
+                width={80}
+                height={20}
+              />
+            </div>
+
+            <p class="text-text leading-relaxed mb-4 text-sm">
+              "{testimonial.text}"
+            </p>
+
+            <div class="flex items-center justify-between pt-4 border-t border-neutral-100">
+              <div>
+                <div class="font-heading font-bold text-sm">{testimonial.name}</div>
+                <div class="text-xs text-text-muted">{testimonial.service}</div>
+              </div>
+              <Icon name="material-symbols:verified" class="w-5 h-5 text-primary" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Google review CTA - ghost pill button */}
+      <div class="text-center mt-10">
+        <a
+          href={branding.googleReviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/40 px-6 py-3 rounded-(--radius-btn) text-white font-heading font-semibold transition-all duration-200"
+        >
+          <Icon name="material-symbols:rate-review-outline" class="w-5 h-5" />
+          Leave Us a Review on Google
+          <Icon name="material-symbols:open-in-new" class="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* Angle: primary -> dark (reverse) */}
+  <AngleDivider from="primary" to="dark" direction="reverse" />
+
+  {/* Photo CTA */}
+  <PhotoCtaSection />
+
+  {/* Angle: dark -> white */}
+  <AngleDivider from="dark" to="white" direction="normal" />
+
+  {/* Contact Section */}
+  <Alt3ContactSection />
+</PageLayout>

@@ -1,0 +1,66 @@
+---
+---
+
+<div class="translate-widget flex items-center">
+  <select id="custom_translate_select" class="custom-translate-select" aria-label="Select language">
+    <option value="en">English</option>
+    <option value="es">Español</option>
+  </select>
+  <div id="google_translate_element" class="hidden"></div>
+</div>
+
+<script is:inline>
+  // Guard against double-initialization
+  if (!window._gtLoaded) {
+    window._gtLoaded = true;
+
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: 'en',
+          includedLanguages: 'en,es',
+          layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+          autoDisplay: false,
+        },
+        'google_translate_element'
+      );
+    };
+
+    // Dynamically load the Google Translate script (non-blocking)
+    var gtScript = document.createElement('script');
+    gtScript.src =
+      '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    gtScript.async = true;
+    document.head.appendChild(gtScript);
+
+    // Detect current language from cookie and set custom dropdown
+    var customSelect = document.getElementById('custom_translate_select');
+    var googtransCookie = document.cookie.match(/googtrans=\/en\/(\w+)/);
+    if (googtransCookie && googtransCookie[1] === 'es' && customSelect) {
+      customSelect.value = 'es';
+    }
+
+    // Wire custom dropdown to Google Translate
+    if (customSelect) {
+      customSelect.addEventListener('change', function () {
+        var gtCombo = document.querySelector('select.goog-te-combo');
+        if (gtCombo) {
+          if (this.value === 'en') {
+            // Clear translation cookies to revert to English
+            ['', location.hostname, '.' + location.hostname].forEach(function (d) {
+              document.cookie =
+                'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/' +
+                (d ? '; domain=' + d : '') +
+                ';';
+            });
+            gtCombo.value = 'en';
+            gtCombo.dispatchEvent(new Event('change'));
+          } else {
+            gtCombo.value = this.value;
+            gtCombo.dispatchEvent(new Event('change'));
+          }
+        }
+      });
+    }
+  }
+</script>

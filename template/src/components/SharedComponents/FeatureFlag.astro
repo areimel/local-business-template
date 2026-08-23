@@ -1,0 +1,11 @@
+---
+import { isFeatureEnabled, type FeatureName } from '@/utils/features';
+
+interface Props {
+  name: FeatureName;
+}
+
+const { name } = Astro.props;
+---
+
+{isFeatureEnabled(name) && <slot />}

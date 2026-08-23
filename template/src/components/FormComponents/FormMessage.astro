@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id?: string;
+}
+
+const { id = 'form-message' } = Astro.props;
+---
+
+<div id={id} class="hidden" role="alert">
+  <div id={`${id}-success`} class="hidden p-4 rounded-lg bg-success/10 border-l-4 border-success">
+    <div class="flex items-center gap-3">
+      <Icon name="material-symbols:check-circle" class="w-6 h-6 text-success shrink-0" />
+      <p class="text-sm text-success font-medium" id={`${id}-success-text`}>
+        Your message has been sent successfully. We'll get back to you shortly!
+      </p>
+    </div>
+  </div>
+  <div id={`${id}-error`} class="hidden p-4 rounded-lg bg-error/10 border-l-4 border-error">
+    <div class="flex items-center gap-3">
+      <Icon name="material-symbols:error" class="w-6 h-6 text-error shrink-0" />
+      <p class="text-sm text-error font-medium" id={`${id}-error-text`}>
+        Something went wrong. Please try again or call us directly.
+      </p>
+    </div>
+  </div>
+</div>

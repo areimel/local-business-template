@@ -1,0 +1,120 @@
+---
+/**
+ * /landing/promo — single-offer promo page for paid ad traffic: one hero,
+ * one coupon, minimal distraction. Generic seasonal-tune-up placeholder
+ * copy, rebrandable via branding.yaml / coupons.yaml. Pick one /landing/*
+ * variant, copy over index.astro, delete the rest.
+ */
+import LandingPageLayout from '@/layouts/LandingPageLayout.astro';
+import CampaignHomeHero from '@/components/CampaignComponents/CampaignHomeHero.astro';
+import CampaignWhoWeAre from '@/components/CampaignComponents/CampaignWhoWeAre.astro';
+import CampaignFinalCta from '@/components/CampaignComponents/CampaignFinalCta.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import CouponCard from '@/components/CouponComponents/CouponCard.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import { getFeaturedCoupons, getActiveCoupons } from '@/utils/data';
+import { getOrganizationJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const headerLinks = [
+  { label: 'Offer', anchor: '#offer' },
+  { label: 'Contact', anchor: '#contact' },
+];
+
+const stickyBar = {
+  text: 'Claim Your Seasonal Offer',
+  subtext: 'Limited appointments available',
+  ctaText: 'Claim My Spot',
+  scrollTarget: 'contact',
+};
+
+const hero = {
+  eyebrow: 'Limited-Time Seasonal Offer',
+  headline: 'Beat The Heat.',
+  headlineAccent: 'Book Your Tune-Up Today.',
+  description:
+    'A fast, thorough system check-up that keeps your AC running efficiently all season — before the rush hits.',
+  trustSignals: ['Licensed Technicians', 'Same-Day Appointments', 'No Hidden Fees'],
+};
+
+const offer = {
+  badge: 'SEASONAL SPECIAL — LIMITED TIME',
+  headline: 'Lock In Your Seasonal Tune-Up',
+  deadline: '2026-08-31',
+  deadlineText: 'Offer ends August 31',
+  ctaText: 'Claim My Spot',
+  disclaimer: 'Limited appointments available. No obligation.',
+};
+
+// Guard: page renders nothing in the offer section if no coupon is configured.
+const coupon = getFeaturedCoupons()[0] ?? getActiveCoupons()[0];
+
+const benefits = {
+  eyebrow: 'Why Book With Us',
+  headline: 'Fast, Honest, Guaranteed',
+  items: [
+    {
+      icon: 'material-symbols:verified-user-outline',
+      title: 'Licensed & Insured',
+      description: 'Certified technicians you can trust.',
+    },
+    {
+      icon: 'material-symbols:payments-outline',
+      title: 'Flat-Rate Pricing',
+      description: 'The price we quote is the price you pay.',
+    },
+    {
+      icon: 'material-symbols:schedule-outline',
+      title: 'Same-Day Scheduling',
+      description: 'Book today, get seen fast.',
+    },
+  ],
+};
+---
+
+<LandingPageLayout
+  title="Seasonal AC Tune-Up Special | Limited-Time Offer"
+  description="Book your seasonal AC tune-up before the rush. Licensed technicians, flat-rate pricing, same-day scheduling. Limited appointments available."
+  schemaData={[getOrganizationJsonLd()]}
+  headerLinks={headerLinks}
+  ctaAnchor="#contact"
+  stickyBar={stickyBar}
+>
+  <CampaignHomeHero hero={hero} offer={offer} formType="quote" heroCompact={true} />
+
+  {coupon && (
+    <FeatureFlag name="coupons">
+      <SectionWrapper id="offer" background="alt">
+        <div class="text-center mb-8" data-animate="fade-up">
+          <Badge text="Current Offer" variant="secondary" size="md" />
+          <h2 class="heading-display text-text mt-4">Your Seasonal Special</h2>
+        </div>
+        <div class="max-w-xl mx-auto">
+          <CouponCard coupon={coupon} />
+        </div>
+      </SectionWrapper>
+    </FeatureFlag>
+  )}
+
+  <CampaignWhoWeAre benefits={benefits} />
+
+  <div id="contact">
+    <CampaignFinalCta
+      urgencyBadge="Limited Appointments — Offer Ends Soon"
+      headline="Don't Miss This Seasonal Special."
+      headlineAccent="Book Your Tune-Up Now."
+      description="Spots are limited during peak season. Reserve your appointment today and keep your system running smoothly all year."
+      formHeading="Claim Your Seasonal Offer"
+      formSubheading="We respond within 1 business day"
+      formHeaderVariant="gradient"
+      ctaText="Claim My Spot"
+      disclaimer="No obligation. Flat-rate pricing. Offer valid for a limited time."
+      formType="quote"
+    />
+  </div>
+</LandingPageLayout>

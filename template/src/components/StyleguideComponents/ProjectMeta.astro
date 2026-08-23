@@ -1,0 +1,105 @@
+---
+import { getBranding } from '../../utils/data';
+import { getCollection } from 'astro:content';
+
+const branding = getBranding();
+const services = await getCollection('services');
+const hubs = services.filter(s => s.data.type === 'hub');
+const servicePages = services.filter(s => s.data.type === 'service');
+
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Company Info -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">Company Info</h3>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Company Name</span>
+      <p class="font-medium text-text">{branding.companyName}</p>
+    </div>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Tagline</span>
+      <p class="font-medium text-text">{branding.tagline}</p>
+    </div>
+    <div>
+      <span class="text-xs text-text-muted">Established</span>
+      <p class="font-medium text-text">{branding.yearEstablished}</p>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">Contact</h3>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Phone</span>
+      <p class="font-medium text-text">{branding.phone}</p>
+    </div>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Email</span>
+      <p class="font-medium text-text">{branding.email}</p>
+    </div>
+    <div>
+      <span class="text-xs text-text-muted">Address</span>
+      <p class="font-medium text-text">{branding.address.full}</p>
+    </div>
+  </div>
+
+  <!-- Service Area -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">Service Area</h3>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Primary Area</span>
+      <p class="font-medium text-text">{branding.serviceArea.primary}</p>
+    </div>
+    <div>
+      <span class="text-xs text-text-muted">Regions</span>
+      <ul class="text-sm text-text">
+        {branding.serviceArea.regions.map((region: string) => (
+          <li class="font-medium">{region}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Content Collections -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">Content Collections</h3>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Total Entries</span>
+      <p class="font-medium text-text">{services.length}</p>
+    </div>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Hub Pages ({hubs.length})</span>
+      <p class="font-medium text-text text-sm">{hubs.map(h => h.data.title).join(', ') || 'None'}</p>
+    </div>
+    <div>
+      <span class="text-xs text-text-muted">Service Pages ({servicePages.length})</span>
+      <p class="font-medium text-text text-sm">{servicePages.map(s => s.data.title).join(', ') || 'None'}</p>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">Tech Stack</h3>
+    <ul class="space-y-1.5 text-sm">
+      <li class="font-medium text-text">Astro 5.x</li>
+      <li class="font-medium text-text">Tailwind CSS v4</li>
+      <li class="font-medium text-text">Anime.js v4 + ScrollObserver</li>
+      <li class="font-medium text-text">SendGrid</li>
+      <li class="font-medium text-text">TypeScript (strict)</li>
+    </ul>
+  </div>
+
+  <!-- SendGrid Status -->
+  <div class="border border-neutral-200 rounded-lg p-5">
+    <h3 class="font-heading font-semibold text-sm text-text-muted uppercase tracking-wider mb-3">SendGrid</h3>
+    <div class="mb-2">
+      <span class="text-xs text-text-muted">Email Handler</span>
+      <p class="font-medium text-text">/api/contact (server endpoint)</p>
+    </div>
+    <div>
+      <span class="text-xs text-text-muted">Config</span>
+      <p class="font-medium text-text">Via environment variables</p>
+    </div>
+  </div>
+</div>

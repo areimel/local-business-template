@@ -1,0 +1,59 @@
+---
+const headings = [
+  { tag: 'h1', token: '--font-size-4xl', value: 'clamp(2.25rem, 1.75rem + 2.5vw, 4rem)' },
+  { tag: 'h2', token: '--font-size-3xl', value: 'clamp(1.875rem, 1.5rem + 1.875vw, 3rem)' },
+  { tag: 'h3', token: '--font-size-2xl', value: 'clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem)' },
+  { tag: 'h4', token: '--font-size-xl', value: 'clamp(1.25rem, 1.1rem + 0.75vw, 1.625rem)' },
+  { tag: 'h5', token: '--font-size-lg', value: 'clamp(1.125rem, 1rem + 0.625vw, 1.375rem)' },
+  { tag: 'h6', token: '--font-size-base', value: 'clamp(1rem, 0.925rem + 0.375vw, 1.125rem)' },
+];
+
+const displayClasses = [
+  { className: '.heading-display', token: '--font-size-3xl', weight: 800, lineHeight: '1.1', value: 'clamp(1.875rem, 1.5rem + 1.875vw, 3rem)' },
+  { className: '.heading-hero', token: '--font-size-hero', weight: 800, lineHeight: '1.05', value: 'clamp(3rem, 2.25rem + 3.75vw, 5rem)' },
+];
+---
+
+<!-- Heading Scale -->
+<h3 class="font-heading font-bold text-lg mb-4">Heading Scale (h1–h6)</h3>
+<p class="text-sm text-text-muted mb-6">Default heading sizes from the base layer. All use <code class="text-xs bg-neutral-100 px-1.5 py-0.5 rounded">font-heading</code> at weight 700.</p>
+
+<div class="border border-neutral-200 rounded-lg p-6 mb-8 space-y-6">
+  {headings.map((h) => (
+    <div class="border-b border-neutral-200 pb-5 last:border-b-0 last:pb-0">
+      <div
+        style={`font-family: var(--font-heading); font-weight: 700; line-height: 1.2; font-size: var(${h.token});`}
+      >
+        {h.tag.toUpperCase()} — The quick brown fox
+      </div>
+      <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+        <span class="text-xs font-mono text-text-muted">&lt;{h.tag}&gt;</span>
+        <span class="text-xs font-mono text-text-muted">{h.token}</span>
+        <span class="text-xs font-mono text-neutral-400">{h.value}</span>
+      </div>
+    </div>
+  ))}
+</div>
+
+<!-- Display Utility Classes -->
+<h3 class="font-heading font-bold text-lg mb-4">Display Classes</h3>
+<p class="text-sm text-text-muted mb-6">Utility classes for oversized display headings. Weight 800, tighter line-height.</p>
+
+<div class="border border-neutral-200 rounded-lg p-6 space-y-6">
+  {displayClasses.map((d) => (
+    <div class="border-b border-neutral-200 pb-5 last:border-b-0 last:pb-0">
+      <div
+        style={`font-family: var(--font-heading); font-weight: ${d.weight}; line-height: ${d.lineHeight}; font-size: var(${d.token});`}
+      >
+        {d.className} — Bold impact
+      </div>
+      <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+        <span class="text-xs font-mono text-primary font-semibold">{d.className}</span>
+        <span class="text-xs font-mono text-text-muted">{d.token}</span>
+        <span class="text-xs font-mono text-text-muted">weight: {d.weight}</span>
+        <span class="text-xs font-mono text-text-muted">line-height: {d.lineHeight}</span>
+        <span class="text-xs font-mono text-neutral-400">{d.value}</span>
+      </div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,68 @@
+meta:
+  title: "Membership Plans | Ironworks Fitness"
+  description: "Compare Ironworks Fitness membership plans — Basic, Premium, and Elite. Certified trainers, unlimited classes, 24/7 access. Start your free 7-day trial."
+
+hero:
+  heading: "Membership Plans"
+  subheading: "No long-term contracts, no hidden fees — just a plan that fits your goals and your schedule."
+  badge: "Membership Plans"
+
+pricing:
+  badge: "Choose Your Plan"
+  heading: "Find Your Fit"
+  subheading: "Every membership includes full gym floor access — upgrade for classes, guest passes, and coaching."
+  layout: cards
+  groups:
+    - items:
+        - name: "Basic"
+          description: "Full gym floor access during standard club hours, plus locker room use."
+          price: "$29/mo"
+        - name: "Premium"
+          description: "Unlimited group classes, 24/7 key-fob access, and two guest passes every month."
+          price: "$49/mo"
+          featured: true
+          badge: "Most Popular"
+        - name: "Elite"
+          description: "Everything in Premium plus 4 personal training sessions and monthly nutrition coaching."
+          price: "$89/mo"
+
+featuresHeading: "What's Included"
+features:
+  - icon: "material-symbols:fitness-center"
+    title: "Full Training Floor Access"
+    description: "20,000 sq ft of free weights, machines, turf, and sled area — open to every membership tier."
+  - icon: "material-symbols:sports-gymnastics"
+    title: "60+ Weekly Group Classes"
+    description: "HIIT, strength, cycle, and yoga classes included at no extra cost on Premium and Elite plans."
+  - icon: "material-symbols:schedule-outline"
+    title: "24/7 Key-Fob Access"
+    description: "Train on your schedule, day or night, with secure key-fob entry any time of day."
+  - icon: "material-symbols:shower-outline"
+    title: "Locker Rooms & Showers"
+    description: "Full locker rooms with showers, towel service, and secure day-use lockers."
+  - icon: "material-symbols:groups-outline"
+    title: "Certified Personal Trainers"
+    description: "One-on-one sessions with trainers certified in strength, mobility, and sport-specific programming."
+  - icon: "material-symbols:self-improvement"
+    title: "Recovery Lounge"
+    description: "Stretch zones, foam rollers, and massage guns available to every member, every visit."
+
+faqsHeading: "Membership FAQs"
+faqs:
+  - question: "Are your memberships month-to-month, or do I have to sign a contract?"
+    answer: "All of our memberships are month-to-month with no long-term contract required. You can upgrade, downgrade, or cancel at any time with 30 days' notice."
+  - question: "Can I freeze or pause my membership?"
+    answer: "Yes — members can freeze their membership for up to 3 months per year, whether for travel, injury, or anything else. Just submit a freeze request at the front desk or through your member account."
+  - question: "Do I get guest passes?"
+    answer: "Premium and Elite members receive guest passes each month to bring a friend or family member. Basic members can purchase single-day guest passes at the front desk."
+  - question: "How do I cancel my membership?"
+    answer: "Cancellations require 30 days' written notice, submitted at the front desk or by email. There are no cancellation fees on any of our month-to-month plans."
+  - question: "Is there a joining fee?"
+    answer: "There is a one-time $49 enrollment fee for new members, which is waived during promotional periods. Ask us about current offers when you start your free trial."
+
+cta:
+  heading: "Start Your 7-Day Free Trial"
+  body: "No contract, no pressure — come see the facility, try a class, and train on us for a full week."
+  buttonText: "Start Free Trial"
+  buttonUrl: "/contact/"
+  variant: "primary"

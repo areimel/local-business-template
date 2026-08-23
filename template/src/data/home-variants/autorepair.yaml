@@ -1,0 +1,122 @@
+meta:
+  title: "Summit Auto Care | Full-Service Auto Repair"
+  description: "Honest, reliable auto repair from brakes to engine diagnostics. Get a free estimate today from Summit Auto Care."
+
+hero:
+  eyebrow: "Full-Service Auto Repair"
+  heading: "Honest Repairs,"
+  headingAccent: "Straight Talk"
+  subheading: "Summit Auto Care has kept local drivers on the road for over 20 years — no upsells, no surprises, just honest work at a fair price."
+  primaryCta:
+    text: "Get an Estimate"
+    url: "/contact/"
+  secondaryCta:
+    text: "About Our Shop"
+    url: "/autorepair-about/"
+  trustPills:
+    - icon: "material-symbols:verified-user-outline"
+      label: "ASE-Certified Technicians"
+    - icon: "material-symbols:request-quote-outline"
+      label: "Free, No-Obligation Estimates"
+    - icon: "material-symbols:shield-outline"
+      label: "24-Month Warranty on Repairs"
+
+featuresHeading: "Full-Service Auto Repair"
+features:
+  - icon: "mdi:car-brake-alert"
+    title: "Brakes"
+    description: "Pad replacement, rotor resurfacing, and full brake system inspections."
+  - icon: "mdi:engine-outline"
+    title: "Engine Diagnostics"
+    description: "Computerized diagnostics to pinpoint check-engine lights and performance issues."
+  - icon: "mdi:oil"
+    title: "Oil & Maintenance"
+    description: "Oil changes, fluid checks, and scheduled maintenance to keep you running smoothly."
+  - icon: "mdi:tire"
+    title: "Tires & Alignment"
+    description: "Tire rotations, replacements, and precision alignments for a smoother ride."
+
+stepsHeading: "How It Works"
+steps:
+  - step: 1
+    title: "Drop Off Your Vehicle"
+    description: "Bring your car in or schedule a convenient drop-off time that works for you."
+  - step: 2
+    title: "Diagnose & Approve"
+    description: "We inspect your vehicle and walk you through the findings before any work begins."
+  - step: 3
+    title: "Repair & Warranty"
+    description: "We complete the repair and back it with our 24-month warranty for peace of mind."
+
+pricing:
+  heading: "Common Repairs, Honest Prices"
+  subheading: "No hidden fees, ever — just fair, upfront pricing."
+  layout: list
+  groups:
+    - name: "Maintenance"
+      items:
+        - name: "Oil Change (Conventional)"
+          price: "from $49"
+        - name: "Oil Change (Synthetic)"
+          price: "from $79"
+        - name: "Multi-Point Inspection"
+          price: "from $39"
+        - name: "Battery Replacement"
+          price: "from $129"
+    - name: "Brakes & Tires"
+      items:
+        - name: "Brake Pad Replacement (per axle)"
+          price: "from $149"
+        - name: "Tire Rotation"
+          price: "from $29"
+        - name: "Wheel Alignment"
+          price: "from $99"
+        - name: "Tire Replacement (each)"
+          price: "from $119"
+
+stats:
+  - value: 15000
+    suffix: "+"
+    label: "Cars Repaired"
+    icon: "material-symbols:build-outline"
+    counter: true
+  - value: 20
+    suffix: "+"
+    label: "Years in Business"
+    icon: "material-symbols:workspace-premium-outline"
+    counter: true
+  - value: 24
+    suffix: " mo"
+    label: "Warranty on Repairs"
+    icon: "material-symbols:shield-outline"
+    counter: true
+  - value: 4.8
+    suffix: ""
+    label: "Star Rating"
+    icon: "material-symbols:star-outline"
+    counter: false
+
+testimonial:
+  name: "Angela R."
+  location: "Summit Auto Care Customer"
+  rating: 5
+  text: "Summit Auto Care is the only shop I trust. They explained exactly what my car needed, gave me a fair price, and had me back on the road the same day."
+
+faqs:
+  - question: "Is the estimate really free?"
+    answer: "Yes — every estimate is free with no obligation to move forward with the repair."
+  - question: "What does your warranty cover?"
+    answer: "All repairs are backed by our 24-month warranty on parts and labor for your peace of mind."
+  - question: "Do you offer loaner cars?"
+    answer: "We offer loaner vehicles for major repairs — just ask when you schedule your appointment."
+  - question: "How long will my repair take?"
+    answer: "Most routine repairs are completed same-day. We'll always give you a clear timeline upfront."
+  - question: "Do you work on all makes and models?"
+    answer: "Yes, our ASE-certified technicians service both domestic and foreign vehicles of all makes and models."
+
+cta:
+  heading: "Get Your Free Estimate"
+  body: "No pressure, no upsells — just honest advice and a fair price. Get your free estimate today."
+  buttonText: "Get Your Free Estimate"
+  buttonUrl: "/contact/"
+  variant: "primary"

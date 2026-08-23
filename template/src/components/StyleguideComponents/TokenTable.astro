@@ -1,0 +1,65 @@
+---
+interface TokenRow {
+  name: string;
+  value: string;
+}
+
+interface Props {
+  title: string;
+  tokens: TokenRow[];
+  previewType?: 'radius' | 'shadow' | 'spacing' | 'none';
+}
+
+const {
+  title,
+  tokens,
+  previewType = 'none',
+} = Astro.props;
+
+const showPreview = previewType !== 'none';
+---
+
+<div class="mb-8">
+  <h3 class="font-heading font-bold text-lg mb-4">{title}</h3>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-neutral-100 text-left text-text-muted font-medium">
+          <th class="px-4 py-3">Token</th>
+          <th class="px-4 py-3">Value</th>
+          {showPreview && <th class="px-4 py-3">Preview</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {tokens.map((token) => (
+          <tr class="even:bg-neutral-50 border-t border-neutral-200 first:border-t-0">
+            <td class="px-4 py-3 font-mono text-primary">{token.name}</td>
+            <td class="px-4 py-3 font-mono text-text-muted">{token.value}</td>
+            {showPreview && (
+              <td class="px-4 py-3">
+                {previewType === 'radius' && (
+                  <div
+                    class="w-16 h-10 bg-primary/20 border-2 border-primary"
+                    style={`border-radius: ${token.value}`}
+                  />
+                )}
+                {previewType === 'shadow' && (
+                  <div
+                    class="w-16 h-10 bg-bg rounded-md"
+                    style={`box-shadow: ${token.value}`}
+                  />
+                )}
+                {previewType === 'spacing' && (
+                  <div
+                    class="h-4 bg-primary/30 rounded"
+                    style={`width: ${token.value}`}
+                  />
+                )}
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

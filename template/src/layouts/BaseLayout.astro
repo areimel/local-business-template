@@ -1,0 +1,96 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@/styles/global.css';
+
+import Head from '@/components/LayoutComponents/Head.astro';
+import GtmHead from '@/components/LayoutComponents/GtmHead.astro';
+import GtmBody from '@/components/LayoutComponents/GtmBody.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import JsonLd from '@/components/SeoComponents/JsonLd.astro';
+import DemoNav from '@/components/DemoNavComponents/DemoNav.astro';
+import { getSchemaConfig } from '@/utils/data';
+import { normalizeRawSchema } from '@/utils/seo';
+
+interface Props {
+  title?: string;
+  titleOverride?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  ogType?: string;
+  articleMeta?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    section?: string;
+    tag?: string[];
+  };
+  noindex?: boolean;
+  schemaData?: object | object[];
+  /** Raw JSON-LD script-tag string from a CMS field (per-page), rendered as-is via set:html. */
+  rawSchema?: string;
+}
+
+const {
+  title,
+  titleOverride,
+  description,
+  ogImage,
+  canonicalUrl,
+  ogType,
+  articleMeta,
+  noindex,
+  schemaData,
+  rawSchema,
+} = Astro.props;
+
+const schemaEntries = schemaData
+  ? Array.isArray(schemaData)
+    ? schemaData
+    : [schemaData]
+  : [];
+
+// CMS-managed raw JSON-LD (two layers, both editable in Pages CMS):
+//  - global: schema-config.yaml, applied to every page
+//  - per-page: this layout's rawSchema prop (an entry's "Schema Data" field)
+// ponytail: raw set:html is safe here — content is committed via Git PR by trusted
+// devs/SEO editors at build time (same trust as the .md prose), never runtime user input.
+//
+// The field instructions say to paste a full script tag, but if an editor pastes
+// only the bare JSON the browser evicts that head text node into <body> and it
+// renders as VISIBLE plaintext. normalizeRawSchema() (see @/utils/seo) guards this
+// by wrapping bare JSON so either paste style produces a valid, invisible head script.
+const globalRawSchema = normalizeRawSchema(getSchemaConfig().schemaData);
+const pageRawSchema = normalizeRawSchema(rawSchema);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head
+      title={title}
+      titleOverride={titleOverride}
+      description={description}
+      ogImage={ogImage}
+      canonicalUrl={canonicalUrl}
+      ogType={ogType}
+      articleMeta={articleMeta}
+      noindex={noindex}
+    />
+    {schemaEntries.map((entry) => <JsonLd data={entry} />)}
+    {globalRawSchema && <Fragment set:html={globalRawSchema} />}
+    {pageRawSchema && <Fragment set:html={pageRawSchema} />}
+    <FeatureFlag name="analytics"><GtmHead /></FeatureFlag>
+  </head>
+  <body>
+    <FeatureFlag name="analytics"><GtmBody /></FeatureFlag>
+    <slot />
+    <FeatureFlag name="demoPages"><DemoNav /></FeatureFlag>
+    <script>
+      import { initAnimations } from '@/utils/animations';
+      initAnimations();
+    </script>
+  </body>
+</html>

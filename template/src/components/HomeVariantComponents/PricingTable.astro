@@ -1,0 +1,89 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import type { PricingGroup } from '@/utils/data';
+
+interface Props {
+  badge?: string;
+  heading: string;
+  subheading?: string;
+  layout: 'list' | 'cards';
+  groups: PricingGroup[];
+}
+
+const { badge, heading, subheading, layout, groups } = Astro.props;
+---
+
+<SectionWrapper background="alt">
+  <div class="text-center max-w-2xl mx-auto mb-12" data-animate="fade-up">
+    {badge && (
+      <div class="mb-4 flex justify-center">
+        <Badge text={badge} />
+      </div>
+    )}
+    <h2 class="heading-display text-text mb-3">{heading}</h2>
+    {subheading && <p class="text-text-muted text-lg">{subheading}</p>}
+  </div>
+
+  {layout === 'list' ? (
+    <div class="max-w-3xl mx-auto space-y-10">
+      {groups.map((group) => (
+        <div>
+          {group.name && (
+            <h3 class="text-xl font-heading font-bold text-text mb-4 pb-2 border-b border-neutral-200">
+              {group.name}
+            </h3>
+          )}
+          <ul class="space-y-4">
+            {group.items.map((item) => (
+              <li>
+                <div class="flex items-baseline gap-3">
+                  <span class="font-heading font-bold text-text whitespace-nowrap">{item.name}</span>
+                  <span class="flex-1 border-b border-dotted border-neutral-300 translate-y-[-4px]" aria-hidden="true"></span>
+                  <span class="font-heading font-bold text-primary whitespace-nowrap">{item.price}</span>
+                </div>
+                {item.badge && (
+                  <div class="mt-1">
+                    <Badge text={item.badge} variant="secondary" />
+                  </div>
+                )}
+                {item.description && <p class="text-text-muted text-sm mt-1">{item.description}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div class="space-y-12">
+      {groups.map((group) => (
+        <div>
+          {group.name && (
+            <h3 class="text-xl font-heading font-bold text-text text-center mb-6">{group.name}</h3>
+          )}
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {group.items.map((item) => (
+              <div
+                class:list={[
+                  'relative rounded-(--radius-card) border bg-bg p-6 lg:p-8 flex flex-col',
+                  item.featured
+                    ? 'border-primary shadow-xl lg:-translate-y-2'
+                    : 'border-neutral-200 shadow-sm',
+                ]}
+              >
+                {item.featured && (
+                  <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge text={item.badge || 'Most Popular'} />
+                  </div>
+                )}
+                <h4 class="text-lg font-heading font-bold text-text mb-2">{item.name}</h4>
+                {item.description && <p class="text-text-muted text-sm mb-4 flex-1">{item.description}</p>}
+                <p class="text-3xl font-heading font-bold text-primary mt-auto">{item.price}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</SectionWrapper>

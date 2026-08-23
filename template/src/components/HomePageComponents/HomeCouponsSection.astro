@@ -1,0 +1,48 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import CouponCard from '@/components/CouponComponents/CouponCard.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { getActiveCoupons } from '@/utils/data';
+
+const coupons = getActiveCoupons().slice(0, 3);
+---
+
+<SectionWrapper id="coupons" background="alt">
+  <!-- Section Header -->
+  <div class="text-center mb-14" data-animate="fade-up">
+    <Badge text="Current Specials" variant="secondary" size="md" />
+    <h2 class="heading-display text-text mt-4 mb-4">Coupons & Promotions</h2>
+    <div class="flex items-center justify-center gap-2 mb-4" aria-hidden="true">
+      <div class="w-8 h-px bg-secondary/40"></div>
+      <div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+      <div class="w-8 h-px bg-secondary/40"></div>
+    </div>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      Take advantage of our latest deals and save on your next AC, heating, plumbing, or electrical service.
+    </p>
+  </div>
+
+  <!-- Coupon Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" data-animate="fade-up">
+    {coupons.map((coupon) => (
+      <CouponCard coupon={coupon} />
+    ))}
+  </div>
+
+  <!-- CTA Sub-section -->
+  <div class="mt-14 text-center" data-animate="fade-up">
+    <p class="text-text-muted text-base mb-6">
+      See all of our available specials and start saving today.
+    </p>
+    <ButtonGroup align="center">
+      <PrimaryButton
+        text="View All Coupons"
+        href="/coupons/"
+        icon="material-symbols:sell-outline"
+        size="lg"
+      />
+    </ButtonGroup>
+  </div>
+</SectionWrapper>

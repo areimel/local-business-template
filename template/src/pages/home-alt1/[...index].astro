@@ -1,0 +1,99 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import PhotoHeroSection from '@/components/HomeAlt1Components/PhotoHeroSection.astro';
+import SplitSection from '@/components/SharedComponents/SplitSection.astro';
+import ImageServiceCards from '@/components/HomeAlt1Components/ImageServiceCards.astro';
+import EmergencyCtaBanner from '@/components/SharedComponents/EmergencyCtaBanner.astro';
+import TestimonialsWithImage from '@/components/HomeAlt1Components/TestimonialsWithImage.astro';
+import Alt1ContactSection from '@/components/HomeAlt1Components/Alt1ContactSection.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+import staffBuilding from '@/assets/images/team/staff-building.jpg';
+import techIndoor from '@/assets/images/team/tech-indoor.jpg';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+---
+
+<PageLayout title="Home - Photo Forward" description={branding.seo.defaultDescription} showBreadcrumbs={false} noindex={true}>
+  <!-- 1. Full-bleed Photo Hero -->
+  <PhotoHeroSection />
+
+  <!-- 2. Split About Section: staff-building photo left, about text + stats right -->
+  <SectionWrapper background="white" id="about">
+    <SplitSection imageSrc={staffBuilding} imageAlt={`${branding.companyName} staff in front of company building`} imagePosition="left" overlayContent={`${yearsInBusiness}+ Years`}>
+      <Badge text="About Our Company" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-6">Your Neighbors in Home Comfort</h2>
+      <p class="text-lg text-text-muted mb-8 max-w-lg leading-relaxed">
+        For over {yearsInBusiness} years, {branding.companyName} has been the name {branding.serviceArea.primary} families call when they need reliable HVAC, heating, and home services.
+      </p>
+      <div class="flex gap-8 mb-8 py-5 border-y border-neutral-200">
+        <div>
+          <div class="text-3xl font-heading font-extrabold text-primary leading-none">
+            <span data-animate="counter" data-count-to={yearsInBusiness}>0</span>+
+          </div>
+          <div class="text-xs font-medium text-text-muted uppercase tracking-wide mt-1">Years</div>
+        </div>
+        <div class="border-l border-neutral-200 pl-8">
+          <div class="text-3xl font-heading font-extrabold text-primary leading-none">
+            <span data-animate="counter" data-count-to={5000}>0</span>+
+          </div>
+          <div class="text-xs font-medium text-text-muted uppercase tracking-wide mt-1">Homes</div>
+        </div>
+        <div class="border-l border-neutral-200 pl-8">
+          <div class="text-3xl font-heading font-extrabold text-primary leading-none">4.9</div>
+          <div class="text-xs font-medium text-text-muted uppercase tracking-wide mt-1">Stars</div>
+        </div>
+      </div>
+      <a href="/about/" class="text-primary font-medium hover:underline inline-flex items-center gap-1">
+        Learn About Us <Icon name="material-symbols:arrow-forward" class="w-4 h-4" />
+      </a>
+    </SplitSection>
+  </SectionWrapper>
+
+  <!-- 3. Image Service Cards -->
+  <ImageServiceCards />
+
+  <!-- 4. Emergency CTA Banner -->
+  <EmergencyCtaBanner />
+
+  <!-- 5. Split Trust Section: trust items left, tech-indoor portrait right -->
+  <SectionWrapper background="white" id="why-choose-us">
+    <SplitSection imageSrc={techIndoor} imageAlt="Technician working on indoor HVAC unit" imagePosition="right" imageAspect="aspect-[3/4]">
+      <Badge text="Why Choose Us" variant="secondary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-6">Trusted by {branding.serviceArea.primary} Homeowners</h2>
+      <div class="space-y-4">
+        {[
+          { icon: 'material-symbols:workspace-premium-outline', title: `${yearsInBusiness}+ Years of Experience`, desc: `Proudly serving ${branding.serviceArea.primary} homeowners since ${branding.yearEstablished}.` },
+          { icon: 'material-symbols:handshake-outline', title: 'Family Owned & Operated', desc: 'A local, family-run business that treats every customer like a neighbor.' },
+          { icon: 'material-symbols:verified-user-outline', title: 'Licensed & Insured', desc: 'Fully licensed, bonded, and insured for your complete peace of mind.' },
+          { icon: 'material-symbols:speed-outline', title: 'Same-Day Service', desc: 'Emergency repairs available — we offer same-day service to get your home comfortable fast.' },
+        ].map((item) => (
+          <div class="group flex gap-4 p-4 rounded-(--radius-md) border border-transparent hover:border-neutral-200 hover:bg-bg-alt hover:shadow-sm transition-all duration-200">
+            <div class="w-11 h-11 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 transition-colors duration-200">
+              <Icon name={item.icon} class="w-5 h-5 text-secondary" />
+            </div>
+            <div>
+              <h3 class="font-heading font-bold text-text group-hover:text-primary transition-colors duration-200">{item.title}</h3>
+              <p class="text-sm text-text-muted mt-1 leading-relaxed">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </SplitSection>
+  </SectionWrapper>
+
+  <!-- 6. Testimonials with Side Image -->
+  <TestimonialsWithImage />
+
+  <!-- 7. Contact Section -->
+  <Alt1ContactSection />
+</PageLayout>

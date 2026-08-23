@@ -1,0 +1,17 @@
+# Blog Configuration
+indexHeading: "HVAC Tips & Insights"
+indexSubheading: "Expert advice to keep your home comfortable year-round"
+indexBadge: "Blog"
+postsPerPage: 12
+
+# Default author
+defaultAuthor: "Team"
+
+# Categories (display order for filter)
+categories:
+  - "HVAC Tips"
+  - "Maintenance"
+  - "Energy Savings"
+  - "Indoor Air Quality"
+  - "Seasonal Guides"
+  - "Company News"

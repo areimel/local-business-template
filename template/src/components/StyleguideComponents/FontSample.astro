@@ -1,0 +1,47 @@
+---
+interface Props {
+  name: string;
+  cssVar: string;
+  usage: string;
+  weights?: number[];
+}
+
+const {
+  name,
+  cssVar,
+  usage,
+  weights = [400, 600, 700],
+} = Astro.props;
+
+const pangram = 'The five boxing wizards jump quickly';
+
+const sizes: Array<{ label: string; className: string }> = [
+  { label: 'text-sm', className: 'text-sm' },
+  { label: 'text-base', className: 'text-base' },
+  { label: 'text-2xl', className: 'text-2xl' },
+];
+---
+
+<div class="border border-neutral-200 rounded-lg p-6 mb-8">
+  <h3 class="font-heading font-bold text-lg mb-1">{name}</h3>
+  <p class="text-sm text-text-muted mb-4">{usage}</p>
+
+  {weights.map((weight) => (
+    <div class="border-b border-neutral-200 pb-6 mb-6 last:border-b-0 last:pb-0 last:mb-0">
+      <span class="text-xs font-mono text-text-muted mb-3 block">Weight: {weight}</span>
+      <div class="space-y-2">
+        {sizes.map((size) => (
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <span
+              class={size.className}
+              style={`font-family: var(${cssVar}); font-weight: ${weight}`}
+            >
+              {pangram}
+            </span>
+            <span class="text-xs font-mono text-text-muted shrink-0">{size.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

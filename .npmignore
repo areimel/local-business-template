@@ -1,0 +1,28 @@
+# What NOT to ship inside the published CLI tarball.
+#
+# The `files` field in package.json whitelists `bin/` and `template/`; this file
+# then strips the heavy, regenerable artifacts from within `template/` so the
+# package stays small. The template ships as SOURCE ONLY — the CLI runs a fresh
+# install in each scaffolded project, so the template's own installed deps and
+# build output must never be published.
+
+# installed dependencies (the big one — pnpm's virtual store)
+node_modules/
+
+# build output & caches
+dist/
+.astro/
+.netlify/
+.vite/
+
+# test / audit output
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+coverage/
+
+# packed tarballs & misc
+*.tgz
+.DS_Store
+temp_images/

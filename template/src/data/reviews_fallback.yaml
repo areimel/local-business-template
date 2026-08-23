@@ -1,0 +1,48 @@
+generatedAt: '2000-01-01T00:00:00.000Z'
+generatedBy: static_fallback
+sourceProvider: static_fallback
+reviewUrl: ""
+placeId: ""
+overallRating: 5.0
+totalReviewCount: 5
+reviews:
+  - authorName: Sarah M.
+    authorPhotoUrl: ""
+    rating: 5
+    text: >-
+      Excellent service from start to finish. The technician arrived on time, diagnosed the problem quickly, and had
+      everything working again the same day. Very professional and reasonably priced. Highly recommend!
+    relativeDate: 1 week ago
+    publishDate: '2000-01-01T00:00:00.000Z'
+  - authorName: Verified Customer
+    authorPhotoUrl: ""
+    rating: 5
+    text: >-
+      Outstanding experience. Called in the morning and they had a technician out by the afternoon. The team was
+      courteous, knowledgeable, and left the work area spotless. Will definitely use them again.
+    relativeDate: 2 weeks ago
+    publishDate: '2000-01-01T00:00:00.000Z'
+  - authorName: James R.
+    authorPhotoUrl: ""
+    rating: 5
+    text: >-
+      These guys really know their stuff. They installed a brand new system for us and walked us through everything
+      we needed to know. Fair pricing, great communication, and top-notch workmanship.
+    relativeDate: 1 month ago
+    publishDate: '2000-01-01T00:00:00.000Z'
+  - authorName: Linda K.
+    authorPhotoUrl: ""
+    rating: 5
+    text: >-
+      I've used this company twice now and they never disappoint. Honest, friendly, and they stand behind their work.
+      The technician explained exactly what was wrong and what it would cost before doing anything. No surprises.
+    relativeDate: 1 month ago
+    publishDate: '2000-01-01T00:00:00.000Z'
+  - authorName: Tom & Carol H.
+    authorPhotoUrl: ""
+    rating: 5
+    text: >-
+      We had our annual maintenance done and the team was fantastic. Thorough, professional, and they caught a small
+      issue before it became a big problem. Couldn't be happier with the service.
+    relativeDate: 2 months ago
+    publishDate: '2000-01-01T00:00:00.000Z'

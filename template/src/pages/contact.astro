@@ -1,0 +1,136 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ContactPageHeader from '@/components/InnerPageComponents/ContactPageHeader.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import BusinessHoursCard from '@/components/SharedComponents/BusinessHoursCard.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding, getCtas } from '@/utils/data';
+import { getContactPageJsonLd } from '@/utils/seo';
+
+const branding = getBranding();
+const { emergencyCta } = getCtas();
+---
+
+<PageLayout
+  title="Contact Us"
+  description={`Contact ${branding.companyName} for AC and heating services in ${branding.serviceArea.primary}. Call ${branding.phone} or fill out our form.`}
+  schemaData={[getContactPageJsonLd()]}
+>
+  <!-- Compact Page Header -->
+  <ContactPageHeader
+    heading="Contact Us"
+    subheading={`Get in touch with ${branding.serviceArea.primary}'s trusted home service experts`}
+  />
+
+  <!-- Contact Info Cards Strip -->
+  <section class="bg-bg-alt py-10 lg:py-14" aria-label="Contact information">
+    <div class="section-container">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+
+        <!-- Phone Card (Most Prominent) -->
+        <a
+          href={`tel:${branding.phoneRaw}`}
+          class="group relative bg-primary rounded-(--radius-card) p-6 text-center text-white shadow-lg transition-all hover:shadow-xl hover:-translate-y-1 no-underline"
+          data-animate="fade-up"
+          aria-label={`Call us at ${branding.phone}`}
+        >
+          <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+            <Icon name="material-symbols:call-outline" class="w-7 h-7 text-white" aria-hidden="true" />
+          </div>
+          <p class="font-heading font-bold text-sm uppercase tracking-wider text-white/90 mb-1">Call Us</p>
+          <p class="font-heading font-bold text-xl text-white">{branding.phone}</p>
+          <p class="text-sm text-white/85 mt-2">Tap to call now</p>
+          <!-- Subtle glow ring -->
+          <div class="absolute inset-0 rounded-(--radius-card) ring-2 ring-white/20 pointer-events-none" aria-hidden="true"></div>
+        </a>
+
+        <!-- Email Card -->
+        <a
+          href={`mailto:${branding.email}`}
+          class="group bg-bg rounded-(--radius-card) p-6 text-center shadow-md transition-all hover:shadow-lg hover:-translate-y-1 no-underline"
+          data-animate="fade-up"
+          aria-label={`Email us at ${branding.email}`}
+        >
+          <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <Icon name="material-symbols:mail-outline" class="w-7 h-7 text-primary" aria-hidden="true" />
+          </div>
+          <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted mb-1">Email</p>
+          <p class="font-heading font-semibold text-text text-base break-all">{branding.email}</p>
+          <p class="text-sm text-text-muted mt-2">We'll respond promptly</p>
+        </a>
+
+        <!-- Address Card -->
+        <a
+          href={branding.googleMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group bg-bg rounded-(--radius-card) p-6 text-center shadow-md transition-all hover:shadow-lg hover:-translate-y-1 no-underline"
+          data-animate="fade-up"
+          aria-label="View our location on Google Maps"
+        >
+          <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <Icon name="material-symbols:location-on-outline" class="w-7 h-7 text-primary" aria-hidden="true" />
+          </div>
+          <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted mb-1">Visit Us</p>
+          <p class="font-heading font-semibold text-text text-base">
+            {branding.address.street}
+          </p>
+          <p class="text-sm text-text-muted mt-1">
+            {branding.address.city}, {branding.address.state} {branding.address.zip}
+          </p>
+        </a>
+
+        <!-- Hours Card -->
+        <BusinessHoursCard />
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency CTA Banner -->
+  <section class="bg-secondary py-4" aria-label="Emergency service">
+    <div class="section-container">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-white text-center sm:text-left">
+        <div class="flex items-center gap-2">
+          <Icon name="material-symbols:warning-outline" class="w-6 h-6 shrink-0" aria-hidden="true" />
+          <span class="font-heading font-bold text-lg">{emergencyCta.heading}</span>
+        </div>
+        <span class="text-white">{emergencyCta.body}</span>
+        <a
+          href={`tel:${emergencyCta.phoneRaw}`}
+          class="btn bg-white text-secondary hover:bg-neutral-100 font-bold text-sm px-4 py-2 shrink-0"
+          aria-label={`Call for emergency service at ${emergencyCta.phone}`}
+        >
+          <Icon name="material-symbols:call" class="w-5 h-5" aria-hidden="true" />
+          {emergencyCta.buttonText} {emergencyCta.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Section (Full Width Card) -->
+  <SectionWrapper background="white">
+    <div class="max-w-3xl mx-auto" data-animate="fade-up">
+      <div class="text-center mb-8">
+        <h2 class="font-heading font-bold text-text mb-3">Send Us a Message</h2>
+        <p class="text-text-muted text-lg max-w-xl mx-auto">
+          Fill out the form below and we'll get back to you as soon as possible. For immediate assistance, give us a call.
+        </p>
+      </div>
+      <div class="bg-bg rounded-(--radius-card) shadow-lg p-6 sm:p-8 lg:p-10">
+        <ContactForm showHeading={false} redirectUrl="/thank-you/" />
+      </div>
+      <!-- Quick phone CTA below form -->
+      <div class="text-center mt-8" data-animate="fade-up">
+        <p class="text-sm text-text-muted mb-3">Prefer to talk to someone directly?</p>
+        <PhoneButton size="md" variant="primary" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- Bottom CTA Banner -->
+  <CtaBanner variant="dark" />
+</PageLayout>

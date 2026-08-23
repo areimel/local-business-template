@@ -1,0 +1,72 @@
+---
+import { getBranding } from '@/utils/data';
+import { getCtas } from '@/utils/data';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { Icon } from 'astro-icon/components';
+
+const branding = getBranding();
+const { hero } = getCtas();
+---
+
+<section
+  class="relative overflow-hidden min-h-[60vh] lg:min-h-[80vh] flex items-center py-16 lg:py-24"
+  style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);"
+  aria-label="Hero"
+>
+  <!-- Decorative: dot-grid overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0); background-size: 32px 32px;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10">
+    <div class="max-w-3xl">
+
+      <!-- Tagline badge -->
+      <div class="mb-6" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+        <span class="inline-flex items-center rounded-full font-medium text-sm px-4 py-1.5 bg-white/15 text-white">
+          {branding.tagline}
+        </span>
+      </div>
+
+      <!-- Heading -->
+      <h1
+        class="heading-hero text-white mb-6"
+        data-animate="split-words" data-on="load" data-delay="150"
+      >
+        {hero.heading}
+      </h1>
+
+      <!-- Subheading -->
+      <p
+        class="text-lg lg:text-xl text-white/90 mb-10 max-w-2xl leading-relaxed"
+        data-animate="fade-up" data-on="load" data-delay="300" data-distance="30" data-duration="600"
+      >
+        {hero.subheading}
+      </p>
+
+      <!-- CTA Buttons -->
+      <div data-animate="fade-up" data-on="load" data-delay="450" data-distance="20" data-duration="500">
+        <ButtonGroup stack="mobile">
+          <PrimaryButton
+            text={hero.primaryButton.text}
+            href={hero.primaryButton.url}
+            size="lg"
+          />
+          <a
+            href={`tel:${branding.phoneRaw}`}
+            class="btn border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4 focus-visible:outline-white"
+            aria-label={`Call us at ${branding.phone}`}
+          >
+            <Icon name="material-symbols:call-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+            Call {branding.phone}
+          </a>
+        </ButtonGroup>
+      </div>
+
+    </div>
+  </div>
+</section>

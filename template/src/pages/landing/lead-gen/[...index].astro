@@ -1,0 +1,174 @@
+---
+/**
+ * /landing/lead-gen — the full conversion one-pager: "the real website
+ * compressed to one page." Generic HVAC/home-services placeholder copy,
+ * rebrandable via branding.yaml / ctas.yaml. Pick one /landing/* variant,
+ * copy over index.astro, delete the rest.
+ */
+import LandingPageLayout from '@/layouts/LandingPageLayout.astro';
+import CampaignHomeHero from '@/components/CampaignComponents/CampaignHomeHero.astro';
+import CampaignWhoWeAre from '@/components/CampaignComponents/CampaignWhoWeAre.astro';
+import CampaignProcessSection from '@/components/CampaignComponents/CampaignProcessSection.astro';
+import CampaignFinalCta from '@/components/CampaignComponents/CampaignFinalCta.astro';
+import TrustBar from '@/components/InnerPageComponents/TrustBar.astro';
+import ServicesOverview from '@/components/HomePageComponents/ServicesOverview.astro';
+import HomeReviews from '@/components/HomePageComponents/HomeReviews.astro';
+import AreasWeServe from '@/components/HomePageComponents/AreasWeServe.astro';
+import FaqSection from '@/components/InnerPageComponents/FaqSection.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import { getFaqs } from '@/utils/data';
+import { getOrganizationJsonLd } from '@/utils/seo';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const headerLinks = [
+  { label: 'Services', anchor: '#services' },
+  { label: 'Why Us', anchor: '#why-us' },
+  { label: 'Reviews', anchor: '#reviews' },
+  { label: 'FAQ', anchor: '#faq' },
+  { label: 'Contact', anchor: '#contact' },
+];
+
+const stickyBar = {
+  text: 'Ready to get started?',
+  subtext: 'Free estimates, no obligation',
+  ctaText: 'Get My Quote',
+  scrollTarget: 'contact',
+};
+
+const hero = {
+  eyebrow: 'Trusted Local HVAC Experts',
+  headline: 'Your Home Comfort,',
+  headlineAccent: 'Done Right The First Time.',
+  description:
+    'From emergency repairs to full system installs, our licensed technicians deliver honest pricing and same-day service you can count on.',
+  trustSignals: ['Licensed & Insured', 'Same-Day Service', 'Upfront Pricing', '4.9-Star Rated'],
+};
+
+const offer = {
+  badge: 'FREE ESTIMATE + PRIORITY SCHEDULING',
+  headline: 'Get Your Free Estimate',
+  ctaText: 'Get My Free Estimate',
+  disclaimer: "No obligation. We'll reach out within 1 business day.",
+};
+
+const whyUsBenefits = {
+  eyebrow: 'Why Homeowners Choose Us',
+  headline: 'The Difference Is In The Details',
+  items: [
+    {
+      icon: 'material-symbols:verified-user-outline',
+      title: 'Licensed & Insured',
+      description: 'Every technician is fully licensed, background-checked, and insured for your peace of mind.',
+    },
+    {
+      icon: 'material-symbols:payments-outline',
+      title: 'Upfront Pricing',
+      description: "You'll know the price before we start — no hidden fees, no surprises.",
+    },
+    {
+      icon: 'material-symbols:speed-outline',
+      title: 'Same-Day Service',
+      description: 'Fast response times when you need comfort restored quickly.',
+    },
+    {
+      icon: 'material-symbols:family-home-outline',
+      title: 'Family Owned & Operated',
+      description: 'A local team that treats your home like our own.',
+    },
+  ],
+};
+
+const process = {
+  eyebrow: 'Simple & Straightforward',
+  headline: 'How It Works',
+  steps: [
+    { title: 'Reach Out', description: 'Call us or fill out the quick form and tell us what you need.' },
+    { title: 'Get Scheduled', description: "We'll confirm a time that works for you — often same-day." },
+    {
+      title: 'We Get To Work',
+      description: 'A licensed technician arrives on time, diagnoses the issue, and walks you through your options.',
+    },
+    {
+      title: 'Enjoy The Results',
+      description: 'Sit back knowing the job was done right, backed by our satisfaction guarantee.',
+      isFinal: true,
+    },
+  ],
+};
+
+const faqCategory = getFaqs().categories[0];
+
+const finalCta = {
+  headline: 'Ready For Reliable Home Comfort?',
+  headlineAccent: "Let's Get Started.",
+  description:
+    "Request your free, no-obligation estimate today. Our team typically responds within one business day to schedule your service.",
+  formHeading: 'Request Your Free Estimate',
+  formSubheading: 'We respond within 1 business day',
+  formHeaderVariant: 'gradient' as const,
+  ctaText: 'Get My Free Estimate',
+  disclaimer: 'No obligation. Upfront, flat-rate pricing.',
+  trustCards: [
+    { icon: 'material-symbols:shield-outline', title: 'Licensed & Insured', subtitle: 'Fully bonded technicians' },
+    { icon: 'material-symbols:star', title: '4.9 Avg. Rating', subtitle: 'Hundreds of verified reviews' },
+    { icon: 'material-symbols:family-home-outline', title: 'Family Owned', subtitle: 'Local & accountable' },
+    { icon: 'material-symbols:schedule-outline', title: 'Same-Day Service', subtitle: 'When you need us most' },
+  ],
+};
+---
+
+<LandingPageLayout
+  title="Home Comfort Experts | Free Estimate & Priority Scheduling"
+  description="Full-service HVAC, plumbing, and electrical repairs, installs, and maintenance. Licensed technicians, upfront pricing, same-day service. Get your free estimate today."
+  schemaData={[getOrganizationJsonLd()]}
+  headerLinks={headerLinks}
+  ctaAnchor="#contact"
+  stickyBar={stickyBar}
+>
+  <CampaignHomeHero hero={hero} offer={offer} formType="quote" />
+
+  <TrustBar />
+
+  <ServicesOverview />
+
+  <div id="why-us">
+    <CampaignWhoWeAre benefits={whyUsBenefits} />
+  </div>
+
+  <FeatureFlag name="reviews">
+    <div id="reviews">
+      <HomeReviews />
+    </div>
+  </FeatureFlag>
+
+  <CampaignProcessSection process={process} />
+
+  <FeatureFlag name="serviceAreas">
+    <div id="service-area">
+      <AreasWeServe />
+    </div>
+  </FeatureFlag>
+
+  <div id="faq">
+    <FaqSection faqs={faqCategory.questions} />
+  </div>
+
+  <div id="contact">
+    <CampaignFinalCta
+      headline={finalCta.headline}
+      headlineAccent={finalCta.headlineAccent}
+      description={finalCta.description}
+      formHeading={finalCta.formHeading}
+      formSubheading={finalCta.formSubheading}
+      formHeaderVariant={finalCta.formHeaderVariant}
+      ctaText={finalCta.ctaText}
+      disclaimer={finalCta.disclaimer}
+      trustCards={finalCta.trustCards}
+      formType="quote"
+    />
+  </div>
+</LandingPageLayout>

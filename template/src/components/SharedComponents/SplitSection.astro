@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  imageSrc: ImageMetadata;
+  imageAlt: string;
+  imagePosition?: 'left' | 'right';
+  imageAspect?: string;
+  overlayContent?: string;
+}
+
+const {
+  imageSrc,
+  imageAlt,
+  imagePosition = 'left',
+  imageAspect = 'aspect-video',
+  overlayContent,
+} = Astro.props;
+
+const isReversed = imagePosition === 'right';
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+  {/* Image column */}
+  <div class:list={['relative', isReversed && 'lg:order-last']} data-animate="fade-up">
+    <div class:list={['relative overflow-hidden rounded-(--radius-lg)', imageAspect]}>
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        class="w-full h-full object-cover"
+        widths={[400, 640, 800]}
+        sizes="(max-width: 1024px) 100vw, 50vw"
+      />
+    </div>
+    {overlayContent && (
+      <div class="absolute bottom-4 left-4 bg-secondary text-white font-heading font-bold px-4 py-2 rounded-(--radius-md) shadow-md text-sm">
+        {overlayContent}
+      </div>
+    )}
+  </div>
+
+  {/* Content column */}
+  <div class:list={[isReversed && 'lg:order-first']} data-animate="fade-up">
+    <slot />
+  </div>
+</div>

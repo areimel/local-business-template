@@ -1,0 +1,213 @@
+---
+import StyleguideLayout from '@/layouts/StyleguideLayout.astro';
+import SidebarNav from '@/components/StyleguideComponents/SidebarNav.astro';
+import StyleguideSection from '@/components/StyleguideComponents/StyleguideSection.astro';
+import AnimationDemo from '@/components/StyleguideComponents/AnimationDemo.astro';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('devPages', () => [{ params: { index: undefined } }]);
+}
+
+const sections = [
+  { id: 'on-load', label: 'On-Load Sequences' },
+  { id: 'scroll-reveals', label: 'Scroll Reveals' },
+  { id: 'zoom-blur', label: 'Zoom & Blur' },
+  { id: 'staggered-children', label: 'Staggered Children' },
+  { id: 'text-splitting', label: 'Text Splitting' },
+  { id: 'counters', label: 'Counters' },
+  { id: 'modifiers', label: 'Modifiers' },
+  { id: 'reduced-motion', label: 'Reduced Motion' },
+];
+
+// data-animate presets rendered as simple boxes, one AnimationDemo each.
+const scrollReveals = ['fade', 'fade-up', 'fade-down', 'fade-left', 'fade-right'];
+const zoomBlur = ['zoom-in', 'blur-in'];
+const textSplits: { preset: string; label: string }[] = [
+  { preset: 'split-chars', label: 'Split Chars' },
+  { preset: 'split-words', label: 'Split Words' },
+  { preset: 'split-lines', label: 'Split Lines' },
+];
+const counterStats = [
+  { label: 'Happy Customers', countTo: 2500 },
+  { label: 'Years in Business', countTo: 18 },
+  { label: 'Projects Completed', countTo: 4300 },
+  { label: 'Team Members', countTo: 42 },
+];
+const easeVariants = ['outQuart', 'outElastic', 'linear'];
+
+function boxCode(preset: string): string {
+  return `<div data-animate="${preset}">\n  ...\n</div>`;
+}
+---
+
+<StyleguideLayout title="Animation Examples">
+  <SidebarNav slot="sidebar" sections={sections} />
+
+  <!-- Mobile nav -->
+  <nav slot="mobile-nav" class="lg:hidden sticky top-0 z-10 bg-bg border-b border-neutral-200 px-4 py-3 overflow-x-auto">
+    <div class="flex gap-2 min-w-max">
+      {sections.map((s) => (
+        <a href={`#${s.id}`} class="text-xs text-text-muted hover:text-primary px-3 py-1.5 rounded-full border border-neutral-200 whitespace-nowrap">
+          {s.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <h1 class="font-heading font-bold text-3xl mb-2">Animation Examples</h1>
+  <p class="text-text-muted mb-8">Live demo and testing ground for the Anime.js v4 `data-animate` system in <code class="font-mono text-sm">src/utils/animations/</code>.</p>
+
+  <!-- Section 1: On-Load Sequences -->
+  <StyleguideSection id="on-load" title="On-Load Sequences" description="The hero pattern: elements fade up in a cascading sequence as soon as the page loads, using data-on=&quot;load&quot; with staggered data-delay values.">
+    <AnimationDemo
+      title="Hero cascade"
+      description="Badge, heading, subheading, and CTA each fire on load with an increasing data-delay (0 / 150 / 300 / 450ms)."
+      code={`<span data-animate="fade-up" data-on="load" data-delay="0">Badge</span>
+<h2 data-animate="fade-up" data-on="load" data-delay="150">Heading</h2>
+<p data-animate="fade-up" data-on="load" data-delay="300">Subheading</p>
+<a data-animate="fade-up" data-on="load" data-delay="450">CTA</a>`}
+    >
+      <div class="text-center">
+        <span data-animate="fade-up" data-on="load" data-delay="0" class="inline-block mb-3 px-3 py-1 rounded-full bg-accent/15 text-accent text-xs font-semibold">Badge</span>
+        <h2 data-animate="fade-up" data-on="load" data-delay="150" class="font-heading font-bold text-2xl mb-2">Hero Heading</h2>
+        <p data-animate="fade-up" data-on="load" data-delay="300" class="text-text-muted mb-4">Placeholder hero subheading copy.</p>
+        <a data-animate="fade-up" data-on="load" data-delay="450" class="inline-block px-4 py-2 rounded-(--radius-btn) bg-primary text-text-on-primary text-sm font-semibold">Call to Action</a>
+      </div>
+    </AnimationDemo>
+  </StyleguideSection>
+
+  <!-- Section 2: Scroll Reveals -->
+  <StyleguideSection id="scroll-reveals" title="Scroll Reveals" description="Each preset below fires once via a scroll observer. Generous spacing separates them so you can see each one trigger individually while scrolling.">
+    <div class="space-y-40">
+      {scrollReveals.map((preset) => (
+        <AnimationDemo title={`data-animate="${preset}"`} code={boxCode(preset)}>
+          <div data-animate={preset} class="w-40 h-24 rounded-(--radius-md) bg-primary/10 border border-primary/30 flex items-center justify-center font-mono text-sm text-primary">
+            {preset}
+          </div>
+        </AnimationDemo>
+      ))}
+    </div>
+  </StyleguideSection>
+
+  <!-- Section 3: Zoom & Blur -->
+  <StyleguideSection id="zoom-blur" title="Zoom & Blur" description="Scale and filter-based reveals.">
+    <div class="space-y-40">
+      {zoomBlur.map((preset) => (
+        <AnimationDemo title={`data-animate="${preset}"`} code={boxCode(preset)}>
+          <div data-animate={preset} class="w-40 h-24 rounded-(--radius-md) bg-secondary/10 border border-secondary/30 flex items-center justify-center font-mono text-sm text-secondary">
+            {preset}
+          </div>
+        </AnimationDemo>
+      ))}
+    </div>
+  </StyleguideSection>
+
+  <!-- Section 4: Staggered Children -->
+  <StyleguideSection id="staggered-children" title="Staggered Children" description="data-animate-children applies a preset to a container's direct children as one staggered group, under a single scroll observer.">
+    <AnimationDemo
+      title="Default stagger"
+      description="Uses the preset's built-in default stagger (80ms for fade-up)."
+      code={`<div data-animate-children="fade-up">\n  <div>Card 1</div>\n  ...\n  <div>Card 6</div>\n</div>`}
+    >
+      <div data-animate-children="fade-up" class="grid grid-cols-3 gap-3 w-full">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div class="h-16 rounded-(--radius-md) bg-neutral-200 flex items-center justify-center text-sm text-text-muted">Card {i + 1}</div>
+        ))}
+      </div>
+    </AnimationDemo>
+    <AnimationDemo
+      title="Custom stagger (150ms)"
+      description="data-stagger overrides the default gap between each child's animation."
+      code={`<div data-animate-children="fade-up" data-stagger="150">\n  <div>Card 1</div>\n  ...\n  <div>Card 6</div>\n</div>`}
+    >
+      <div data-animate-children="fade-up" data-stagger="150" class="grid grid-cols-3 gap-3 w-full">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div class="h-16 rounded-(--radius-md) bg-neutral-200 flex items-center justify-center text-sm text-text-muted">Card {i + 1}</div>
+        ))}
+      </div>
+    </AnimationDemo>
+  </StyleguideSection>
+
+  <!-- Section 5: Text Splitting -->
+  <StyleguideSection id="text-splitting" title="Text Splitting" description="splitText() breaks headline text into chars, words, or lines, then staggers each unit in.">
+    <div class="space-y-40">
+      {textSplits.map(({ preset, label }) => (
+        <AnimationDemo title={label} code={boxCode(preset)}>
+          <h3 data-animate={preset} class="font-heading font-bold text-3xl text-center">Animate this headline</h3>
+        </AnimationDemo>
+      ))}
+    </div>
+  </StyleguideSection>
+
+  <!-- Section 6: Counters -->
+  <StyleguideSection id="counters" title="Counters" description="Animated number counters. Each element reads its target from data-count-to.">
+    <AnimationDemo
+      title="Stat blocks"
+      code={counterStats.map((s) => `<span data-animate="counter" data-count-to="${s.countTo}">0</span>`).join('\n')}
+    >
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full text-center">
+        {counterStats.map((stat) => (
+          <div>
+            <span data-animate="counter" data-count-to={stat.countTo} class="block font-heading font-bold text-3xl text-primary">0</span>
+            <span class="text-xs text-text-muted">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </AnimationDemo>
+  </StyleguideSection>
+
+  <!-- Section 7: Modifiers -->
+  <StyleguideSection id="modifiers" title="Modifiers" description="data-duration, data-distance, data-ease, and data-repeat modify any preset's default behavior. All boxes below use fade-up.">
+    <div class="space-y-40">
+      <AnimationDemo
+        title="data-duration: 300 vs 1500"
+        code={`<div data-animate="fade-up" data-duration="300">Fast</div>\n<div data-animate="fade-up" data-duration="1500">Slow</div>`}
+      >
+        <div class="flex gap-4">
+          <div data-animate="fade-up" data-duration="300" class="w-32 h-20 rounded-(--radius-md) bg-primary/10 border border-primary/30 flex items-center justify-center text-sm">300ms</div>
+          <div data-animate="fade-up" data-duration="1500" class="w-32 h-20 rounded-(--radius-md) bg-primary/10 border border-primary/30 flex items-center justify-center text-sm">1500ms</div>
+        </div>
+      </AnimationDemo>
+      <AnimationDemo
+        title="data-distance: 20 vs 120"
+        code={`<div data-animate="fade-up" data-distance="20">Short</div>\n<div data-animate="fade-up" data-distance="120">Long</div>`}
+      >
+        <div class="flex gap-4">
+          <div data-animate="fade-up" data-distance="20" class="w-32 h-20 rounded-(--radius-md) bg-secondary/10 border border-secondary/30 flex items-center justify-center text-sm">20px</div>
+          <div data-animate="fade-up" data-distance="120" class="w-32 h-20 rounded-(--radius-md) bg-secondary/10 border border-secondary/30 flex items-center justify-center text-sm">120px</div>
+        </div>
+      </AnimationDemo>
+      <AnimationDemo
+        title="data-ease: outQuart vs outElastic vs linear"
+        code={easeVariants.map((e) => `<div data-animate="fade-up" data-ease="${e}">${e}</div>`).join('\n')}
+      >
+        <div class="flex gap-4">
+          {easeVariants.map((ease) => (
+            <div data-animate="fade-up" data-ease={ease} class="w-28 h-20 rounded-(--radius-md) bg-accent/10 border border-accent/30 flex items-center justify-center text-xs font-mono">{ease}</div>
+          ))}
+        </div>
+      </AnimationDemo>
+      <AnimationDemo
+        title="data-repeat: true"
+        description="Replays on every re-enter — scroll this box out of view and back in to see it fire again."
+        code={`<div data-animate="fade-up" data-repeat="true">Replays every time</div>`}
+      >
+        <div data-animate="fade-up" data-repeat="true" class="w-48 h-20 rounded-(--radius-md) bg-primary/10 border border-primary/30 flex items-center justify-center text-sm text-center px-2">Replays every time</div>
+      </AnimationDemo>
+    </div>
+  </StyleguideSection>
+
+  <!-- Section 8: Reduced Motion -->
+  <StyleguideSection id="reduced-motion" title="Reduced Motion" description="How the animation module respects prefers-reduced-motion.">
+    <div class="rounded-(--radius-card) border border-neutral-200 bg-bg-alt p-6 space-y-3 text-sm text-text-muted">
+      <p><code class="font-mono text-text">initAnimations()</code> in <code class="font-mono text-text">src/utils/animations/index.ts</code> checks <code class="font-mono text-text">window.matchMedia('(prefers-reduced-motion: no-preference)')</code> before touching a single element. If the user has requested reduced motion, the function returns immediately — no preset ever calls <code class="font-mono text-text">utils.set()</code>, so nothing is ever hidden.</p>
+      <p>Because the hidden state is JS-owned (never CSS <code class="font-mono text-text">opacity-0</code>), all content on this page — and every page using this system — renders fully visible by default, with or without JavaScript.</p>
+      <p><strong class="text-text">To test:</strong></p>
+      <ul class="list-disc list-inside space-y-1">
+        <li>macOS: System Settings &rarr; Accessibility &rarr; Display &rarr; enable "Reduce motion", then reload this page.</li>
+        <li>Chrome DevTools: Cmd+Shift+P &rarr; "Show Rendering" &rarr; set "Emulate CSS media feature prefers-reduced-motion" to "reduce".</li>
+      </ul>
+    </div>
+  </StyleguideSection>
+</StyleguideLayout>

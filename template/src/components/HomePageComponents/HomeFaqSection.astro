@@ -1,0 +1,43 @@
+---
+/**
+ * HomeFaqSection.astro
+ *
+ * Homepage FAQ teaser — renders the "general" FAQ category via the shared
+ * FaqAccordion and links to the full FAQ page.
+ */
+import { getFaqs } from '@/utils/data';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import FaqAccordion from '@/components/InnerPageComponents/FaqAccordion.astro';
+
+const { categories } = getFaqs();
+// Prefer the "general" category; fall back to the first category if absent.
+const category = categories.find((c) => c.slug === 'general') ?? categories[0];
+const faqs = category?.questions.slice(0, 5) ?? [];
+---
+
+{faqs.length > 0 && (
+  <SectionWrapper id="home-faqs" background="white">
+    <div class="max-w-3xl mx-auto">
+      <div class="mb-8 text-center" data-animate="fade-up">
+        <Badge text="Got Questions?" variant="primary" size="md" />
+        <h2 class="heading-display mt-4 text-text">Common Questions</h2>
+        <p class="mt-3 mx-auto max-w-2xl text-lg leading-relaxed text-text-muted">
+          Quick answers to what homeowners ask us most.
+        </p>
+      </div>
+
+      <FaqAccordion faqs={faqs} />
+
+      <div class="mt-8 text-center" data-animate="fade-up">
+        <PrimaryButton
+          text="View All FAQs"
+          href="/faqs/"
+          icon="material-symbols:arrow-forward"
+          size="md"
+        />
+      </div>
+    </div>
+  </SectionWrapper>
+)}

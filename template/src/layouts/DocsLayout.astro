@@ -1,0 +1,93 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/LayoutComponents/Header.astro';
+import Footer from '@/components/LayoutComponents/Footer.astro';
+
+interface DocEntry {
+  title: string;
+  slug: string;
+  order: number;
+}
+
+interface Props {
+  title: string;
+  docs: DocEntry[];
+  currentSlug: string;
+}
+
+const { title, docs, currentSlug } = Astro.props;
+const sortedDocs = [...docs].sort((a, b) => a.order - b.order);
+const currentIndex = sortedDocs.findIndex(d => d.slug === currentSlug);
+const prevDoc = currentIndex > 0 ? sortedDocs[currentIndex - 1] : null;
+const nextDoc = currentIndex < sortedDocs.length - 1 ? sortedDocs[currentIndex + 1] : null;
+---
+
+<BaseLayout title={title} noindex={true}>
+  <Header />
+  <div class="lg:grid lg:grid-cols-[260px_1fr]">
+    <!-- Desktop sidebar -->
+    <aside class="hidden lg:block sticky top-0 h-screen overflow-y-auto border-r border-neutral-200 bg-bg-alt p-6">
+      <a href="/docs/" class="block text-xs font-semibold uppercase tracking-wider text-text-muted mb-4 hover:text-primary">
+        Documentation
+      </a>
+      <nav class="space-y-1">
+        {sortedDocs.map((doc) => (
+          <a
+            href={`/docs/${doc.slug}/`}
+            class:list={[
+              'block px-3 py-2 rounded-md text-sm transition-colors',
+              doc.slug === currentSlug
+                ? 'bg-primary/10 text-primary font-semibold'
+                : 'text-text-muted hover:text-text hover:bg-neutral-100',
+            ]}
+          >
+            {doc.title}
+          </a>
+        ))}
+      </nav>
+    </aside>
+    <div>
+      <!-- Mobile nav -->
+      <nav class="lg:hidden sticky top-0 z-10 bg-bg border-b border-neutral-200 px-4 py-3 overflow-x-auto">
+        <div class="flex gap-2 min-w-max">
+          <a href="/docs/" class="text-xs text-text-muted hover:text-primary px-3 py-1.5 rounded-full border border-neutral-200 whitespace-nowrap">
+            All Docs
+          </a>
+          {sortedDocs.map((doc) => (
+            <a
+              href={`/docs/${doc.slug}/`}
+              class:list={[
+                'text-xs px-3 py-1.5 rounded-full border whitespace-nowrap',
+                doc.slug === currentSlug
+                  ? 'bg-primary text-white border-primary'
+                  : 'text-text-muted hover:text-primary border-neutral-200',
+              ]}
+            >
+              {doc.title}
+            </a>
+          ))}
+        </div>
+      </nav>
+      <!-- Main content -->
+      <main id="main-content" class="px-6 py-8 lg:px-12 max-w-4xl">
+        <slot />
+        <!-- Prev/Next navigation -->
+        <nav class="mt-16 pt-8 border-t border-neutral-200 flex justify-between gap-4">
+          {prevDoc ? (
+            <a href={`/docs/${prevDoc.slug}/`} class="group flex flex-col items-start text-sm">
+              <span class="text-text-muted text-xs mb-1">Previous</span>
+              <span class="text-primary group-hover:text-primary-dark font-medium">&larr; {prevDoc.title}</span>
+            </a>
+          ) : <div />}
+          {nextDoc ? (
+            <a href={`/docs/${nextDoc.slug}/`} class="group flex flex-col items-end text-sm text-right">
+              <span class="text-text-muted text-xs mb-1">Next</span>
+              <span class="text-primary group-hover:text-primary-dark font-medium">{nextDoc.title} &rarr;</span>
+            </a>
+          ) : <div />}
+        </nav>
+      </main>
+    </div>
+  </div>
+  <Footer />
+</BaseLayout>

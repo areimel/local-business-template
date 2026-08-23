@@ -1,0 +1,52 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import VariantHero from '@/components/HomeVariantComponents/VariantHero.astro';
+import TeamIntro from '@/components/HomeVariantComponents/TeamIntro.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import FeatureCards from '@/components/InnerPageComponents/FeatureCards.astro';
+import ProcessSteps from '@/components/InnerPageComponents/ProcessSteps.astro';
+import FaqSection from '@/components/InnerPageComponents/FaqSection.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import Alt1ContactSection from '@/components/HomeAlt1Components/Alt1ContactSection.astro';
+import { getHomeVariant } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getHomeVariant('dental');
+---
+
+<PageLayout title={v.meta.title} description={v.meta.description} noindex={true} showBreadcrumbs={false}>
+  <VariantHero
+    eyebrow={v.hero.eyebrow}
+    heading={v.hero.heading}
+    headingAccent={v.hero.headingAccent}
+    subheading={v.hero.subheading}
+    primaryCta={v.hero.primaryCta}
+    secondaryCta={v.hero.secondaryCta}
+    trustPills={v.hero.trustPills}
+  />
+
+  <div id="services">
+    <FeatureCards heading={v.featuresHeading} features={v.features!} />
+  </div>
+
+  <ProcessSteps heading={v.stepsHeading} steps={v.steps!} />
+
+  <TeamIntro badge={v.team!.badge} heading={v.team!.heading} subheading={v.team!.subheading} members={v.team!.members} />
+
+  <StatCounterBar stats={v.stats} />
+
+  <FaqSection heading="Dental FAQs" faqs={v.faqs!} />
+
+  <CtaBanner
+    heading={v.cta!.heading}
+    body={v.cta!.body}
+    buttonText={v.cta!.buttonText}
+    buttonUrl={v.cta!.buttonUrl}
+  />
+
+  <Alt1ContactSection />
+</PageLayout>

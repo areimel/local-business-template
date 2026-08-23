@@ -1,0 +1,88 @@
+---
+import JsonLd from '@/components/SeoComponents/JsonLd.astro';
+import { getBreadcrumbJsonLd } from '@/utils/seo';
+
+interface BreadcrumbItem {
+  label: string;
+  url: string;
+  current: boolean;
+}
+
+const pathname = Astro.url.pathname;
+
+// Don't render breadcrumbs on homepage
+const isHomepage = pathname === '/' || pathname === '';
+
+// Build breadcrumb items from URL path
+function buildBreadcrumbs(path: string): BreadcrumbItem[] {
+  const items: BreadcrumbItem[] = [
+    { label: 'Home', url: '/', current: false },
+  ];
+
+  const segments = path.split('/').filter(Boolean);
+
+  let currentUrl = '';
+  segments.forEach((segment, index) => {
+    currentUrl += `/${segment}`;
+    const label = segment
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    items.push({
+      label,
+      url: `${currentUrl}/`,
+      current: index === segments.length - 1,
+    });
+  });
+
+  return items;
+}
+
+const breadcrumbs = isHomepage ? [] : buildBreadcrumbs(pathname);
+
+// Emit BreadcrumbList JSON-LD from the same array that renders visibly (Google wants them to match).
+// URLs must be absolute — resolve against Astro.site.
+const breadcrumbSchema =
+  breadcrumbs.length > 1
+    ? getBreadcrumbJsonLd(
+        breadcrumbs.map((item) => ({
+          name: item.label,
+          url: new URL(item.url, Astro.site).href,
+        }))
+      )
+    : null;
+---
+
+{!isHomepage && breadcrumbs.length > 1 && (
+  <>
+  {breadcrumbSchema && <JsonLd data={breadcrumbSchema} />}
+  <nav aria-label="Breadcrumb" class="bg-neutral-50 border-b border-neutral-200">
+    <div class="section-container py-3">
+      <ol class="flex flex-wrap items-center gap-1.5 text-sm" role="list">
+        {breadcrumbs.map((item, index) => (
+          <li class="flex items-center gap-1.5">
+            {index > 0 && (
+              <svg class="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+            {item.current ? (
+              <span class="text-neutral-600 font-medium" aria-current="page">
+                {item.label}
+              </span>
+            ) : (
+              <a
+                href={item.url}
+                class="text-primary hover:text-primary-dark transition-colors"
+              >
+                {item.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </nav>
+  </>
+)}

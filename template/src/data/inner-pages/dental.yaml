@@ -1,0 +1,63 @@
+meta:
+  title: "Brightside Dental | Book Your Appointment"
+  description: "Schedule your dental appointment online in just a few clicks. New patients welcome at Brightside Dental — gentle, modern care for the whole family."
+
+hero:
+  heading: "Book Your Visit"
+  subheading: "New patients welcome. Schedule quickly and start your journey to a healthier, more confident smile."
+  badge: "Book a Visit"
+
+stepsHeading: "How to Book"
+
+steps:
+  - step: 1
+    title: "Choose Your Service"
+    description: "Select the reason for your visit — exam, cleaning, cosmetic, or emergency care."
+  - step: 2
+    title: "Pick Your Time"
+    description: "Find an appointment that fits your schedule. We offer early morning and evening slots for busy families."
+  - step: 3
+    title: "Complete Your Profile"
+    description: "Tell us a bit about yourself and your dental history so we're ready when you arrive."
+  - step: 4
+    title: "Confirm & Relax"
+    description: "Get a confirmation email and arrive 10 minutes early. Our team handles the rest."
+
+booking:
+  formHeading: "Schedule Your Appointment"
+  serviceOptions:
+    - value: "new-patient-exam"
+      label: "New Patient Exam & Cleaning"
+    - value: "routine-checkup"
+      label: "Routine Checkup & Cleaning"
+    - value: "whitening"
+      label: "Professional Teeth Whitening"
+    - value: "cosmetic-consult"
+      label: "Cosmetic Consultation (Veneers, Smile Makeover)"
+    - value: "invisalign"
+      label: "Invisalign® or Braces Consultation"
+    - value: "emergency"
+      label: "Urgent / Emergency Care"
+    - value: "implant-consult"
+      label: "Dental Implant Consultation"
+    - value: "kids-exam"
+      label: "Children's Exam & Cleaning"
+
+faqs:
+  - question: "What should I bring to my first appointment?"
+    answer: "Bring your ID, insurance card, and any previous dental records from your last dentist. We'll have forms for you to complete, or you can fill them out online before your visit."
+  - question: "How long is a typical appointment?"
+    answer: "New patient exams usually take 60-90 minutes to allow time for a thorough exam, X-rays, and a chance to meet our team. Regular cleanings are typically 45-60 minutes."
+  - question: "Do you accept dental insurance?"
+    answer: "Yes, we accept over 30 major insurance plans. We'll verify your benefits before your appointment and help you understand your coverage."
+  - question: "Can I schedule a same-day emergency appointment?"
+    answer: "Absolutely. If you're in pain or have a dental emergency, call us right away. We keep same-day slots available for urgent cases."
+  - question: "What's your cancellation policy?"
+    answer: "We ask for at least 24 hours' notice to reschedule. If you need to cancel, just call or email us as soon as possible so we can offer the slot to another patient."
+
+cta:
+  heading: "Prefer to Talk First?"
+  body: "No problem. Give us a call at your convenience, and our team will answer all your questions and help you find the perfect appointment time."
+  buttonText: "Call Us"
+  buttonUrl: "tel:555-0147"
+  variant: "dark"

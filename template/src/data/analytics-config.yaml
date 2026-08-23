@@ -1,0 +1,3 @@
+# On/off lives in features.yaml → analytics (also requires a real id here)
+gtm:
+  id: "GTM-XXXXXXX"

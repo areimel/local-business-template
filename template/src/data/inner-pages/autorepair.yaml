@@ -1,0 +1,92 @@
+meta:
+  title: "Our Story | Summit Auto Care"
+  description: "Learn about Summit Auto Care — 20+ years of honest, ASE-certified auto repair. Family owned, no upsells, just straight talk and fair prices."
+
+hero:
+  heading: "About Summit Auto Care"
+  subheading: "Honest repairs and straight talk, from a shop that's been part of this community for over 20 years."
+  badge: "About Us"
+
+story:
+  badge: "Our Story"
+  heading: "Built on Honest Work and Fair Prices"
+  paragraphs:
+    - "Summit Auto Care opened its doors in 2004 with a simple promise: tell customers the truth about their vehicle, and charge a fair price for fixing it. That promise hasn't changed in over 20 years."
+    - "What started as a two-bay garage with a single ASE-certified technician has grown into a full-service shop trusted by thousands of local drivers — but the values are exactly the same as they were on day one."
+    - "Today our team of ASE-certified mechanics handles everything from routine oil changes to complex engine diagnostics, always walking customers through what's wrong and what it will cost before any work begins."
+
+stats:
+  - value: 15000
+    suffix: "+"
+    label: "Vehicles Repaired"
+    icon: "material-symbols:build-outline"
+    counter: true
+  - value: 20
+    suffix: "+"
+    label: "Years in Business"
+    icon: "material-symbols:workspace-premium-outline"
+    counter: true
+  - value: 12
+    suffix: ""
+    label: "ASE-Certified Technicians"
+    icon: "material-symbols:verified-user-outline"
+    counter: true
+  - value: 4.8
+    suffix: ""
+    label: "Star Rating"
+    icon: "material-symbols:star-outline"
+    counter: false
+
+valuesHeading: "What Sets Our Shop Apart"
+values:
+  - icon: "material-symbols:handshake-outline"
+    title: "Honesty First"
+    description: "We tell you what's actually wrong with your vehicle — never what's easiest to upsell."
+  - icon: "material-symbols:verified-user-outline"
+    title: "ASE-Certified Expertise"
+    description: "Every technician on our floor holds ASE certification, backed by ongoing training on the latest vehicle systems."
+  - icon: "material-symbols:request-quote-outline"
+    title: "Transparent Pricing"
+    description: "You'll see and approve a written estimate before we touch your vehicle — no surprise charges, ever."
+  - icon: "material-symbols:speed-outline"
+    title: "Fast Turnaround"
+    description: "Most routine repairs are completed same-day, so you're back on the road without losing your week."
+  - icon: "material-symbols:shield-outline"
+    title: "Warranty Backed"
+    description: "Every repair is covered by our 24-month warranty on parts and labor for total peace of mind."
+  - icon: "material-symbols:volunteer-activism-outline"
+    title: "Community Focused"
+    description: "We've sponsored local youth sports and school programs for two decades because this community built our business."
+
+team:
+  badge: "Meet the Team"
+  heading: "The Technicians Behind Every Repair"
+  subheading: "ASE-certified mechanics who treat your car like their own."
+  members:
+    - name: "Victor Delgado"
+      role: "Founder & Master Technician"
+      bio: "Victor opened Summit Auto Care in 2004 and still works the floor most days, mentoring the next generation of techs."
+      icon: "material-symbols:build-outline"
+    - name: "Maria Delgado"
+      role: "Shop Manager"
+      bio: "Maria runs day-to-day operations and makes sure every customer gets a clear, honest estimate before any work starts."
+      icon: "material-symbols:person"
+    - name: "Jerome Baptiste"
+      role: "Lead Diagnostics Technician"
+      bio: "ASE Master Certified with 15 years of experience, Jerome handles the shop's toughest engine and electrical diagnostic cases."
+      icon: "material-symbols:settings-outline"
+    - name: "Alicia Nguyen"
+      role: "Service Advisor"
+      bio: "Alicia is usually the first person you'll talk to — walking you through inspection results in plain English, no jargon."
+      icon: "material-symbols:support-agent"
+    - name: "Kevin Marsh"
+      role: "Brakes & Suspension Specialist"
+      bio: "Kevin has spent over a decade specializing in brake, suspension, and alignment work for all makes and models."
+      icon: "material-symbols:handyman-outline"
+
+cta:
+  heading: "Schedule Your Service"
+  body: "Experience the honest, straightforward service that's kept local drivers coming back for 20 years."
+  buttonText: "Schedule Your Service"
+  buttonUrl: "/contact/"
+  variant: "primary"

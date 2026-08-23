@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+
+interface Props {
+  currentCategory: string;
+  currentSlug: string;
+  maxItems?: number;
+}
+
+const { currentCategory, currentSlug, maxItems = 3 } = Astro.props;
+
+const allServices = await getCollection('services');
+const siblings = allServices
+  .filter(entry =>
+    entry.data.type === 'service' &&
+    entry.data.category === currentCategory &&
+    entry.id !== `${currentCategory}/${currentSlug}`
+  )
+  .sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0))
+  .slice(0, maxItems);
+---
+
+{siblings.length > 0 && (
+  <SectionWrapper background="alt">
+    <h2 class="heading-display text-text text-center mb-12" data-animate="fade-up">
+      Related Services
+    </h2>
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
+      {siblings.map((entry) => {
+        const href = `/${currentCategory}/${entry.id.split('/').pop()}/`;
+        const icon = entry.data.features?.[0]?.icon;
+        return (
+          <a
+            href={href}
+            class="group block bg-bg rounded-(--radius-card) border-l-3 border-primary shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6"
+          >
+            {/* Service icon */}
+            {icon && (
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Icon name={icon} class="w-5 h-5 text-primary" aria-hidden="true" />
+              </div>
+            )}
+
+            <h3 class="text-lg font-heading font-bold text-text mb-2 group-hover:text-primary transition-colors">
+              {entry.data.title}
+            </h3>
+            <p class="text-text-muted text-sm line-clamp-3 mb-4">{entry.data.intro}</p>
+
+            {/* View arrow */}
+            <span class="inline-flex items-center gap-1 text-primary text-sm font-medium">
+              View Service
+              <Icon
+                name="material-symbols:arrow-forward"
+                class="w-4 h-4 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </span>
+          </a>
+        );
+      })}
+    </div>
+  </SectionWrapper>
+)}

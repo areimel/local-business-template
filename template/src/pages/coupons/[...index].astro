@@ -1,0 +1,90 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import CouponCard from '@/components/CouponComponents/CouponCard.astro';
+import { Icon } from 'astro-icon/components';
+import { getActiveCoupons, getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+// Rest-param route so the page can be flag-gated: when 'coupons' is off,
+// no paths are returned and /coupons/ is never built.
+export async function getStaticPaths() {
+  return gatedPaths('coupons', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+const activeCoupons = getActiveCoupons();
+---
+
+<PageLayout
+  title="Current Specials"
+  description={`Save on AC, heating, plumbing, and electrical services with current promotions from ${branding.companyName} in ${branding.serviceArea.primary}.`}
+>
+  <InnerHero
+    heading="Current Specials & Coupons"
+    subheading={`Take advantage of our latest promotions and save on quality home services across ${branding.serviceArea.primary}.`}
+  />
+
+  <!-- Coupons Grid -->
+  <SectionWrapper background="white">
+    <div class="text-center mb-12" data-animate="fade-up">
+      <h2 class="heading-display text-text mb-4">Available Offers</h2>
+      <p class="text-text-muted text-lg max-w-2xl mx-auto">
+        Browse our current specials below. Mention any coupon when you schedule your service to redeem.
+      </p>
+    </div>
+
+    {activeCoupons.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {activeCoupons.map((coupon) => (
+          <CouponCard coupon={coupon} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <Icon name="material-symbols:sell-outline" class="w-12 h-12 text-neutral-300 mx-auto mb-4" aria-hidden="true" />
+        <p class="text-text-muted text-lg">No active promotions at this time. Check back soon!</p>
+      </div>
+    )}
+  </SectionWrapper>
+
+  <!-- Fine Print -->
+  <SectionWrapper background="alt">
+    <div class="max-w-3xl mx-auto" data-animate="fade-up">
+      <div class="bg-bg rounded-(--radius-card) border border-neutral-200 p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <Icon name="material-symbols:info-outline" class="w-6 h-6 text-primary shrink-0 mt-0.5" aria-hidden="true" />
+          <div>
+            <h3 class="font-heading font-bold text-text mb-3">Important Information</h3>
+            <ul class="space-y-2 text-sm text-text-muted leading-relaxed">
+              <li>Coupons must be mentioned at the time of scheduling and presented before service begins.</li>
+              <li>Offers cannot be combined with other promotions, discounts, or special pricing.</li>
+              <li>All offers are subject to availability and may be withdrawn at any time.</li>
+              <li>Valid for residential customers in our <a href="/service-areas/" class="text-primary font-medium hover:text-primary-dark">{branding.serviceArea.primary} service area</a> only.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-8">
+        <p class="text-text-muted">
+          Have questions about our specials? Call us at{' '}
+          <a
+            href={`tel:${branding.phoneRaw}`}
+            class="text-primary-dark font-semibold hover:text-accent-dark"
+          >
+            {branding.phone}
+          </a>{' '}
+          or{' '}
+          <a href="/contact/" class="text-primary-dark font-semibold hover:text-accent-dark">
+            contact us online
+          </a>.
+        </p>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <CtaBanner />
+</PageLayout>

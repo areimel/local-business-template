@@ -1,0 +1,153 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  id: string;
+  labelledBy: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  id,
+  labelledBy,
+  size = 'md',
+} = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: 'max-w-sm',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+};
+---
+
+<div
+  id={id}
+  class="modal-wrapper fixed inset-0 z-[60] flex items-center justify-center p-4 hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={labelledBy}
+>
+  <!-- Backdrop -->
+  <div
+    class="modal-backdrop absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300"
+    data-modal-backdrop
+  ></div>
+
+  <!-- Content box -->
+  <div
+    class:list={[
+      'modal-content relative bg-bg shadow-xl w-full opacity-0 scale-95 transition-[opacity,transform] duration-300 max-h-[90vh] overflow-y-auto',
+      `rounded-[var(--radius-card)]`,
+      sizeClasses[size],
+    ]}
+    data-modal-content
+  >
+    <!-- Close button -->
+    <button
+      type="button"
+      class="absolute top-3 right-3 p-1.5 rounded-full text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100 transition-colors z-10"
+      data-modal-close
+      aria-label="Close dialog"
+    >
+      <Icon name="material-symbols:close" class="w-5 h-5" />
+    </button>
+
+    <slot />
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll<HTMLElement>('.modal-wrapper').forEach((modal) => {
+      const backdrop = modal.querySelector<HTMLElement>('[data-modal-backdrop]');
+      const content = modal.querySelector<HTMLElement>('[data-modal-content]');
+      const closeButtons = modal.querySelectorAll<HTMLElement>('[data-modal-close]');
+      let previouslyFocused: Element | null = null;
+
+      if (!backdrop || !content) return;
+
+      function getFocusableElements(): HTMLElement[] {
+        return [
+          ...content!.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          ),
+        ].filter((element) => {
+          if (element.hasAttribute('hidden') || element.closest('[hidden]')) {
+            return false;
+          }
+
+          return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        });
+      }
+
+      function open() {
+        previouslyFocused = document.activeElement;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        requestAnimationFrame(() => {
+          backdrop!.classList.remove('opacity-0');
+          backdrop!.classList.add('opacity-100');
+          content!.classList.remove('opacity-0', 'scale-95');
+          content!.classList.add('opacity-100', 'scale-100');
+        });
+
+        const focusable = getFocusableElements();
+        if (focusable.length) {
+          focusable[0].focus();
+        }
+      }
+
+      function close() {
+        backdrop!.classList.remove('opacity-100');
+        backdrop!.classList.add('opacity-0');
+        content!.classList.remove('opacity-100', 'scale-100');
+        content!.classList.add('opacity-0', 'scale-95');
+        document.body.style.overflow = '';
+
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          if (previouslyFocused && previouslyFocused instanceof HTMLElement) {
+            previouslyFocused.focus();
+          }
+        }, 300);
+      }
+
+      // Focus trap
+      modal.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          const focusable = getFocusableElements();
+          if (!focusable.length) return;
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      // Escape key closes
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+          close();
+        }
+      });
+
+      // Backdrop click closes
+      backdrop.addEventListener('click', close);
+
+      // Close buttons
+      closeButtons.forEach((btn) => btn.addEventListener('click', close));
+
+      // Custom event API
+      window.addEventListener(`modal:open:${modal.id}`, open);
+      window.addEventListener(`modal:close:${modal.id}`, close);
+    });
+  });
+</script>

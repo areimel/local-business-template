@@ -1,0 +1,118 @@
+meta:
+  title: "Hartwell & Associates | Personal Injury & Family Law Attorneys"
+  description: "Trusted personal injury and family law attorneys fighting for your rights. Free consultations, no fee unless we win."
+
+hero:
+  eyebrow: "Trusted Legal Representation Since 1998"
+  heading: "When Life Gets Complicated,"
+  headingAccent: "We Fight For You"
+  subheading: "Hartwell & Associates has recovered over $50 million for injured and wronged clients across the region. Your first consultation is always free."
+  primaryCta:
+    text: "Free Consultation"
+    url: "/contact/"
+  secondaryCta:
+    text: "Meet Our Attorneys"
+    url: "/lawfirm-team/"
+  trustPills:
+    - icon: "material-symbols:workspace-premium-outline"
+      label: "25+ Years Experience"
+    - icon: "material-symbols:verified-user-outline"
+      label: "Licensed & Board Certified"
+    - icon: "material-symbols:handshake-outline"
+      label: "No Fee Unless We Win"
+
+stats:
+  - value: 3200
+    suffix: "+"
+    label: "Cases Won"
+    icon: "mdi:gavel"
+    counter: true
+  - value: 25
+    suffix: "+"
+    label: "Years of Experience"
+    icon: "material-symbols:workspace-premium-outline"
+    counter: true
+  - value: 50
+    suffix: "M+"
+    label: "Recovered for Clients"
+    icon: "material-symbols:payments-outline"
+    counter: true
+  - value: 4.9
+    suffix: ""
+    label: "Star Rating"
+    icon: "material-symbols:star-outline"
+    counter: false
+
+pricing:
+  badge: "Practice Areas & Fees"
+  heading: "Practice Areas & Fees"
+  subheading: "Transparent pricing, no surprises."
+  layout: cards
+  groups:
+    - items:
+        - name: "Personal Injury"
+          description: "Car accidents, slip & fall, and workplace injuries."
+          price: "No Fee Unless We Win"
+        - name: "Family Law"
+          description: "Divorce, custody, and support matters handled with care."
+          price: "From $250/hr"
+          featured: true
+          badge: "Most Requested"
+        - name: "Estate Planning"
+          description: "Wills, trusts, and probate made simple."
+          price: "Flat Fee from $899"
+
+team:
+  badge: "Our Attorneys"
+  heading: "Meet Our Attorneys"
+  subheading: "Decades of combined experience fighting for our clients."
+  members:
+    - name: "Margaret Hartwell, Esq."
+      role: "Founding Partner, Personal Injury"
+      bio: "25 years of trial experience recovering millions for injured clients."
+    - name: "David Chen, Esq."
+      role: "Family Law Partner"
+      bio: "Compassionate advocate for families navigating divorce and custody."
+    - name: "Priya Anand, Esq."
+      role: "Estate Planning Attorney"
+      bio: "Helps families protect what matters most for generations to come."
+
+stepsHeading: "How Your Case Proceeds"
+steps:
+  - step: 1
+    title: "Free Consultation"
+    description: "We review the facts of your case at no cost and outline your options."
+  - step: 2
+    title: "Investigation"
+    description: "Our team gathers evidence, medical records, and expert opinions to build your case."
+  - step: 3
+    title: "Negotiation"
+    description: "We negotiate aggressively with insurers and opposing counsel to maximize your outcome."
+  - step: 4
+    title: "Resolution"
+    description: "Whether by settlement or verdict, we fight until your case is resolved."
+
+testimonial:
+  name: "Robert T."
+  location: "Personal Injury Client"
+  rating: 5
+  text: "After my accident, Hartwell & Associates handled everything. I never paid a dime out of pocket and they recovered far more than I expected. I can't thank them enough."
+
+faqs:
+  - question: "How much does a free consultation cost?"
+    answer: "Nothing. Your initial consultation is completely free, with no obligation to hire us."
+  - question: "What does 'no fee unless we win' mean?"
+    answer: "For personal injury cases, you pay nothing upfront and no attorney fees unless we recover compensation on your behalf."
+  - question: "How long will my case take?"
+    answer: "Every case is different, but most personal injury claims resolve in 6-18 months depending on complexity."
+  - question: "Do I need a lawyer for my divorce?"
+    answer: "While not required, having an experienced family law attorney protects your rights and helps avoid costly mistakes."
+  - question: "What areas of law do you practice?"
+    answer: "We focus on personal injury, family law, and estate planning, giving each case dedicated attention."
+
+cta:
+  heading: "Get Your Free Case Review"
+  body: "Don't wait to protect your rights. Speak with an attorney today, completely free."
+  buttonText: "Get Your Free Case Review"
+  buttonUrl: "/contact/"
+  variant: "dark"

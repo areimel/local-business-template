@@ -1,0 +1,130 @@
+meta:
+  title: "Lume Salon | Hair & Beauty Studio"
+  description: "Modern hair, color, and spa services at Lume Salon. Book your appointment with our award-winning stylists today."
+
+hero:
+  eyebrow: "Downtown Studio · Est. 2016"
+  heading: "Lume Salon"
+  headingAccent: "Hair & Beauty Studio"
+  subheading: "Modern color, precision cuts, and relaxing spa services — all in one light-filled studio."
+  primaryCta:
+    text: "Book Now"
+    url: "/contact/"
+  secondaryCta:
+    text: "View Our Work"
+    url: "/salon-gallery/"
+  trustPills:
+    - icon: "material-symbols:content-cut"
+      label: "Award-Winning Stylists"
+    - icon: "material-symbols:spa"
+      label: "Cruelty-Free Products"
+    - icon: "material-symbols:event-available-outline"
+      label: "Walk-Ins Welcome"
+
+pricing:
+  badge: "Services"
+  heading: "Service Menu"
+  subheading: "Every service is tailored to you — prices below are starting points."
+  layout: list
+  groups:
+    - name: "Hair"
+      items:
+        - name: "Women's Cut & Style"
+          description: "Consultation, shampoo, cut, and blow-dry finish"
+          price: "from $65"
+        - name: "Men's Cut"
+          description: "Precision cut with clippers or shears"
+          price: "from $40"
+        - name: "Blowout"
+          description: "Wash and professional blow-dry style"
+          price: "from $45"
+        - name: "Kids Cut"
+          description: "Ages 12 and under"
+          price: "from $30"
+    - name: "Color"
+      items:
+        - name: "Single Process Color"
+          description: "All-over color, one shade"
+          price: "from $85"
+        - name: "Balayage"
+          description: "Hand-painted, low-maintenance dimension"
+          price: "from $150"
+        - name: "Root Touch-Up"
+          description: "Refresh regrowth between full color services"
+          price: "from $70"
+        - name: "Full Highlights"
+          description: "Foil highlights, full head"
+          price: "from $130"
+    - name: "Spa"
+      items:
+        - name: "Classic Facial"
+          description: "Cleanse, exfoliate, mask, and moisturize"
+          price: "from $75"
+        - name: "Deep Tissue Massage"
+          description: "60-minute full body massage"
+          price: "from $95"
+        - name: "Manicure"
+          description: "Shape, cuticle care, polish"
+          price: "from $35"
+
+gallery:
+  heading: "The Studio"
+  subheading: "A bright, modern space built for a relaxing visit from start to finish."
+  items:
+    - icon: "material-symbols:content-cut"
+      caption: "Styling Floor"
+    - icon: "material-symbols:colorize"
+      caption: "Color Bar"
+    - icon: "material-symbols:water-drop-outline"
+      caption: "Wash Lounge"
+    - icon: "material-symbols:spa"
+      caption: "Spa Suite"
+    - icon: "material-symbols:storefront-outline"
+      caption: "Reception & Retail"
+    - icon: "material-symbols:brush-outline"
+      caption: "Blowout Bar"
+
+team:
+  heading: "Meet Your Stylists"
+  subheading: "Every stylist at Lume trains continuously to stay ahead of the latest techniques."
+  members:
+    - name: "Nina Alvarez"
+      role: "Salon Director & Master Stylist"
+      bio: "Nina has 15 years behind the chair and leads our team's ongoing education program."
+      icon: "material-symbols:content-cut"
+    - name: "Priya Shah"
+      role: "Senior Colorist"
+      bio: "Priya specializes in balayage and hand-painted color that grows out beautifully."
+      icon: "material-symbols:colorize"
+    - name: "Jordan Lee"
+      role: "Esthetician"
+      bio: "Jordan builds every facial around your skin's specific needs, not a one-size routine."
+      icon: "material-symbols:spa"
+    - name: "Sam Okafor"
+      role: "Stylist"
+      bio: "Sam is known for precision cuts and effortless everyday styles."
+      icon: "material-symbols:face-outline"
+
+testimonial:
+  name: "Rachel T."
+  location: "Riverside"
+  rating: 5
+  text: "I've never trusted anyone with my color until Priya. Lume feels like a spa day every time I book a simple cut."
+
+faqs:
+  - question: "Do I need an appointment, or can I walk in?"
+    answer: "We welcome walk-ins whenever a stylist is available, but booking ahead guarantees your preferred time and stylist."
+  - question: "What is your cancellation policy?"
+    answer: "We ask for at least 24 hours' notice to cancel or reschedule so we can offer the slot to another client."
+  - question: "What products do you use?"
+    answer: "We use professional-grade, cruelty-free color and styling lines selected for long-lasting results and hair health."
+  - question: "How should I prepare for my first color appointment?"
+    answer: "Come with dry, unwashed hair and a few reference photos so your colorist can plan the right approach for you."
+  - question: "Do you offer gift cards?"
+    answer: "Yes, gift cards are available in any amount, in-studio or through our contact form."
+
+cta:
+  heading: "Book Your Appointment"
+  body: "Spots fill up quickly with our stylists — reserve your visit and let's find your next look."
+  buttonText: "Book Now"
+  buttonUrl: "/contact/"

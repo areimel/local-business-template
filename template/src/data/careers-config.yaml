@@ -1,0 +1,12 @@
+# Careers Page Configuration
+indexHeading: "Join Our Team"
+indexSubheading: "Build your career with a company that values quality, integrity, and its people"
+indexBadge: "Careers"
+
+# Departments (display order for filter)
+departments:
+  - "HVAC Service"
+  - "Installation"
+  - "Sales"
+  - "Office"
+  - "Management"

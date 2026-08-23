@@ -1,0 +1,62 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+
+interface Feature {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+interface Props {
+  features: Feature[];
+  heading?: string;
+  freeEstimate?: boolean;
+}
+
+const { features, heading, freeEstimate = false } = Astro.props;
+const ctaText = freeEstimate ? 'Get a Free Estimate' : 'Schedule Service';
+---
+
+<SectionWrapper background="white">
+  {heading && (
+    <h2 class="heading-display text-text text-center mb-12" data-animate="fade-up">
+      {heading}
+    </h2>
+  )}
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+  >
+    {features.map((feature) => (
+      <div class="group relative bg-bg rounded-(--radius-card) border border-neutral-200 p-6 lg:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <!-- Top accent border -->
+        <div
+          class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent rounded-t-(--radius-card)"
+          aria-hidden="true"
+        ></div>
+
+        <div class="flex flex-col items-center text-center">
+          <div class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center mb-5">
+            <Icon
+              name={feature.icon || 'material-symbols:check-circle-outline'}
+              class="w-7 h-7 text-secondary"
+              aria-hidden="true"
+            />
+          </div>
+          <h3 class="text-lg font-heading font-bold text-text mb-2">{feature.title}</h3>
+          <p class="text-text-muted text-sm mb-4">{feature.description}</p>
+
+          <!-- Hover CTA -->
+          <a
+            href="#contact-form"
+            class="inline-flex items-center gap-1 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            {ctaText}
+            <Icon name="material-symbols:arrow-forward" class="w-4 h-4" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</SectionWrapper>

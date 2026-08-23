@@ -1,0 +1,69 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import InnerHero from "@/components/InnerPageComponents/InnerHero.astro";
+import ProcessSteps from "@/components/InnerPageComponents/ProcessSteps.astro";
+import ContactForm from "@/components/FormComponents/ContactForm.astro";
+import FaqSection from "@/components/InnerPageComponents/FaqSection.astro";
+import CtaBanner from "@/components/InnerPageComponents/CtaBanner.astro";
+import SectionWrapper from "@/components/SharedComponents/SectionWrapper.astro";
+import { getInnerPage } from "@/utils/data";
+import { gatedPaths } from "@/utils/features";
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getInnerPage("dental");
+---
+
+<PageLayout
+  title={v.meta.title}
+  description={v.meta.description}
+  noindex={true}
+  showBreadcrumbs={false}
+>
+  <InnerHero
+    heading={v.hero.heading}
+    subheading={v.hero.subheading}
+    badge={v.hero.badge}
+  />
+
+  {
+    v.steps && (
+      <ProcessSteps
+        heading={v.stepsHeading}
+        steps={v.steps}
+        showCta={false}
+      />
+    )
+  }
+
+  {
+    v.booking && (
+      <SectionWrapper background="alt">
+        <div class="max-w-2xl mx-auto">
+          <ContactForm
+            heading={v.booking.formHeading}
+            serviceLabel="Reason for Visit"
+            serviceOptions={v.booking.serviceOptions}
+            redirectUrl="/thank-you/"
+          />
+        </div>
+      </SectionWrapper>
+    )
+  }
+
+  {v.faqs && <FaqSection heading="Appointment FAQs" faqs={v.faqs} />}
+
+  {
+    v.cta && (
+      <CtaBanner
+        heading={v.cta.heading}
+        body={v.cta.body}
+        buttonText={v.cta.buttonText}
+        buttonUrl={v.cta.buttonUrl}
+        variant={v.cta.variant as "primary" | "dark" | undefined}
+      />
+    )
+  }
+</PageLayout>

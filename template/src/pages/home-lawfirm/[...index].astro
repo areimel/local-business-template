@@ -1,0 +1,62 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import VariantHero from '@/components/HomeVariantComponents/VariantHero.astro';
+import PricingTable from '@/components/HomeVariantComponents/PricingTable.astro';
+import TeamIntro from '@/components/HomeVariantComponents/TeamIntro.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import ProcessSteps from '@/components/InnerPageComponents/ProcessSteps.astro';
+import TestimonialHighlight from '@/components/InnerPageComponents/TestimonialHighlight.astro';
+import FaqSection from '@/components/InnerPageComponents/FaqSection.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import Alt2ContactSection from '@/components/HomeAlt2Components/Alt2ContactSection.astro';
+import { getHomeVariant } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getHomeVariant('lawfirm');
+---
+
+<PageLayout title={v.meta.title} description={v.meta.description} noindex={true} showBreadcrumbs={false}>
+  <VariantHero
+    eyebrow={v.hero.eyebrow}
+    heading={v.hero.heading}
+    headingAccent={v.hero.headingAccent}
+    subheading={v.hero.subheading}
+    primaryCta={v.hero.primaryCta}
+    secondaryCta={v.hero.secondaryCta}
+    trustPills={v.hero.trustPills}
+  />
+
+  <StatCounterBar stats={v.stats} />
+
+  <div id="practice-areas">
+    <PricingTable
+      badge={v.pricing!.badge}
+      heading={v.pricing!.heading}
+      subheading={v.pricing!.subheading}
+      layout={v.pricing!.layout}
+      groups={v.pricing!.groups}
+    />
+  </div>
+
+  <TeamIntro badge={v.team!.badge} heading={v.team!.heading} subheading={v.team!.subheading} members={v.team!.members} />
+
+  <ProcessSteps heading={v.stepsHeading} steps={v.steps!} />
+
+  <TestimonialHighlight testimonial={v.testimonial} />
+
+  <FaqSection heading="Legal FAQs" faqs={v.faqs!} />
+
+  <CtaBanner
+    heading={v.cta!.heading}
+    body={v.cta!.body}
+    buttonText={v.cta!.buttonText}
+    buttonUrl={v.cta!.buttonUrl}
+    variant="dark"
+  />
+
+  <Alt2ContactSection />
+</PageLayout>

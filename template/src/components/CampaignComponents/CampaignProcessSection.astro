@@ -1,0 +1,120 @@
+---
+/**
+ * CampaignProcessSection.astro
+ *
+ * "How It Works" numbered timeline section for campaign landing pages.
+ * Left column: numbered steps with connecting dashed line.
+ * Right column: photo + CTA buttons.
+ *
+ * The `process.image` prop accepts a path relative to src/assets/images/
+ * (e.g. "hero/tech-infront-unit.jpg"). Falls back to a generic tech photo.
+ */
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import defaultPhoto from '@/assets/images/hero/tech-infront-unit.jpg';
+import type { ImageMetadata } from 'astro';
+
+interface ProcessStep {
+  title: string;
+  description: string;
+  isFinal?: boolean;
+}
+
+interface Props {
+  process: {
+    eyebrow?: string;
+    headline: string;
+    image?: string;
+    steps: ProcessStep[];
+  };
+}
+
+const { process } = Astro.props;
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/**/*.{jpg,jpeg,png,webp}', { eager: true });
+
+let techPhoto = defaultPhoto;
+if (process.image) {
+  const imagePath = `/src/assets/images/${process.image}`;
+  if (images[imagePath]) {
+    techPhoto = images[imagePath].default;
+  }
+}
+---
+
+<SectionWrapper id="our-process" background="white">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+    <!-- Left Column: Timeline -->
+    <div data-animate="fade-up">
+      <div class="mb-8">
+        {process.eyebrow && (
+          <Badge text={process.eyebrow} variant="primary" size="md" />
+        )}
+        <h2 class="heading-display text-text mt-4">
+          {process.headline}
+        </h2>
+      </div>
+
+      <div class="relative">
+        <!-- Vertical connecting line -->
+        <div
+          class="absolute left-6 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-primary/25"
+          aria-hidden="true"
+        ></div>
+
+        {process.steps.map((step, index) => (
+          <div class="flex gap-6 items-start">
+            <div
+              class:list={[
+                'w-12 h-12 rounded-full text-white font-heading font-bold text-lg flex items-center justify-center shrink-0 relative z-10 shadow-md',
+                step.isFinal
+                  ? 'bg-secondary'
+                  : 'bg-gradient-to-br from-primary-dark to-primary',
+              ]}
+            >
+              {step.isFinal ? (
+                <Icon name="material-symbols:check" class="w-6 h-6" aria-hidden="true" />
+              ) : (
+                <span>{index + 1}</span>
+              )}
+            </div>
+            <div class="pb-8 lg:pb-10">
+              <h3 class="text-lg font-heading font-bold text-text mb-1">{step.title}</h3>
+              <p class="text-text-muted">{step.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right Column: CTA with Image -->
+    <div data-animate="fade-up">
+      <div class="relative overflow-hidden rounded-(--radius-card) shadow-lg mb-6">
+        <Image
+          src={techPhoto}
+          alt="HVAC technician performing a service call"
+          class="w-full h-full object-cover"
+          widths={[400, 640, 800]}
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          loading="lazy"
+        />
+      </div>
+      <h3 class="text-2xl font-heading font-bold text-text mb-2">
+        Ready to Get Started?
+      </h3>
+      <p class="text-text-muted mb-6">
+        Fill out the form below and our team will be in touch.
+      </p>
+      <ButtonGroup align="left" stack="mobile">
+        <PrimaryButton text="Get Started" href="#hero-form" icon="material-symbols:arrow-forward" />
+        <PhoneButton />
+      </ButtonGroup>
+    </div>
+
+  </div>
+</SectionWrapper>

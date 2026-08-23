@@ -1,0 +1,94 @@
+---
+import { getBranding } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Image } from 'astro:assets';
+import techIndoor from '@/assets/images/team/tech-crossed-arms.jpg';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const features = [
+  {
+    icon: 'material-symbols:family-home-outline',
+    title: 'Family Owned',
+    description: `Founded in ${branding.yearEstablished} and still family-owned today, ${branding.companyName} is built on the personal touch — we know our customers by name and treat every home like our own.`,
+  },
+  {
+    icon: 'material-symbols:verified-user-outline',
+    title: 'Licensed & Insured',
+    description: 'With decades of professional service behind us, our fully certified and insured technicians deliver the expert workmanship local families depend on.',
+  },
+  {
+    icon: 'material-symbols:speed-outline',
+    title: 'Same-Day Service',
+    description: 'When your system goes down, we respond fast — because homeowners shouldn\'t have to wait. Same-day emergency repairs, 7 days a week.',
+  },
+  {
+    icon: 'material-symbols:receipt-long-outline',
+    title: 'Transparent Pricing',
+    description: 'Honest, upfront pricing is part of who we are. As a family business, we believe you deserve to know the cost before any work begins — no surprises, no hidden fees.',
+  },
+];
+---
+
+<SectionWrapper id="why-choose-us-alt2" background="alt">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+    <!-- Left Column: Content + Feature Grid (~70%) -->
+    <div class="lg:col-span-8">
+      <div class="mb-10" data-animate="fade-up">
+        <Badge text="Why Choose Us" variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4 mb-4">
+          Why {branding.serviceArea.primary} Homeowners Trust {branding.companyNameShort}
+        </h2>
+        <p class="text-text-muted text-lg max-w-2xl leading-relaxed">
+          For over {yearsInBusiness} years, {branding.companyName} has been the name families
+          turn to for reliable HVAC service. Our commitment to quality workmanship, honest
+          pricing, and same-day availability is why customers keep coming back.
+        </p>
+      </div>
+
+      <!-- 2x2 Feature Grid -->
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-6"
+      >
+        {features.map((feature) => (
+          <div class="bg-bg rounded-(--radius-card) p-5 border border-neutral-200 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300">
+            <div class="flex gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <Icon name={feature.icon} class="w-6 h-6 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 class="text-base font-heading font-bold text-text mb-1">{feature.title}</h3>
+                <p class="text-sm text-text-muted leading-relaxed">{feature.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right Column: Tech Photo (~30%) -->
+    <div class="lg:col-span-4 hidden lg:block" data-animate="fade-up">
+      <div class="relative">
+        <Image
+          src={techIndoor}
+          alt={`${branding.companyName} certified technician`}
+          width={380}
+          height={500}
+          class="rounded-(--radius-card) shadow-lg object-cover w-full"
+          loading="lazy"
+        />
+        <!-- Accent decoration -->
+        <div
+          class="absolute -bottom-3 -left-3 w-full h-full rounded-(--radius-card) border-2 border-primary/40 bg-primary/5 -z-10"
+          aria-hidden="true"
+        ></div>
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>

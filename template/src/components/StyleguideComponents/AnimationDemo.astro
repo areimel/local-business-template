@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  code: string;
+  description?: string;
+}
+
+const { title, code, description } = Astro.props;
+---
+
+<div class="mb-8">
+  <h3 class="font-heading font-bold text-lg mb-1">{title}</h3>
+  {description && <p class="text-sm text-text-muted mb-3">{description}</p>}
+  <div class="min-h-32 flex items-center justify-center rounded-(--radius-card) border border-neutral-200 bg-bg-alt p-6 mb-3">
+    <slot />
+  </div>
+  <pre class="overflow-x-auto rounded-(--radius-md) bg-neutral-900 p-4 text-xs leading-relaxed"><code class="font-mono text-neutral-100">{code}</code></pre>
+</div>

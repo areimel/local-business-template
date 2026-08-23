@@ -1,0 +1,42 @@
+---
+import ColorSampleCard from './ColorSampleCard.astro';
+
+interface ColorDef {
+  name: string;
+  cssVar: string;
+  hex: string;
+  textColor?: 'light' | 'dark';
+}
+
+interface Props {
+  title: string;
+  colors: ColorDef[];
+  columns?: 3 | 4 | 5;
+}
+
+const {
+  title,
+  colors,
+  columns = 3,
+} = Astro.props;
+
+const gridClasses: Record<number, string> = {
+  3: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4',
+  4: 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4',
+  5: 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4',
+};
+---
+
+<div class="mb-10">
+  <h3 class="font-heading font-bold text-lg mb-4">{title}</h3>
+  <div class={gridClasses[columns]}>
+    {colors.map((color) => (
+      <ColorSampleCard
+        name={color.name}
+        cssVar={color.cssVar}
+        hex={color.hex}
+        textColor={color.textColor}
+      />
+    ))}
+  </div>
+</div>

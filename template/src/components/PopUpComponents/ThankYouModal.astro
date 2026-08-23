@@ -1,0 +1,42 @@
+---
+import Modal from '@/components/PopUpComponents/Modal.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import { Icon } from 'astro-icon/components';
+import { getModals } from '@/utils/data';
+
+const { thankYou } = getModals();
+---
+
+<Modal id="thank-you-modal" labelledBy="thank-you-heading" size="md">
+  <div class="p-6 sm:p-8 text-center">
+    <!-- Success icon -->
+    <div class="mx-auto mb-4 w-14 h-14 rounded-full bg-success/10 flex items-center justify-center">
+      <Icon name={thankYou.icon} class="w-7 h-7 text-success" />
+    </div>
+
+    <!-- Heading -->
+    <h2 id="thank-you-heading" class="font-heading text-2xl font-bold text-text mb-2">
+      {thankYou.heading}
+    </h2>
+    <p class="text-text-muted mb-4">{thankYou.subheading}</p>
+
+    <!-- Body -->
+    <p class="text-sm text-text-muted mb-6">{thankYou.body}</p>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+      <PrimaryButton
+        text={thankYou.primaryButton.text}
+        href={thankYou.primaryButton.url}
+        icon="material-symbols:home-outline"
+      />
+      <button
+        type="button"
+        class="text-sm text-text-muted hover:text-text transition-colors py-2"
+        data-modal-close
+      >
+        {thankYou.secondaryButton.text}
+      </button>
+    </div>
+  </div>
+</Modal>

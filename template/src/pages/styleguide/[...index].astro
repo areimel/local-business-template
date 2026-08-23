@@ -1,0 +1,243 @@
+---
+import StyleguideLayout from '@/layouts/StyleguideLayout.astro';
+import { gatedPaths } from '@/utils/features';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import SidebarNav from '@/components/StyleguideComponents/SidebarNav.astro';
+import StyleguideSection from '@/components/StyleguideComponents/StyleguideSection.astro';
+import ColorSampleGroup from '@/components/StyleguideComponents/ColorSampleGroup.astro';
+import FontSample from '@/components/StyleguideComponents/FontSample.astro';
+import TokenTable from '@/components/StyleguideComponents/TokenTable.astro';
+import ProjectMeta from '@/components/StyleguideComponents/ProjectMeta.astro';
+import HeadingShowcase from '@/components/StyleguideComponents/HeadingShowcase.astro';
+import ButtonShowcase from '@/components/StyleguideComponents/ButtonShowcase.astro';
+import FormElementsShowcase from '@/components/StyleguideComponents/FormElementsShowcase.astro';
+import SharedComponentsShowcase from '@/components/StyleguideComponents/SharedComponentsShowcase.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import QuickContactForm from '@/components/FormComponents/QuickContactForm.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+
+export async function getStaticPaths() {
+  return gatedPaths('devPages', () => [{ params: { index: undefined } }]);
+}
+
+// Sidebar navigation sections
+const sections = [
+  { id: 'project-meta', label: 'Project Meta' },
+  { id: 'colors', label: 'Colors' },
+  { id: 'typography', label: 'Typography' },
+  { id: 'tokens', label: 'Tokens' },
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'form-elements', label: 'Form Elements' },
+  { id: 'forms', label: 'Forms' },
+  { id: 'shared-components', label: 'Shared Components' },
+  { id: 'section-backgrounds', label: 'Section Backgrounds' },
+  { id: 'feature-flags', label: 'Feature Flags' },
+];
+
+// Color data — values from src/styles/global.css @theme block
+const brandColors = [
+  { name: 'Primary', cssVar: '--color-primary', hex: '#ff1100' },
+  { name: 'Primary Dark', cssVar: '--color-primary-dark', hex: '#cc0e00' },
+  { name: 'Primary Light', cssVar: '--color-primary-light', hex: '#ff4433', textColor: 'dark' as const },
+  { name: 'Secondary', cssVar: '--color-secondary', hex: '#02c0f3' },
+  { name: 'Secondary Dark', cssVar: '--color-secondary-dark', hex: '#0299c2' },
+  { name: 'Secondary Light', cssVar: '--color-secondary-light', hex: '#33d4ff', textColor: 'dark' as const },
+  { name: 'Accent', cssVar: '--color-accent', hex: '#ff8707', textColor: 'dark' as const },
+  { name: 'Accent Dark', cssVar: '--color-accent-dark', hex: '#cc6c05' },
+  { name: 'Accent Light', cssVar: '--color-accent-light', hex: '#ffa940', textColor: 'dark' as const },
+];
+
+const neutralColors = [
+  { name: 'Neutral 50', cssVar: '--color-neutral-50', hex: '#fafafa', textColor: 'dark' as const },
+  { name: 'Neutral 100', cssVar: '--color-neutral-100', hex: '#f4f4f4', textColor: 'dark' as const },
+  { name: 'Neutral 200', cssVar: '--color-neutral-200', hex: '#e8e8ee', textColor: 'dark' as const },
+  { name: 'Neutral 300', cssVar: '--color-neutral-300', hex: '#d0d0da', textColor: 'dark' as const },
+  { name: 'Neutral 400', cssVar: '--color-neutral-400', hex: '#b0b0be', textColor: 'dark' as const },
+  { name: 'Neutral 500', cssVar: '--color-neutral-500', hex: '#8e8e9e' },
+  { name: 'Neutral 600', cssVar: '--color-neutral-600', hex: '#525252' },
+  { name: 'Neutral 700', cssVar: '--color-neutral-700', hex: '#4a4a5a' },
+  { name: 'Neutral 800', cssVar: '--color-neutral-800', hex: '#2d2d44' },
+  { name: 'Neutral 900', cssVar: '--color-neutral-900', hex: '#171717' },
+];
+
+const semanticColors = [
+  { name: 'Success', cssVar: '--color-success', hex: '#22C55E' },
+  { name: 'Warning', cssVar: '--color-warning', hex: '#F59E0B', textColor: 'dark' as const },
+  { name: 'Error', cssVar: '--color-error', hex: '#EF4444' },
+  { name: 'Info', cssVar: '--color-info', hex: '#3B82F6' },
+];
+
+const surfaceColors = [
+  { name: 'Background', cssVar: '--color-bg', hex: '#ffffff', textColor: 'dark' as const },
+  { name: 'Background Alt', cssVar: '--color-bg-alt', hex: '#f4f4f4', textColor: 'dark' as const },
+  { name: 'Text', cssVar: '--color-text', hex: '#171717' },
+  { name: 'Text Muted', cssVar: '--color-text-muted', hex: '#525252' },
+  { name: 'Text on Primary', cssVar: '--color-text-on-primary', hex: '#ffffff', textColor: 'dark' as const },
+  { name: 'Text on Secondary', cssVar: '--color-text-on-secondary', hex: '#ffffff', textColor: 'dark' as const },
+];
+
+// Token data
+const spacingTokens = [
+  { name: '--spacing-section', value: 'clamp(4rem, 8vw, 8rem)' },
+];
+
+const radiusTokens = [
+  { name: '--radius-sm', value: '0.375rem' },
+  { name: '--radius-md', value: '0.5rem' },
+  { name: '--radius-lg', value: '0.75rem' },
+  { name: '--radius-xl', value: '1rem' },
+  { name: '--radius-btn', value: '0.5rem' },
+  { name: '--radius-card', value: '1rem' },
+  { name: '--radius-full', value: '9999px' },
+];
+
+const shadowTokens = [
+  { name: '--shadow-sm', value: '0 1px 2px rgba(0, 0, 0, 0.05)' },
+  { name: '--shadow-md', value: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' },
+  { name: '--shadow-lg', value: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' },
+  { name: '--shadow-xl', value: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' },
+  { name: '--shadow-btn', value: '0 4px 20px rgba(249, 115, 22, 0.35)' },
+];
+---
+
+<StyleguideLayout title="Styleguide">
+  <SidebarNav slot="sidebar" sections={sections} />
+  <a
+    slot="sidebar"
+    href="/animation-examples"
+    class="mt-4 block py-2 px-3 text-sm text-primary font-medium rounded-md border border-primary/30 hover:bg-primary/10 transition-colors"
+  >
+    Animation Examples &rarr;
+  </a>
+  <a
+    slot="sidebar"
+    href="/docs/"
+    class="mt-2 block py-2 px-3 text-sm text-primary font-medium rounded-md border border-primary/30 hover:bg-primary/10 transition-colors"
+  >
+    Documentation &rarr;
+  </a>
+
+  <!-- Mobile nav -->
+  <nav slot="mobile-nav" class="lg:hidden sticky top-0 z-10 bg-bg border-b border-neutral-200 px-4 py-3 overflow-x-auto">
+    <div class="flex gap-2 min-w-max">
+      {sections.map((s) => (
+        <a href={`#${s.id}`} class="text-xs text-text-muted hover:text-primary px-3 py-1.5 rounded-full border border-neutral-200 whitespace-nowrap">
+          {s.label}
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <!-- Section 1: Project Meta -->
+  <StyleguideSection id="project-meta" title="Project Meta" description="Overview of branding configuration, content collections, and project setup.">
+    <ProjectMeta />
+  </StyleguideSection>
+
+  <!-- Section 2: Colors -->
+  <StyleguideSection id="colors" title="Colors" description="All color tokens defined in the design system. Colors auto-generate Tailwind utilities.">
+    <ColorSampleGroup title="Brand Colors" colors={brandColors} columns={3} />
+    <ColorSampleGroup title="Neutrals" colors={neutralColors} columns={5} />
+    <ColorSampleGroup title="Semantic Colors" colors={semanticColors} columns={4} />
+    <ColorSampleGroup title="Surface Colors" colors={surfaceColors} columns={3} />
+  </StyleguideSection>
+
+  <!-- Section 3: Typography -->
+  <StyleguideSection id="typography" title="Typography" description="Font families and the fluid type scale.">
+    <FontSample name="Outfit Variable" cssVar="--font-heading" usage="Used for all headings (h1-h6), navigation, and card titles" weights={[400, 600, 800]} />
+    <FontSample name="Inter" cssVar="--font-body" usage="Used for body text, form labels, descriptions, and UI elements" weights={[400, 500, 600]} />
+    <HeadingShowcase />
+  </StyleguideSection>
+
+  <!-- Section 4: Tokens -->
+  <StyleguideSection id="tokens" title="Spacing, Radius & Shadows" description="Layout and visual effect tokens.">
+    <TokenTable title="Spacing" tokens={spacingTokens} previewType="spacing" />
+    <TokenTable title="Border Radius" tokens={radiusTokens} previewType="radius" />
+    <TokenTable title="Shadows" tokens={shadowTokens} previewType="shadow" />
+  </StyleguideSection>
+
+  <!-- Section 5: Buttons -->
+  <StyleguideSection id="buttons" title="Buttons" description="All button components with size, variant, and grouping options.">
+    <ButtonShowcase />
+  </StyleguideSection>
+
+  <!-- Section 6: Form Elements -->
+  <StyleguideSection id="form-elements" title="Form Elements" description="Individual form field components with various states.">
+    <FormElementsShowcase />
+  </StyleguideSection>
+
+  <!-- Section 7: Forms -->
+  <StyleguideSection id="forms" title="Forms" description="Complete form compositions. These forms are live if a Web3Forms key is configured.">
+    <div class="space-y-8">
+      <Card variant="outlined" padding="lg">
+        <h3 class="font-heading font-bold text-lg mb-4">Contact Form</h3>
+        <ContactForm showHeading={false} />
+      </Card>
+      <Card variant="outlined" padding="lg">
+        <h3 class="font-heading font-bold text-lg mb-4">Quick Contact Form</h3>
+        <QuickContactForm showHeading={false} />
+      </Card>
+    </div>
+  </StyleguideSection>
+
+  <!-- Section 8: Shared Components -->
+  <StyleguideSection id="shared-components" title="Shared Components" description="Reusable UI primitives: cards, badges, dividers, and ratings.">
+    <SharedComponentsShowcase />
+  </StyleguideSection>
+
+  <!-- Section 9: Section Backgrounds -->
+  <StyleguideSection id="section-backgrounds" title="Section Backgrounds" description="SectionWrapper background variants for page sections.">
+    <div class="space-y-6">
+      <SectionWrapper background="white" padding="tight">
+        <p class="font-heading font-semibold">background="white"</p>
+        <p class="text-sm text-text-muted">Default white background. Used for standard content sections.</p>
+      </SectionWrapper>
+      <SectionWrapper background="alt" padding="tight">
+        <p class="font-heading font-semibold">background="alt"</p>
+        <p class="text-sm text-text-muted">Light gray background. Used to alternate visual rhythm between sections.</p>
+      </SectionWrapper>
+      <SectionWrapper background="primary" padding="tight">
+        <p class="font-heading font-semibold">background="primary"</p>
+        <p class="text-sm">Blue background with white text. Used for emphasis CTAs.</p>
+      </SectionWrapper>
+      <SectionWrapper background="dark" padding="tight">
+        <p class="font-heading font-semibold">background="dark"</p>
+        <p class="text-sm">Dark charcoal background with light text. Used for footer-style sections.</p>
+      </SectionWrapper>
+    </div>
+  </StyleguideSection>
+
+  <!-- Section: Feature Flags -->
+  <StyleguideSection id="feature-flags" title="Feature Flags" description="Internal-team and demo content is gated at build time via src/data/features.yaml — no runtime toggle. This whole styleguide is itself a flag-gated route.">
+    <p class="text-text-muted">
+      Three flags cover internal tooling: <code>devTools</code> (reserved for future dev tools,
+      like a site theme picker — no consumer wired yet), <code>devPages</code> (internal-team
+      pages: <code>/docs</code>, <code>/styleguide</code>, <code>/animation-examples</code>), and
+      <code>demoPages</code> (client-facing demo/variant pages plus the floating demo navigator).
+      When a flag is off, the page or section simply isn't built — the URL 404s. There is no
+      runtime toggle to flip it back on.
+    </p>
+    <p class="text-text-muted mt-4">
+      To gate a static route, convert it to a rest-param page (<code>foo.astro</code> &rarr;
+      <code>foo/[...index].astro</code>, which keeps the URL unchanged) and wrap its
+      <code>getStaticPaths</code> in <code>gatedPaths</code>:
+    </p>
+    <pre class="mt-3 rounded-(--radius-md) bg-neutral-900 text-neutral-100 text-xs p-4 overflow-x-auto"><code>{`import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('devPages', () => [{ params: { index: undefined } }]);
+}`}</code></pre>
+    <p class="text-text-muted mt-4">
+      To gate a chunk of markup within an already-built page, wrap it in
+      <code>&lt;FeatureFlag name="devPages"&gt;...&lt;/FeatureFlag&gt;</code>. To self-gate a
+      component's logic, call <code>isFeatureEnabled('devPages')</code> directly. Example of a
+      live-gated element (renders only while <code>devTools</code> is enabled in
+      <code>features.yaml</code>):
+    </p>
+    <FeatureFlag name="devTools">
+      <div class="mt-4 rounded-(--radius-md) border border-dashed border-neutral-300 bg-bg-alt p-4 text-sm text-text-muted">
+        This box is wrapped in <code>&lt;FeatureFlag name="devTools"&gt;</code> — it only renders when that flag is <code>true</code>.
+      </div>
+    </FeatureFlag>
+  </StyleguideSection>
+</StyleguideLayout>

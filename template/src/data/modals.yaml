@@ -1,0 +1,23 @@
+# Exit Intent Modal (on/off lives in features.yaml → exitIntentModal)
+exitIntent:
+  heading: "Wait, Before You Go!"
+  subheading: "Check out this special offer before you leave."
+  secondaryButton:
+    text: "No Thanks"
+  activationDelay: 5000
+  excludePaths:
+    - "/thank-you/"
+    - "/contact/"
+    - "/coupons/"
+
+# Thank You Modal (shown after successful form submission)
+thankYou:
+  heading: "Thank You!"
+  subheading: "Your message has been sent successfully."
+  body: "We typically respond within 30 minutes during business hours. We look forward to helping you!"
+  icon: "material-symbols:check-circle"
+  primaryButton:
+    text: "Back to Home"
+    url: "/"
+  secondaryButton:
+    text: "Close"

@@ -1,0 +1,264 @@
+---
+import { getBranding, getCtas } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import FormMessage from '@/components/FormComponents/FormMessage.astro';
+
+const branding = getBranding();
+const { hero } = getCtas();
+
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const statPills = [
+  { icon: 'material-symbols:star', label: '4.9 Stars' },
+  { icon: 'material-symbols:workspace-premium-outline', label: `${yearsInBusiness}+ Years` },
+  { icon: 'material-symbols:home-outline', label: '5,000+ Homes' },
+  { icon: 'material-symbols:schedule-outline', label: '24/7 Service' },
+];
+
+const serviceOptions = [
+  { value: '', label: 'Select a service' },
+  { value: 'ac-repair', label: 'AC Repair & Service' },
+  { value: 'heating', label: 'Heating Service' },
+  { value: 'plumbing', label: 'Plumbing Service' },
+  { value: 'electrical', label: 'Electrical Service' },
+  { value: 'gas', label: 'Gas Service' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<section
+  class="relative overflow-hidden min-h-[50vh] lg:min-h-[60vh] flex items-center py-12 lg:py-16"
+  style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);"
+  aria-label="Hero"
+>
+  <!-- Decorative: orange blob top-right -->
+  <div
+    class="absolute -top-20 -right-20 w-80 h-80 lg:w-[500px] lg:h-[500px] rounded-full bg-secondary/20 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative: cyan blob bottom-left -->
+  <div
+    class="absolute -bottom-20 -left-20 w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-accent/15 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative: dot-grid overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.10) 1px, transparent 0); background-size: 28px 28px;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+
+      <!-- Left Column: Content -->
+      <div>
+        <!-- Stat pills row -->
+        <div class="flex flex-wrap gap-2 mb-6" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+          {statPills.map((pill) => (
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/15 text-white text-xs sm:text-sm font-medium px-3 py-1.5">
+              <Icon name={pill.icon} class="w-4 h-4 shrink-0" aria-hidden="true" />
+              {pill.label}
+            </span>
+          ))}
+        </div>
+
+        <!-- Heading (4xl, not hero size) -->
+        <h1
+          class="font-heading font-extrabold text-white mb-4 leading-tight"
+          style="font-size: var(--font-size-4xl);"
+          data-animate="fade-up" data-on="load" data-delay="150"
+        >
+          {hero.heading}
+        </h1>
+
+        <!-- Subheading -->
+        <p
+          class="text-base lg:text-lg text-white/90 mb-8 max-w-lg leading-relaxed"
+          data-animate="fade-up" data-on="load" data-delay="300" data-distance="30" data-duration="600"
+        >
+          {hero.subheading}
+        </p>
+
+        <!-- CTA Buttons -->
+        <div data-animate="fade-up" data-on="load" data-delay="450" data-distance="20" data-duration="500">
+          <ButtonGroup stack="mobile">
+            <PrimaryButton
+              text={hero.primaryButton.text}
+              href={hero.primaryButton.url}
+              size="lg"
+            />
+            <a
+              href={`tel:${branding.phoneRaw}`}
+              class="btn border-2 border-white text-white hover:bg-white hover:text-primary text-base px-6 py-3 lg:text-lg lg:px-8 lg:py-4 focus-visible:outline-white"
+              aria-label={`Call us at ${branding.phone}`}
+            >
+              <Icon name="material-symbols:call-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+              Call {branding.phone}
+            </a>
+          </ButtonGroup>
+        </div>
+      </div>
+
+      <!-- Right Column: Quick Contact Form Card -->
+      <div
+        class="bg-bg rounded-(--radius-card) shadow-xl p-6 sm:p-8 border-t-4 border-secondary"
+        data-animate="fade-up"
+      >
+        <h2 class="text-xl font-heading font-bold text-text mb-1">
+          Get Your Free Estimate
+        </h2>
+        <p class="text-sm text-text-muted mb-5">
+          Fill out the form and we'll get back to you within the hour.
+        </p>
+
+        <FormMessage id="hero-form-message" />
+
+        <form
+          id="hero-quick-form"
+          action="/api/contact"
+          method="POST"
+          class="space-y-4"
+        >
+          <!-- Honeypot spam protection -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" aria-hidden="true" />
+
+          <div>
+            <label for="hero-name" class="form-label">Full Name</label>
+            <input
+              id="hero-name"
+              name="name"
+              type="text"
+              required
+              placeholder="John Smith"
+              class="form-input"
+            />
+          </div>
+
+          <div>
+            <label for="hero-phone" class="form-label">Phone Number</label>
+            <input
+              id="hero-phone"
+              name="phone"
+              type="tel"
+              required
+              placeholder="(555) 555-0123"
+              class="form-input"
+            />
+          </div>
+
+          <div>
+            <label for="hero-service" class="form-label">Service Needed</label>
+            <select
+              id="hero-service"
+              name="service"
+              required
+              class="form-input"
+            >
+              {serviceOptions.map((opt) => (
+                <option value={opt.value} disabled={opt.value === ''} selected={opt.value === ''}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label for="hero-date" class="form-label">Preferred Date</label>
+            <input
+              id="hero-date"
+              name="preferred_date"
+              type="date"
+              class="form-input"
+            />
+          </div>
+
+          <button
+            type="submit"
+            id="hero-form-submit-btn"
+            class="btn btn-primary w-full"
+          >
+            <Icon name="material-symbols:calendar-month-outline" class="w-5 h-5 shrink-0" />
+            <span>Request Estimate</span>
+          </button>
+
+          <p class="text-center text-xs text-text-muted mt-2">
+            Or call us directly:
+            <a
+              href={`tel:${branding.phoneRaw}`}
+              class="font-semibold text-primary hover:text-primary-dark"
+            >
+              {branding.phone}
+            </a>
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('hero-quick-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('hero-form-submit-btn') as HTMLButtonElement;
+  const messageContainer = document.getElementById('hero-form-message') as HTMLElement;
+  const successMsg = document.getElementById('hero-form-message-success') as HTMLElement;
+  const errorMsg = document.getElementById('hero-form-message-error') as HTMLElement;
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Hide any previous messages
+      messageContainer?.classList.add('hidden');
+      successMsg?.classList.add('hidden');
+      errorMsg?.classList.add('hidden');
+
+      // Set loading state
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+          <path fill="currentColor" class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span>Sending...</span>
+      `;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          // Show success message
+          messageContainer?.classList.remove('hidden');
+          successMsg?.classList.remove('hidden');
+          form.reset();
+        } else {
+          // Show error message
+          messageContainer?.classList.remove('hidden');
+          errorMsg?.classList.remove('hidden');
+        }
+      } catch {
+        // Show error message
+        messageContainer?.classList.remove('hidden');
+        errorMsg?.classList.remove('hidden');
+      } finally {
+        // Restore button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+</script>

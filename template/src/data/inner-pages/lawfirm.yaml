@@ -1,0 +1,79 @@
+meta:
+  title: "Meet Our Attorneys | Hartwell & Associates"
+  description: "Meet the attorneys of Hartwell & Associates — decades of combined experience in personal injury, family law, and estate planning. Free consultations available."
+
+hero:
+  heading: "Meet Our Attorneys"
+  subheading: "Decades of combined courtroom experience, working for you."
+  badge: "Our Attorneys"
+
+stats:
+  - value: 60
+    suffix: "+"
+    label: "Years Combined Experience"
+    icon: "material-symbols:workspace-premium-outline"
+    counter: true
+  - value: 3200
+    suffix: "+"
+    label: "Cases Won"
+    icon: "mdi:gavel"
+    counter: true
+  - value: 4.9
+    suffix: ""
+    label: "Client Satisfaction"
+    icon: "material-symbols:star-outline"
+    counter: false
+  - value: 5000
+    suffix: "+"
+    label: "Free Consultations Given"
+    icon: "material-symbols:handshake-outline"
+    counter: true
+
+team:
+  badge: "Our Attorneys"
+  heading: "Attorneys Who Fight For You"
+  subheading: "Every case gets the personal attention of a partner, not a paralegal."
+  members:
+    - name: "Margaret Hartwell, Esq."
+      role: "Managing Partner, Personal Injury"
+      bio: "Founded the firm in 1998 after a decade at a top regional litigation practice. Margaret has personally recovered more than $30 million for injured clients and tries cases when insurers refuse to negotiate fairly."
+      icon: "material-symbols:person-pin-outline"
+    - name: "David Chen, Esq."
+      role: "Family Law Partner"
+      bio: "David guides clients through divorce, custody, and support disputes with a calm, strategic approach. He is a certified family law mediator and believes most families are better served by resolution than by a drawn-out fight."
+      icon: "material-symbols:family-restroom"
+    - name: "Priya Anand, Esq."
+      role: "Estate Planning Attorney"
+      bio: "Priya helps families protect what they've built — wills, trusts, and probate handled with care and plain-English explanations, not legal jargon."
+      icon: "material-symbols:policy-outline"
+    - name: "Marcus Webb, Esq."
+      role: "Senior Associate, Personal Injury"
+      bio: "Marcus focuses on serious auto accident and workplace injury claims, building the medical and financial documentation that maximizes every settlement."
+      icon: "mdi:gavel"
+    - name: "Renee Ortiz, Esq."
+      role: "Associate Attorney"
+      bio: "Renee supports the firm's personal injury and family law caseload, ensuring no client's questions go unanswered and no deadline is missed."
+      icon: "material-symbols:person"
+    - name: "Thomas Reyes"
+      role: "Senior Paralegal & Client Liaison"
+      bio: "Thomas is often the first and most frequent point of contact for clients, coordinating case updates, records requests, and scheduling across the firm."
+      icon: "material-symbols:support-agent"
+
+faqs:
+  - question: "How much does a consultation with an attorney cost?"
+    answer: "Nothing. Every initial consultation with our attorneys is free, with no obligation to hire the firm afterward."
+  - question: "Will I work directly with a partner, or get passed to a paralegal?"
+    answer: "Every case is overseen by one of our attorneys from intake through resolution. Paralegals support the case, but a lawyer is always the one making the strategic calls."
+  - question: "Do I pay anything upfront for a personal injury case?"
+    answer: "No. Personal injury cases are handled on contingency — you pay no attorney fees unless we recover compensation for you."
+  - question: "Is what I tell my attorney confidential?"
+    answer: "Yes. Everything you share with any attorney or staff member at our firm is protected by attorney-client privilege."
+  - question: "What should I bring to my first meeting?"
+    answer: "Bring any documents related to your case — accident reports, medical records, correspondence, or court paperwork — along with a list of questions. We'll tell you what else is needed after we hear the details."
+
+cta:
+  heading: "Schedule a Free Consultation"
+  body: "Talk to an attorney about your situation today — no cost, no obligation, no pressure."
+  buttonText: "Schedule a Free Consultation"
+  buttonUrl: "/contact/"
+  variant: "dark"

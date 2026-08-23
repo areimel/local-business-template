@@ -1,0 +1,167 @@
+---
+/**
+ * CampaignPageLayout.astro
+ *
+ * Isolated layout for campaign/offer landing pages.
+ * Wraps BaseLayout directly — intentionally strips the main site
+ * Header/Footer for conversion focus. Uses CampaignHeader + a
+ * custom minimal footer instead. Passes noindex through to BaseLayout.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CampaignHeader from '@/components/CampaignComponents/CampaignHeader.astro';
+import CampaignHomeHero from '@/components/CampaignComponents/CampaignHomeHero.astro';
+import CampaignWhoWeAre from '@/components/CampaignComponents/CampaignWhoWeAre.astro';
+import CampaignProcessSection from '@/components/CampaignComponents/CampaignProcessSection.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import CampaignFaqSection from '@/components/CampaignComponents/CampaignFaqSection.astro';
+import CampaignFinalCta from '@/components/CampaignComponents/CampaignFinalCta.astro';
+import StickyMobileCta from '@/components/CampaignComponents/StickyMobileCta.astro';
+import ThankYouModal from '@/components/PopUpComponents/ThankYouModal.astro';
+import LandingFooter from '@/components/LandingComponents/LandingFooter.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    slug: string;
+    description: string;
+    service?: string;
+    campaign?: string;
+    status: string;
+    noindex: boolean;
+    formType?: 'quote' | 'contest';
+    showEmergencyCta?: boolean;
+    showStatCounter?: boolean;
+    heroCompact?: boolean;
+    hero: {
+      eyebrow?: string;
+      headline: string;
+      headlineAccent?: string;
+      description: string;
+      backgroundImage?: string;
+      trustSignals: string[];
+    };
+    offer: {
+      badge: string;
+      headline: string;
+      deadline?: string;
+      deadlineText?: string;
+      ctaText: string;
+      disclaimer?: string;
+      couponId?: string;
+    };
+    benefits?: {
+      eyebrow?: string;
+      headline: string;
+      items: Array<{
+        icon?: string;
+        title: string;
+        description: string;
+      }>;
+    };
+    process?: {
+      eyebrow?: string;
+      headline: string;
+      image?: string;
+      steps: Array<{
+        title: string;
+        description: string;
+        isFinal?: boolean;
+      }>;
+    };
+    faq?: {
+      eyebrow?: string;
+      headline: string;
+      defaultOpen?: number;
+      items: Array<{
+        question: string;
+        answer: string;
+      }>;
+    };
+    finalCta?: {
+      urgencyBadge?: string;
+      headline: string;
+      headlineAccent?: string;
+      description: string;
+      formHeading: string;
+      formSubheading?: string;
+      formHeaderVariant: string;
+      ctaText: string;
+      disclaimer?: string;
+      trustCards: Array<{
+        icon?: string;
+        title: string;
+        subtitle?: string;
+      }>;
+    };
+    stickyBar?: {
+      text: string;
+      subtext?: string;
+      ctaText: string;
+      scrollTarget: string;
+    };
+    schemaData?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout
+  titleOverride={frontmatter.title}
+  description={frontmatter.description}
+  noindex={frontmatter.noindex}
+  rawSchema={frontmatter.schemaData}
+>
+  <CampaignHeader />
+
+  <main id="main-content">
+    <!-- 1. Hero -->
+    <CampaignHomeHero
+      hero={frontmatter.hero}
+      offer={frontmatter.offer}
+      formType={frontmatter.formType}
+      heroCompact={frontmatter.heroCompact}
+    />
+
+    <!-- 2. Benefits / Why Choose Us -->
+    <CampaignWhoWeAre benefits={frontmatter.benefits} />
+
+    <!-- 3. Process / How It Works -->
+    {frontmatter.process && <CampaignProcessSection process={frontmatter.process} />}
+
+    <!-- 4. Stat Counter -->
+    {(frontmatter.showStatCounter !== false) && <StatCounterBar background="dark" />}
+
+    <!-- 5. FAQ -->
+    {frontmatter.faq && frontmatter.faq.items.length > 0 && <CampaignFaqSection faq={frontmatter.faq} />}
+
+    <!-- 6. Final CTA -->
+    {frontmatter.finalCta && (
+      <CampaignFinalCta
+        urgencyBadge={frontmatter.finalCta.urgencyBadge}
+        headline={frontmatter.finalCta.headline}
+        headlineAccent={frontmatter.finalCta.headlineAccent}
+        description={frontmatter.finalCta.description}
+        formHeading={frontmatter.finalCta.formHeading}
+        formSubheading={frontmatter.finalCta.formSubheading}
+        formHeaderVariant={frontmatter.finalCta.formHeaderVariant as 'primary' | 'dark' | 'gradient'}
+        ctaText={frontmatter.finalCta.ctaText}
+        disclaimer={frontmatter.finalCta.disclaimer}
+        trustCards={frontmatter.finalCta.trustCards}
+        formType={frontmatter.formType}
+      />
+    )}
+
+    <!-- Markdown body content -->
+    <slot />
+  </main>
+
+  <!-- Minimal footer (legal links + configurable developer credit) -->
+  <LandingFooter />
+
+  <!-- Sticky mobile CTA bar -->
+  {frontmatter.stickyBar && <StickyMobileCta stickyBar={frontmatter.stickyBar} />}
+
+  <!-- Thank you modal -->
+  <ThankYouModal />
+</BaseLayout>

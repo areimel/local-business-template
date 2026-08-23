@@ -1,0 +1,70 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import { getBranding } from '@/utils/data';
+import type { VariantTestimonial } from '@/utils/data';
+import { isFeatureEnabled } from '@/utils/features';
+
+if (!isFeatureEnabled('reviews')) return;
+
+interface Props {
+  testimonial?: VariantTestimonial;
+}
+
+const branding = getBranding();
+
+const defaultTestimonial: VariantTestimonial = {
+  name: 'Sarah M.',
+  location: branding.serviceArea.primary,
+  rating: 5,
+  text: `${branding.companyNameShort} is hands-down the best HVAC company we've ever worked with. They showed up on time, diagnosed the problem quickly, and had our AC running perfectly within the hour. Highly recommend!`,
+};
+
+const { testimonial = defaultTestimonial } = Astro.props;
+---
+
+<SectionWrapper background="primary">
+  <div class="max-w-3xl mx-auto text-center" data-animate="fade-up">
+    <!-- Large decorative quote mark -->
+    <div class="mb-6" aria-hidden="true">
+      <Icon
+        name="material-symbols:format-quote"
+        class="w-14 h-14 text-white/25 mx-auto rotate-180"
+      />
+    </div>
+
+    <!-- Rating -->
+    <div class="flex justify-center mb-6">
+      <StarRating rating={testimonial.rating} size="lg" />
+    </div>
+
+    <!-- Quote -->
+    <blockquote class="text-xl lg:text-2xl text-white/95 leading-relaxed font-light mb-8">
+      &ldquo;{testimonial.text}&rdquo;
+    </blockquote>
+
+    <!-- Attribution -->
+    <div class="flex items-center justify-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
+        <Icon
+          name="material-symbols:person"
+          class="w-6 h-6 text-white"
+          aria-hidden="true"
+        />
+      </div>
+      <div class="text-left">
+        <p class="text-white font-heading font-bold text-sm">{testimonial.name}</p>
+        <p class="text-white/80 text-xs">{testimonial.location}</p>
+      </div>
+    </div>
+
+    <!-- Review count badge -->
+    <div class="mt-8 pt-6 border-t border-white/20">
+      <div class="inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-2">
+        <Icon name="material-symbols:star" class="w-4 h-4 text-warning" aria-hidden="true" />
+        <span class="text-white/90 text-sm font-medium">4.9 Stars from 200+ Reviews</span>
+      </div>
+    </div>
+  </div>
+</SectionWrapper>

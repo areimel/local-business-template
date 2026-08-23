@@ -1,0 +1,108 @@
+meta:
+  title: "Ironworks Fitness | Strength & Fitness Club"
+  description: "Join Ironworks Fitness for certified trainers, unlimited classes, and 24/7 access. Start your free 7-day trial today."
+
+hero:
+  eyebrow: "Downtown Training Floor · 20,000 sq ft"
+  heading: "Ironworks Fitness"
+  headingAccent: "Strength & Fitness Club"
+  subheading: "Certified trainers, unlimited classes, and a training floor built for every goal — from your first rep to your next PR."
+  primaryCta:
+    text: "Start Free Trial"
+    url: "/contact/"
+  secondaryCta:
+    text: "View Memberships"
+    url: "/gym-membership/"
+  trustPills:
+    - icon: "material-symbols:fitness-center"
+      label: "Certified Trainers"
+    - icon: "material-symbols:schedule-outline"
+      label: "24/7 Access"
+    - icon: "material-symbols:verified-outline"
+      label: "No Contract Options"
+
+stats:
+  - value: 2500
+    suffix: "+"
+    label: "Active Members"
+    icon: "material-symbols:groups-outline"
+    counter: true
+  - value: 60
+    suffix: "+"
+    label: "Weekly Classes"
+    icon: "material-symbols:sports-gymnastics"
+    counter: true
+  - value: 15
+    suffix: "+"
+    label: "Certified Trainers"
+    icon: "material-symbols:fitness-center"
+    counter: true
+  - value: 20000
+    suffix: " sq ft"
+    label: "Training Floor"
+    icon: "material-symbols:straighten-outline"
+    counter: true
+
+pricing:
+  badge: "Memberships"
+  heading: "Membership Plans"
+  subheading: "No long-term contracts required — cancel or upgrade anytime."
+  layout: cards
+  groups:
+    - items:
+        - name: "Basic"
+          description: "Full gym floor access during standard club hours."
+          price: "$29/mo"
+        - name: "Premium"
+          description: "Unlimited classes, 24/7 access, and two guest passes a month."
+          price: "$49/mo"
+          featured: true
+          badge: "Most Popular"
+        - name: "Elite"
+          description: "Everything in Premium plus 4 personal training sessions and nutrition coaching."
+          price: "$89/mo"
+
+gallery:
+  heading: "Tour the Facility"
+  subheading: "20,000 square feet of free weights, turf, cardio, and recovery space."
+  items:
+    - icon: "material-symbols:fitness-center"
+      caption: "Free Weight Zone"
+    - icon: "material-symbols:monitor-heart-outline"
+      caption: "Cardio Deck"
+    - icon: "material-symbols:sports-gymnastics"
+      caption: "Group Class Studio"
+    - icon: "material-symbols:exercise-outline"
+      caption: "Turf & Sled Area"
+    - icon: "material-symbols:self-improvement"
+      caption: "Recovery Lounge"
+    - icon: "material-symbols:shower-outline"
+      caption: "Locker Rooms"
+
+featuresHeading: "Everything You Need"
+features:
+  - icon: "material-symbols:fitness-center"
+    title: "Certified Personal Trainers"
+    description: "Work one-on-one with trainers certified in strength, mobility, and sport-specific programming."
+  - icon: "material-symbols:sports-gymnastics"
+    title: "Free Group Classes"
+    description: "60+ weekly classes included with every membership — HIIT, strength, cycle, and yoga."
+  - icon: "material-symbols:shower-outline"
+    title: "Locker Rooms & Showers"
+    description: "Full locker rooms with showers, towel service, and secure day-use lockers."
+  - icon: "material-symbols:schedule-outline"
+    title: "Open 24/7"
+    description: "Key-fob access means you can train on your schedule, day or night."
+
+testimonial:
+  name: "Marcus B."
+  location: "Riverside"
+  rating: 5
+  text: "Ironworks changed my routine completely. The trainers actually know your name and the 24/7 access means no excuses."
+
+cta:
+  heading: "Start Your Free 7-Day Trial"
+  body: "No contract, no pressure — come see the facility and try a class on us."
+  buttonText: "Start Free Trial"
+  buttonUrl: "/contact/"
+  variant: "primary"

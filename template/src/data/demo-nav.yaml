@@ -1,0 +1,85 @@
+# Internal demo navigation — lists preview/variant routes that are deliberately
+# excluded from the production nav. All of these routes are noindex.
+# Toggle the whole feature with `demoPages` in features.yaml.
+
+button:
+  label: "Demos"
+  ariaLabel: "Open demo page navigation"
+
+panelTitle: "Demo Pages"
+
+sections:
+  - title: "Main Site"
+    links:
+      - label: "Production Home"
+        url: "/"
+        description: "The canonical homepage"
+
+  - title: "Home Page Designs"
+    links:
+      - label: "Original"
+        url: "/home-original/"
+      - label: "Photo Forward"
+        url: "/home-alt1/"
+      - label: "Trust First"
+        url: "/home-alt2/"
+      - label: "Bold Modern"
+        url: "/home-alt3/"
+
+  - title: "Industry Home Variants"
+    links:
+      - label: "Auto Repair"
+        url: "/home-autorepair/"
+      - label: "Dental"
+        url: "/home-dental/"
+      - label: "Gym / Fitness"
+        url: "/home-gym/"
+      - label: "Law Firm"
+        url: "/home-lawfirm/"
+      - label: "Restaurant"
+        url: "/home-restaurant/"
+      - label: "Salon"
+        url: "/home-salon/"
+
+  - title: "Industry Inner Pages"
+    links:
+      - label: "Auto Repair — About"
+        url: "/autorepair-about/"
+      - label: "Dental — Booking"
+        url: "/dental-booking/"
+      - label: "Gym — Membership"
+        url: "/gym-membership/"
+      - label: "Law Firm — Team"
+        url: "/lawfirm-team/"
+      - label: "Restaurant — Menu"
+        url: "/restaurant-menu/"
+      - label: "Salon — Gallery"
+        url: "/salon-gallery/"
+
+  - title: "Landing Page Variants"
+    links:
+      - label: "Lead Gen"
+        url: "/landing/lead-gen/"
+        description: "Full conversion one-pager"
+      - label: "Promo"
+        url: "/landing/promo/"
+        description: "Single-offer ad traffic page"
+      - label: "Brochure"
+        url: "/landing/brochure/"
+        description: "Digital business card"
+      - label: "Profile"
+        url: "/landing/profile/"
+        description: "Google-Business-Profile style hub"
+      - label: "Coming Soon"
+        url: "/landing/coming-soon/"
+        description: "Pre-launch placeholder"
+
+  - title: "Internal / Dev"
+    links:
+      - label: "Styleguide"
+        url: "/styleguide/"
+      - label: "Animation Examples"
+        url: "/animation-examples/"
+      - label: "Documentation"
+        url: "/docs/"
+        description: "Internal guides for devs working on this template"

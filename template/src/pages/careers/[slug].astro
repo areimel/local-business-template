@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import CareerPostLayout from '@/layouts/CareerPostLayout.astro';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('careers', async () => {
+    const allJobs = await getCollection('careers');
+    return allJobs
+      .filter((job) => job.data.active)
+      .map((entry) => ({
+        params: { slug: entry.data.slug },
+        props: { entry },
+      }));
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<CareerPostLayout frontmatter={entry.data}>
+  <Content />
+</CareerPostLayout>

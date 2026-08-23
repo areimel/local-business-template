@@ -1,0 +1,62 @@
+---
+interface Props {
+  categories: string[];
+}
+
+const { categories } = Astro.props;
+---
+
+<div
+  class="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 md:mb-12"
+  role="group"
+  aria-label="Filter posts by category"
+>
+  <button
+    type="button"
+    class="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-primary text-white"
+    data-filter-btn
+    data-filter="all"
+    aria-pressed="true"
+  >
+    All
+  </button>
+
+  {categories.map((category) => (
+    <button
+      type="button"
+      class="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-neutral-100 text-text-muted hover:bg-neutral-200"
+      data-filter-btn
+      data-filter={category}
+      aria-pressed="false"
+    >
+      {category}
+    </button>
+  ))}
+</div>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-btn]');
+  const blogCards = document.querySelectorAll<HTMLElement>('.blog-card');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selected = btn.dataset.filter ?? 'all';
+
+      filterButtons.forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle('bg-primary', isActive);
+        b.classList.toggle('text-white', isActive);
+        b.classList.toggle('bg-neutral-100', !isActive);
+        b.classList.toggle('text-text-muted', !isActive);
+        b.classList.toggle('hover:bg-neutral-200', !isActive);
+        b.setAttribute('aria-pressed', String(isActive));
+      });
+
+      blogCards.forEach((card) => {
+        const cardCategory = card.dataset.category ?? '';
+        const visible = selected === 'all' || cardCategory === selected;
+        card.style.display = visible ? '' : 'none';
+      });
+    });
+  });
+</script>

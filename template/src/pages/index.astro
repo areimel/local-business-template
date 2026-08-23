@@ -1,0 +1,44 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import HeroSlider from '@/components/HomePageComponents/HeroSlider.astro';
+import BrandLogoBar from '@/components/SharedComponents/BrandLogoBar.astro';
+import ServicesOverview from '@/components/HomePageComponents/ServicesOverview.astro';
+import WhoWeAre from '@/components/HomePageComponents/WhoWeAre.astro';
+import HomeReviews from '@/components/HomePageComponents/HomeReviews.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import WhyChooseUsWithImage from '@/components/HomeAlt2Components/WhyChooseUsWithImage.astro';
+import HomeMaintenancePlanCta from '@/components/HomePageComponents/HomeMaintenancePlanCta.astro';
+import HomeCouponsSection from '@/components/HomePageComponents/HomeCouponsSection.astro';
+import AreasWeServe from '@/components/HomePageComponents/AreasWeServe.astro';
+import HomeFaqSection from '@/components/HomePageComponents/HomeFaqSection.astro';
+import HomeBlogSection from '@/components/HomePageComponents/HomeBlogSection.astro';
+import EmergencyCtaBanner from '@/components/SharedComponents/EmergencyCtaBanner.astro';
+import Alt2ContactSection from '@/components/HomeAlt2Components/Alt2ContactSection.astro';
+import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
+import { getBranding } from '@/utils/data';
+import { getOrganizationJsonLd, getReviewSchema } from '@/utils/seo';
+import { isFeatureEnabled } from '@/utils/features';
+
+const branding = getBranding();
+
+// LocalBusiness identity + (only when a real review provider is configured) AggregateRating.
+// getReviewSchema() returns [] for static_fallback, so the spread is a no-op until live reviews land.
+const schemaData = [getOrganizationJsonLd(), ...(isFeatureEnabled('reviews') ? getReviewSchema() : [])];
+---
+
+<PageLayout title={`${branding.serviceArea.primary} HVAC Experts Since ${branding.yearEstablished}`} description={branding.seo.defaultDescription} showBreadcrumbs={false} schemaData={schemaData}>
+  <HeroSlider />
+  <BrandLogoBar grayscale={true} />
+  <ServicesOverview />
+  <WhoWeAre />
+  <FeatureFlag name="reviews"><HomeReviews /></FeatureFlag>
+  <StatCounterBar background="dark" />
+  <WhyChooseUsWithImage />
+  <HomeMaintenancePlanCta />
+  <FeatureFlag name="coupons"><HomeCouponsSection /></FeatureFlag>
+  <FeatureFlag name="serviceAreas"><AreasWeServe /></FeatureFlag>
+  <FeatureFlag name="faqs"><HomeFaqSection /></FeatureFlag>
+  <FeatureFlag name="blog"><HomeBlogSection /></FeatureFlag>
+  <EmergencyCtaBanner />{/* self-gates on the emergencyCta flag */}
+  <Alt2ContactSection />
+</PageLayout>

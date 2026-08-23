@@ -1,0 +1,33 @@
+---
+interface Props {
+  align?: 'left' | 'center' | 'right';
+  stack?: 'never' | 'mobile' | 'always';
+}
+
+const {
+  align = 'left',
+  stack = 'mobile',
+} = Astro.props;
+
+const alignClasses: Record<string, string> = {
+  left: 'justify-start',
+  center: 'justify-center',
+  right: 'justify-end',
+};
+
+const stackClasses: Record<string, string> = {
+  never: 'flex-row flex-wrap',
+  mobile: 'flex-col sm:flex-row',
+  always: 'flex-col',
+};
+
+const classes = [
+  'flex gap-4',
+  alignClasses[align],
+  stackClasses[stack],
+].join(' ');
+---
+
+<div class={classes}>
+  <slot />
+</div>

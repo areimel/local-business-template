@@ -1,0 +1,40 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '../../utils/data';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+  showIcon?: boolean;
+  variant?: 'primary' | 'secondary';
+}
+
+const {
+  size = 'md',
+  fullWidth = false,
+  showIcon = true,
+  variant = 'secondary',
+} = Astro.props;
+
+const branding = getBranding();
+
+const sizeClasses: Record<string, string> = {
+  sm: 'text-sm px-4 py-2',
+  md: '',
+  lg: 'text-lg px-8 py-4',
+};
+
+const variantClass = variant === 'primary' ? 'btn-primary' : 'btn-outline';
+
+const classes = [
+  'btn',
+  variantClass,
+  sizeClasses[size],
+  fullWidth ? 'w-full' : '',
+].filter(Boolean).join(' ');
+---
+
+<a href={`tel:${branding.phoneRaw}`} class={classes} aria-label={`Call us at ${branding.phone}`}>
+  {showIcon && <Icon name="material-symbols:call" class="w-5 h-5 shrink-0" />}
+  <span>Call {branding.phone}</span>
+</a>

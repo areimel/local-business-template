@@ -1,0 +1,242 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+
+const serviceCategories = [
+  {
+    name: 'Air Conditioning',
+    description: 'Keep your home cool and comfortable with our trusted AC services — from emergency repairs to full system installations, backed by decades of family-owned reliability.',
+    icon: 'material-symbols:ac-unit',
+    url: '/air-conditioning/',
+    color: 'primary' as const,
+    features: [
+      'Repair & Diagnostics',
+      'New System Installation',
+      'Preventive Maintenance',
+      '24/7 Emergency Service',
+    ],
+  },
+  {
+    name: 'Heating',
+    description: 'Stay warm during the cooler months with dependable heating solutions from our team — expert repairs, new installations, and seasonal tune-ups delivered with the personal touch we\'re known for.',
+    icon: 'material-symbols:heat',
+    url: '/heating/',
+    color: 'accent' as const,
+    features: [
+      'Heating Repair',
+      'System Installation',
+      'Preventive Maintenance',
+      'Heat Pump Services',
+    ],
+  },
+  {
+    name: 'Plumbing',
+    description: 'From leak repairs to water heater installations, our licensed plumbers deliver reliable solutions for every pipe and fixture in your home.',
+    icon: 'material-symbols:plumbing',
+    url: '/plumbing/',
+    color: 'secondary' as const,
+    features: [
+      'Leak Detection',
+      'Water Heater Services',
+      'Drain Cleaning',
+      'Repiping & Water Lines',
+    ],
+  },
+  {
+    name: 'Electrical Services',
+    description: 'Safe, code-compliant electrical work from certified technicians — whether you need a panel upgrade, new lighting, or EV charger installation.',
+    icon: 'material-symbols:electric-bolt',
+    url: '/electrical-services/',
+    color: 'info' as const,
+    features: [
+      'Installation & Repairs',
+      'Panel Upgrades',
+      'Lighting & Fans',
+      'EV Charger Installation',
+    ],
+  },
+  {
+    name: 'Gas Services',
+    description: 'Protect your family with professional gas line services — from leak detection and safety inspections to new appliance hookups and repairs.',
+    icon: 'material-symbols:gas-meter',
+    url: '/gas/',
+    color: 'warning' as const,
+    features: [
+      'Gas Leak Detection',
+      'Safety Inspections',
+      'Installations & Repairs',
+      'Natural Gas & Propane',
+    ],
+  },
+];
+
+const colorMap = {
+  primary: {
+    gradient: 'from-primary to-primary-dark',
+    iconBg: 'bg-white/20',
+    featureIcon: 'text-white/90',
+    accentLine: 'bg-primary',
+    tag: 'bg-primary/10 text-primary',
+    linkText: 'text-primary',
+  },
+  accent: {
+    gradient: 'from-accent to-accent-dark',
+    iconBg: 'bg-white/20',
+    featureIcon: 'text-white/90',
+    accentLine: 'bg-accent',
+    tag: 'bg-accent/10 text-accent',
+    linkText: 'text-accent-dark',
+  },
+  secondary: {
+    gradient: 'from-secondary to-secondary-dark',
+    iconBg: 'bg-white/20',
+    featureIcon: 'text-white/90',
+    accentLine: 'bg-secondary',
+    tag: 'bg-secondary/10 text-secondary',
+    linkText: 'text-secondary',
+  },
+  info: {
+    gradient: 'from-info to-blue-700',
+    iconBg: 'bg-white/20',
+    featureIcon: 'text-white/90',
+    accentLine: 'bg-info',
+    tag: 'bg-info/10 text-info',
+    linkText: 'text-info',
+  },
+  warning: {
+    gradient: 'from-warning to-amber-600',
+    iconBg: 'bg-white/20',
+    featureIcon: 'text-white/90',
+    accentLine: 'bg-warning',
+    tag: 'bg-warning/10 text-warning',
+    linkText: 'text-warning',
+  },
+};
+---
+
+<!-- The old GSAP stagger left these cards invisible when scrolled past
+     mid-animation; the anime.js engine plays interrupted reveals to
+     completion (sync: 'play' in scroll.ts), so the grid stagger is safe. -->
+<SectionWrapper id="services" background="alt">
+  <!-- Section Header -->
+  <div class="text-center mb-14">
+    <Badge text="Our Services" variant="primary" size="md" />
+    <h2 class="heading-display text-text mt-4 mb-4">What We Do</h2>
+    <div class="flex items-center justify-center gap-2 mb-4" aria-hidden="true">
+      <div class="w-8 h-px bg-primary/40"></div>
+      <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+      <div class="w-8 h-px bg-primary/40"></div>
+    </div>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      We deliver comfort, air quality, reliability, and efficiency to every family we serve.
+      From routine maintenance to emergency repairs, count on the team that's kept
+      local homes comfortable since 1990.
+    </p>
+  </div>
+
+  <!-- Service Panels -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+    data-animate-children="fade-up"
+    data-stagger="100"
+  >
+    {serviceCategories.map((service) => {
+      const colors = colorMap[service.color];
+      return (
+        <a
+          href={service.url}
+          class="service-panel group relative flex flex-col rounded-[--radius-card] overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+        >
+          {/* Gradient Header — fixed height so both panels match */}
+          <div class:list={['service-panel__header relative px-6 pt-7 pb-8 lg:px-8 lg:pt-8 lg:pb-10 min-h-[220px] lg:min-h-[220px] flex flex-col justify-end bg-gradient-to-br', colors.gradient]}>
+            {/* Subtle pattern overlay */}
+            <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 24px 24px;" aria-hidden="true"></div>
+
+            <div class="relative">
+              {/* Icon */}
+              <div class:list={['w-14 h-14 rounded-xl flex items-center justify-center mb-5', colors.iconBg]}>
+                <Icon name={service.icon} class="w-7 h-7 text-white" />
+              </div>
+
+              {/* Title */}
+              <h3 class="text-2xl font-heading font-bold text-white mb-2">{service.name}</h3>
+
+              {/* Description */}
+              <p class="text-white/90 text-sm leading-relaxed max-w-md">{service.description}</p>
+            </div>
+          </div>
+
+          {/* Card Body */}
+          <div class="flex flex-col grow bg-white px-6 py-6 lg:px-8 lg:py-7">
+            {/* Features */}
+            <ul class="grid grid-cols-1 gap-y-3 mb-6" role="list">
+              {service.features.map((feature) => (
+                <li class="flex items-center gap-2.5 text-sm text-text-muted">
+                  <Icon name="material-symbols:check-circle-outline" class="w-4 h-4 text-secondary shrink-0" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Spacer */}
+            <div class="grow"></div>
+
+            {/* Divider */}
+            <div class="h-px bg-neutral-200/80 mb-5" aria-hidden="true"></div>
+
+            {/* Arrow Link */}
+            <span class:list={['inline-flex items-center gap-1.5 font-semibold text-sm service-panel__link', colors.linkText]}>
+              Explore Services
+              <Icon name="material-symbols:arrow-forward" class="w-4 h-4 service-panel__arrow" />
+            </span>
+          </div>
+        </a>
+      );
+    })}
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="mt-14 text-center">
+    <ButtonGroup align="center">
+      <PrimaryButton
+        text="Schedule a Service"
+        href="/contact/"
+        icon="material-symbols:calendar-month-outline"
+        size="lg"
+      />
+    </ButtonGroup>
+  </div>
+</SectionWrapper>
+
+<style>
+  /* Arrow link slides right on hover */
+  .service-panel__link {
+    transition: gap 0.25s ease;
+  }
+  .service-panel:hover .service-panel__link {
+    gap: 0.625rem;
+  }
+  .service-panel__arrow {
+    transition: transform 0.25s ease;
+  }
+  .service-panel:hover .service-panel__arrow {
+    transform: translateX(3px);
+  }
+
+  /* Header glow on hover */
+  .service-panel__header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .service-panel:hover .service-panel__header::after {
+    opacity: 1;
+  }
+</style>

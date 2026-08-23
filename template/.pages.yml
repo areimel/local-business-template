@@ -1,0 +1,994 @@
+media:
+  input: src/assets/images/cms-uploads
+  output: /src/assets/images/cms-uploads
+  extensions: [jpg, jpeg, png, webp, svg, gif]
+  categories: [image]
+
+content:
+  - name: branding
+    type: file
+    path: src/data/branding.yaml
+    format: yaml
+    label: "Branding & SEO Defaults"
+    description: "Company identity, contact info, logos, SEO defaults, licenses, service area, and theme colors. Changes here propagate site-wide."
+    fields:
+      - name: seo
+        type: object
+        label: "SEO Defaults"
+        description: "Global SEO settings applied to pages that don't override them."
+        fields:
+          - { name: titleTemplate, type: string, label: "Title Template", description: "Pattern for page titles. Use %s as placeholder (e.g., '%s | Your Company Name').", required: true }
+          - { name: defaultTitle, type: string, label: "Default Page Title", description: "Fallback title for pages without a custom title.", required: true }
+          - { name: defaultDescription, type: string, label: "Default Meta Description", description: "Fallback meta description for pages without one.", required: true }
+          - { name: defaultImage, type: image, label: "Default OG Image", description: "Default social share image (1200x630px recommended)." }
+          - { name: locale, type: string, label: "Locale", description: "Language locale code (e.g., en_US).", required: true }
+      - { name: companyName, type: string, label: "Company Name", description: "Full legal company name.", required: true }
+      - { name: companyNameShort, type: string, label: "Short Name", description: "Shortened name for compact contexts.", required: true }
+      - { name: tagline, type: string, label: "Tagline", description: "Company tagline used throughout the site." }
+      - { name: headerTagline, type: string, label: "Header Tagline", description: "Tagline displayed in site header." }
+      - { name: yearEstablished, type: number, label: "Year Established", description: "Year the company was founded.", required: true }
+      - { name: phone, type: string, label: "Phone (formatted)", description: "Display-formatted phone number (e.g., (555) 123-4567).", required: true }
+      - { name: phoneRaw, type: string, label: "Phone (raw digits)", description: "Raw digits only, used in tel: links.", required: true }
+      - { name: email, type: string, label: "Email", required: true }
+      - name: address
+        type: object
+        label: "Street Address"
+        fields:
+          - { name: street, type: string, label: "Street", required: true }
+          - { name: suite, type: string, label: "Suite / Unit" }
+          - { name: city, type: string, label: "City", required: true }
+          - { name: state, type: string, label: "State (2-letter)", required: true }
+          - { name: zip, type: string, label: "ZIP Code", required: true }
+          - { name: full, type: string, label: "Full Address (display)", description: "Pre-formatted full address string used in display." }
+      - name: businessHours
+        type: object
+        label: "Business Hours"
+        description: "Drives the contact-page hours and LocalBusiness schema (OpeningHoursSpecification). One entry per distinct schedule."
+        list: true
+        fields:
+          - { name: days, type: string, label: "Days", description: "Day names this schedule applies to (e.g., Monday, Tuesday).", list: true }
+          - { name: opens, type: string, label: "Opens", description: "24-hour time, HH:MM (e.g., 08:00)." }
+          - { name: closes, type: string, label: "Closes", description: "24-hour time, HH:MM (e.g., 22:00). For 24/7 use 00:00–23:59." }
+      - { name: priceRange, type: string, label: "Price Range", description: "Schema.org price-range hint shown to search engines (e.g., $, $$, $$$)." }
+      - { name: website, type: string, label: "Website URL", required: true }
+      - { name: googleMapsUrl, type: string, label: "Google Maps URL" }
+      - { name: googleReviewUrl, type: string, label: "Google Review URL", description: "Direct link to leave a Google review. Leave blank to hide review prompts." }
+      - name: socialMedia
+        type: object
+        label: "Social Media"
+        description: "Social profile URLs. Leave blank to hide a channel."
+        fields:
+          - { name: facebook, type: string, label: "Facebook URL" }
+          - { name: instagram, type: string, label: "Instagram URL" }
+          - { name: youtube, type: string, label: "YouTube URL" }
+          - { name: nextdoor, type: string, label: "Nextdoor URL" }
+      - name: licenses
+        type: object
+        label: "License Numbers"
+        description: "State license numbers displayed in footer and legal sections."
+        fields:
+          - { name: plumbing, type: string, label: "Plumbing License" }
+          - { name: gas, type: string, label: "Gas License" }
+          - { name: gasPlumbing, type: string, label: "Gas/Plumbing License" }
+          - { name: electrical, type: string, label: "Electrical License" }
+          - { name: ac, type: string, label: "AC / HVAC License" }
+      - { name: logo, type: string, label: "Logo (main)", description: "Path relative to src/assets/ (e.g., logos/logo-full.svg)." }
+      - { name: logoIcon, type: string, label: "Logo (icon only)", description: "Icon-only logo path, relative to src/assets/." }
+      - { name: logoText, type: string, label: "Logo (text only)", description: "Text-only logo path, relative to src/assets/." }
+      - name: serviceArea
+        type: object
+        label: "Service Area"
+        description: "Geographic coverage used for SEO and service-area pages."
+        fields:
+          - { name: primary, type: string, label: "Primary Region", description: "Main service region name (e.g., Central Florida).", required: true }
+          - { name: regions, type: string, label: "Counties / Regions", description: "List of counties or regions served.", list: true }
+          - name: map
+            type: object
+            label: "Map Center"
+            description: "Default center point for service-area maps."
+            fields:
+              - { name: centerLat, type: number, label: "Center Latitude", required: true }
+              - { name: centerLon, type: number, label: "Center Longitude", required: true }
+              - { name: zoom, type: number, label: "Default Zoom Level", required: true }
+      - name: theme
+        type: object
+        label: "Theme Colors (reference)"
+        description: "Reference colors. Actual theming is in global.css — changes here are documentation only."
+        fields:
+          - { name: primary, type: string, label: "Primary" }
+          - { name: primaryDark, type: string, label: "Primary Dark" }
+          - { name: secondary, type: string, label: "Secondary" }
+          - { name: accent, type: string, label: "Accent" }
+          - { name: neutral, type: string, label: "Neutral Dark" }
+          - { name: neutralLight, type: string, label: "Neutral Light" }
+          - { name: white, type: string, label: "White" }
+      - name: credit
+        type: object
+        label: "Footer Developer Credit"
+        description: "Optional 'Website developed by...' credit link shown in site footers."
+        fields:
+          - { name: enabled, type: boolean, label: "Show Credit", default: true }
+          - { name: text, type: string, label: "Credit Text" }
+          - { name: url, type: string, label: "Credit Link URL" }
+
+  - name: blog
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    filename: "{fields.slug}.md"
+    label: "Blog Posts"
+    description: "Manage blog articles and company news."
+    view:
+      fields: [title, publishDate, category, featured, draft]
+      primary: title
+      search: [title]
+      sort: publishDate
+      order: desc
+    fields:
+      - { name: seoTitle, type: string, label: "SEO: Page Title", description: "Custom title for search engines (leave blank to use post title)." }
+      - { name: seoDescription, type: string, label: "SEO: Meta Description", description: "Concise summary for search results (150-160 chars recommended).", required: true }
+      - { name: ogImage, type: image, label: "SEO: Social Share Image", description: "Image for social media sharing (1200x630px recommended)." }
+      - { name: title, type: string, label: "Post Title", required: true }
+      - { name: slug, type: string, label: "URL Slug", description: "Unique identifier for URL (auto-generated from title if left blank).", required: true }
+      - { name: publishDate, type: date, label: "Publish Date", required: true }
+      - { name: updatedDate, type: date, label: "Updated Date", description: "When the post was last updated (optional)." }
+      - { name: author, type: string, label: "Author", description: "Author name.", default: "Team" }
+      - name: category
+        type: select
+        label: "Category"
+        options:
+          values: ["HVAC Tips", "Maintenance", "Energy Savings", "Indoor Air Quality", "Seasonal Guides", "Company News"]
+        required: true
+      - { name: tags, type: string, label: "Tags", description: "List of relevant tags for search and filtering.", list: true }
+      - { name: excerpt, type: string, label: "Excerpt", description: "Short summary shown in blog listings.", required: true }
+      - { name: featuredImage, type: image, label: "Featured Image", description: "Main image displayed with the post." }
+      - { name: featuredImageAlt, type: string, label: "Featured Image Alt Text", description: "Accessibility text for featured image." }
+      - { name: readingTime, type: number, label: "Reading Time (minutes)", description: "Estimated reading time in minutes (optional)." }
+      - { name: heroHeading, type: string, label: "Hero Heading", description: "Heading displayed in page hero section (optional)." }
+      - { name: heroSubheading, type: string, label: "Hero Subheading", description: "Subheading displayed in page hero section (optional)." }
+      - { name: ctaHeading, type: string, label: "CTA Heading", description: "Heading for call-to-action section (optional)." }
+      - { name: ctaBody, type: string, label: "CTA Body", description: "Body text for call-to-action section (optional)." }
+      - { name: ctaButtonText, type: string, label: "CTA Button Text", description: "Text for CTA button (optional)." }
+      - { name: featured, type: boolean, label: "Featured", description: "Display this post prominently.", default: false }
+      - { name: draft, type: boolean, label: "Draft", description: "Hide this post from the site (kept for reference only).", default: false }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Post Content", description: "Main post content in Markdown.", required: true }
+
+  - name: services
+    type: collection
+    path: src/content/services
+    format: yaml-frontmatter
+    label: "Services"
+    description: "HVAC and home services pages (organized by category)."
+    subfolders: true
+    view:
+      fields: [title, type, category, sortOrder]
+      primary: title
+      search: [title]
+    fields:
+      - { name: seoTitle, type: string, label: "SEO: Page Title", description: "Custom title for search engines (leave blank to use page title)." }
+      - { name: seoDescription, type: string, label: "SEO: Meta Description", description: "Summary for search results (150-160 chars recommended).", required: true }
+      - { name: ogImage, type: image, label: "SEO: Social Share Image", description: "Image for social media sharing (1200x630px recommended)." }
+      - name: type
+        type: select
+        label: "Page Type"
+        description: "Hub = category landing page. Service = individual service detail page."
+        options:
+          - { value: hub, label: "Hub (Category Page)" }
+          - { value: service, label: "Service (Detail Page)" }
+        required: true
+      - { name: title, type: string, label: "Page Title", required: true }
+      - { name: category, type: string, label: "Category", description: "Category key (e.g., 'air-conditioning', 'heating').", required: true }
+      - { name: categoryLabel, type: string, label: "Category Label", description: "Human-readable category name.", required: true }
+      - { name: heroHeading, type: string, label: "Hero Heading", required: true }
+      - { name: heroSubheading, type: string, label: "Hero Subheading", description: "Optional subtext for hero section." }
+      - { name: heroImage, type: image, label: "Hero Image", description: "Background image for hero section." }
+      - { name: intro, type: string, label: "Intro Text", description: "Introductory paragraph.", required: true }
+      - name: features
+        type: object
+        label: "Features"
+        description: "List of feature cards with icons."
+        list: true
+        fields:
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: description, type: string, label: "Description", required: true }
+          - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier (e.g., 'material-symbols:ac-unit')." }
+      - name: processSteps
+        type: object
+        label: "Process Steps"
+        description: "Numbered steps in service delivery process."
+        list: true
+        fields:
+          - { name: step, type: number, label: "Step Number", required: true }
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: description, type: string, label: "Description", required: true }
+      - name: subServices
+        type: object
+        label: "Sub-Services"
+        description: "Related service pages (hub pages only)."
+        list: true
+        fields:
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: slug, type: string, label: "Service Slug", required: true }
+          - { name: description, type: string, label: "Description", required: true }
+          - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier." }
+      - name: faqs
+        type: object
+        label: "FAQs"
+        description: "Frequently asked questions for this service."
+        list: true
+        fields:
+          - { name: question, type: string, label: "Question", required: true }
+          - { name: answer, type: string, label: "Answer", required: true }
+      - { name: ctaHeading, type: string, label: "CTA Heading", description: "Custom call-to-action heading (optional)." }
+      - { name: ctaBody, type: string, label: "CTA Body", description: "Custom call-to-action body text (optional)." }
+      - { name: ctaButtonText, type: string, label: "CTA Button Text", description: "Custom call-to-action button text (optional)." }
+      - { name: showContactForm, type: boolean, label: "Show Contact Form", description: "Display contact form on this page.", default: true }
+      - { name: showEmergencyCta, type: boolean, label: "Show Emergency CTA", description: "Display emergency service call-to-action.", default: false }
+      - { name: freeEstimate, type: boolean, label: "Free Estimate Badge", description: "Show a free-estimate badge on this service.", default: false }
+      - { name: sortOrder, type: number, label: "Sort Order", description: "Display order (0 = first).", default: 0 }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Page Content", description: "Main page content in Markdown." }
+
+  - name: locations
+    type: collection
+    path: src/content/locations
+    format: yaml-frontmatter
+    filename: "{fields.slug}.md"
+    label: "Service Locations"
+    description: "Geographic service areas and location-specific pages."
+    view:
+      fields: [title, region, sortOrder]
+      primary: title
+      search: [title]
+      sort: title
+      order: asc
+    fields:
+      - { name: seoTitle, type: string, label: "SEO: Page Title", description: "Custom title for search engines." }
+      - { name: seoDescription, type: string, label: "SEO: Meta Description", description: "Summary for search results (150-160 chars recommended).", required: true }
+      - { name: title, type: string, label: "Location Title", required: true }
+      - { name: slug, type: string, label: "URL Slug", required: true }
+      - { name: region, type: string, label: "Region/County", description: "Geographic region served.", required: true }
+      - { name: heroHeading, type: string, label: "Hero Heading", required: true }
+      - { name: heroSubheading, type: string, label: "Hero Subheading", description: "Optional subtext." }
+      - { name: intro, type: string, label: "Intro Text", description: "Introductory paragraph.", required: true }
+      - name: highlights
+        type: object
+        label: "Location Highlights"
+        description: "Key features of this location service."
+        list: true
+        fields:
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: description, type: string, label: "Description", required: true }
+          - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier." }
+      - name: featuredServices
+        type: object
+        label: "Featured Services"
+        description: "Services available in this location."
+        list: true
+        fields:
+          - { name: title, type: string, label: "Service Title", required: true }
+          - { name: slug, type: string, label: "Service Slug", required: true }
+          - { name: description, type: string, label: "Description", required: true }
+      - { name: nearbyLocations, type: string, label: "Nearby Locations", description: "Links to nearby service areas (list of slugs).", list: true }
+      - { name: mapEmbedQuery, type: string, label: "Map Embed Query", description: "Address or place name for embedded map." }
+      - name: faqs
+        type: object
+        label: "FAQs"
+        description: "Location-specific frequently asked questions."
+        list: true
+        fields:
+          - { name: question, type: string, label: "Question", required: true }
+          - { name: answer, type: string, label: "Answer", required: true }
+      - { name: ctaHeading, type: string, label: "CTA Heading", description: "Custom call-to-action heading (optional)." }
+      - { name: ctaBody, type: string, label: "CTA Body", description: "Custom call-to-action body text (optional)." }
+      - { name: ctaButtonText, type: string, label: "CTA Button Text", description: "Custom call-to-action button text (optional)." }
+      - { name: showContactForm, type: boolean, label: "Show Contact Form", description: "Display contact form on this page.", default: true }
+      - { name: showEmergencyCta, type: boolean, label: "Show Emergency CTA", description: "Display emergency service call-to-action.", default: false }
+      - { name: sortOrder, type: number, label: "Sort Order", description: "Display order (0 = first).", default: 0 }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Location Content", description: "Main location page content in Markdown." }
+
+  - name: campaigns
+    type: collection
+    path: src/content/campaigns
+    format: yaml-frontmatter
+    filename: "{fields.slug}.md"
+    label: "Campaign Landing Pages"
+    description: "Conversion-optimized promotional landing pages and offers."
+    view:
+      fields: [title, status, campaign, noindex]
+      primary: title
+    fields:
+      - { name: title, type: string, label: "Campaign Title", required: true }
+      - { name: slug, type: string, label: "URL Slug", required: true }
+      - { name: description, type: string, label: "Description", description: "Internal campaign description.", required: true }
+      - { name: service, type: string, label: "Primary Service", description: "Associated service name (optional)." }
+      - { name: campaign, type: string, label: "Campaign Name", description: "Campaign identifier (optional)." }
+      - name: status
+        type: select
+        label: "Campaign Status"
+        description: "Active campaigns generate pages. Paused/Expired are hidden."
+        options:
+          values: [active, paused, expired]
+        default: active
+        required: true
+      - { name: noindex, type: boolean, label: "Hide from Search Engines", description: "Check this to add noindex meta tag (promotional pages should default to true).", default: true }
+      - name: formType
+        type: select
+        label: "Form Type"
+        description: "Quote form for service inquiries. Contest form for giveaway entries."
+        options:
+          values: [quote, contest]
+        default: quote
+        required: true
+      - { name: showReviews, type: boolean, label: "Show Reviews/Testimonials", description: "Display customer reviews section.", default: true }
+      - { name: showEmergencyCta, type: boolean, label: "Show Emergency CTA", description: "Display emergency service call-to-action.", default: true }
+      - { name: showStatCounter, type: boolean, label: "Show Stats Counter", description: "Display statistics/numbers counter section.", default: true }
+      - { name: heroCompact, type: boolean, label: "Compact Hero Layout", description: "Use the compact hero variant.", default: false }
+      - name: hero
+        type: object
+        label: "Hero Section"
+        description: "Main page hero section."
+        required: true
+        fields:
+          - { name: eyebrow, type: string, label: "Eyebrow Text", description: "Small text above headline (optional)." }
+          - { name: headline, type: string, label: "Headline", required: true }
+          - { name: headlineAccent, type: string, label: "Headline Accent", description: "Accent color/highlight text in headline (optional)." }
+          - { name: description, type: string, label: "Description", required: true }
+          - { name: backgroundImage, type: image, label: "Background Image", description: "Hero background image." }
+          - { name: trustSignals, type: string, label: "Trust Signals", description: "List of trust indicators (e.g., '30+ Years Experience', '24/7 Support').", list: true }
+      - name: offer
+        type: object
+        label: "Offer/Promotion"
+        description: "Special offer details."
+        required: true
+        fields:
+          - { name: badge, type: string, label: "Badge Text", description: "Promo badge text (e.g., 'Limited Time').", required: true }
+          - { name: headline, type: string, label: "Offer Headline", required: true }
+          - { name: deadline, type: string, label: "Deadline", description: "Offer deadline date (optional)." }
+          - { name: deadlineText, type: string, label: "Deadline Text", description: "Text describing deadline (optional)." }
+          - { name: ctaText, type: string, label: "CTA Button Text", required: true }
+          - { name: disclaimer, type: string, label: "Disclaimer", description: "Legal disclaimer text (optional)." }
+          - { name: couponId, type: string, label: "Coupon ID", description: "Optional id of a coupon from coupons.yaml to link this offer to." }
+      - name: benefits
+        type: object
+        label: "Benefits Section"
+        description: "Key benefits of the offer (optional)."
+        fields:
+          - { name: eyebrow, type: string, label: "Eyebrow Text" }
+          - { name: headline, type: string, label: "Section Headline", required: true }
+          - name: items
+            type: object
+            label: "Benefit Items"
+            list: true
+            required: true
+            fields:
+              - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier." }
+              - { name: title, type: string, label: "Title", required: true }
+              - { name: description, type: string, label: "Description", required: true }
+      - name: process
+        type: object
+        label: "Process/Steps Section"
+        description: "How the offer works (optional)."
+        fields:
+          - { name: eyebrow, type: string, label: "Eyebrow Text" }
+          - { name: headline, type: string, label: "Section Headline", required: true }
+          - { name: image, type: image, label: "Section Image", description: "Illustration or photo." }
+          - name: steps
+            type: object
+            label: "Steps"
+            list: true
+            required: true
+            fields:
+              - { name: title, type: string, label: "Step Title", required: true }
+              - { name: description, type: string, label: "Step Description", required: true }
+              - { name: isFinal, type: boolean, label: "Final Step", description: "Mark this as the final/closing step.", default: false }
+      - name: faq
+        type: object
+        label: "FAQ Section"
+        description: "Frequently asked questions (optional)."
+        fields:
+          - { name: eyebrow, type: string, label: "Eyebrow Text" }
+          - { name: headline, type: string, label: "Section Headline", required: true }
+          - { name: defaultOpen, type: number, label: "Default Open Item", description: "Which FAQ item opens by default (0-indexed).", default: 0 }
+          - name: items
+            type: object
+            label: "FAQ Items"
+            list: true
+            required: true
+            fields:
+              - { name: question, type: string, label: "Question", required: true }
+              - { name: answer, type: string, label: "Answer", required: true }
+      - name: finalCta
+        type: object
+        label: "Final CTA Section"
+        description: "Closing call-to-action section (optional)."
+        fields:
+          - { name: urgencyBadge, type: string, label: "Urgency Badge", description: "Badge text (e.g., 'Offer Ends Soon')." }
+          - { name: headline, type: string, label: "Headline", required: true }
+          - { name: headlineAccent, type: string, label: "Headline Accent", description: "Accent text in headline (optional)." }
+          - { name: description, type: string, label: "Description", required: true }
+          - { name: formHeading, type: string, label: "Form Heading", required: true }
+          - { name: formSubheading, type: string, label: "Form Subheading", description: "Optional subtext above form fields." }
+          - name: formHeaderVariant
+            type: select
+            label: "Form Header Style"
+            options:
+              values: [primary, dark, gradient]
+            default: gradient
+          - { name: ctaText, type: string, label: "CTA Button Text", required: true }
+          - { name: disclaimer, type: string, label: "Disclaimer", description: "Legal text (optional)." }
+          - name: trustCards
+            type: object
+            label: "Trust Cards"
+            description: "Trust indicators below form (optional)."
+            list: true
+            fields:
+              - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier." }
+              - { name: title, type: string, label: "Title", required: true }
+              - { name: subtitle, type: string, label: "Subtitle", description: "Additional text (optional)." }
+      - name: stickyBar
+        type: object
+        label: "Sticky Mobile CTA Bar"
+        description: "Fixed bottom bar on mobile devices (optional)."
+        fields:
+          - { name: text, type: string, label: "Main Text", required: true }
+          - { name: subtext, type: string, label: "Subtext", description: "Additional text below main (optional)." }
+          - { name: ctaText, type: string, label: "CTA Button Text", required: true }
+          - { name: scrollTarget, type: string, label: "Scroll Target", description: "Element ID to scroll to when CTA clicked (default: mid-cta).", default: "mid-cta" }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Additional Content", description: "Extra Markdown content (optional)." }
+
+  - name: pages
+    type: collection
+    path: src/content/pages
+    format: yaml-frontmatter
+    label: "Custom Pages"
+    description: "Static pages with flexible section-based layouts."
+    view:
+      fields: [title]
+      primary: title
+      search: [title]
+    fields:
+      - { name: seoTitle, type: string, label: "SEO: Page Title", description: "Custom title for search engines." }
+      - { name: seoDescription, type: string, label: "SEO: Meta Description", description: "Summary for search results (150-160 chars recommended).", required: true }
+      - { name: ogImage, type: image, label: "SEO: Social Share Image", description: "Image for social media sharing (1200x630px recommended)." }
+      - { name: title, type: string, label: "Page Title", required: true }
+      - { name: noindex, type: boolean, label: "Hide from Search Engines", description: "Check this to add noindex meta tag.", default: false }
+      - { name: heroHeading, type: string, label: "Hero Heading", description: "Main heading in hero section (optional)." }
+      - { name: heroSubheading, type: string, label: "Hero Subheading", description: "Subtext in hero section (optional)." }
+      - { name: heroImage, type: image, label: "Hero Image", description: "Background image for hero section (optional)." }
+      - name: sections
+        type: object
+        label: "Page Sections"
+        description: "Flexible content sections."
+        list: true
+        fields:
+          - { name: heading, type: string, label: "Section Heading", description: "Optional section title." }
+          - { name: body, type: string, label: "Section Body", description: "Text content (supports Markdown)." }
+          - name: items
+            type: object
+            label: "Section Items"
+            description: "List of feature/content items (optional)."
+            list: true
+            fields:
+              - { name: title, type: string, label: "Title", required: true }
+              - { name: description, type: string, label: "Description", required: true }
+              - { name: icon, type: string, label: "Icon Name", description: "Iconify icon identifier." }
+      - { name: lastUpdated, type: string, label: "Last Updated", description: "Date of last update (optional)." }
+      - { name: contactBlock, type: boolean, label: "Show Contact Block", description: "When true, renders an email/phone/address block (from branding.yaml) below the page content.", default: false }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Main Content", description: "Primary page content in Markdown." }
+
+  - name: careers
+    type: collection
+    path: src/content/careers
+    format: yaml-frontmatter
+    filename: "{fields.slug}.md"
+    label: "Job Postings"
+    description: "Current job openings and career opportunities."
+    view:
+      fields: [title, department, jobType, active, featured]
+      primary: title
+      search: [title]
+    fields:
+      - { name: seoTitle, type: string, label: "SEO: Page Title", description: "Custom title for search engines." }
+      - { name: seoDescription, type: string, label: "SEO: Meta Description", description: "Summary for search results (150-160 chars recommended).", required: true }
+      - { name: title, type: string, label: "Job Title", required: true }
+      - { name: slug, type: string, label: "URL Slug", required: true }
+      - { name: department, type: string, label: "Department", description: "Job department (e.g., 'Operations', 'Field Service').", required: true }
+      - name: jobType
+        type: select
+        label: "Job Type"
+        options:
+          values: ["Full-Time", "Part-Time", "Contract", "Seasonal"]
+        required: true
+      - { name: location, type: string, label: "Work Location", description: "City, region, or 'Remote'.", required: true }
+      - { name: salary, type: string, label: "Salary Range", description: "Salary or pay range (optional)." }
+      - { name: publishDate, type: date, label: "Publish Date", required: true }
+      - { name: closingDate, type: date, label: "Closing Date", description: "Application deadline (optional)." }
+      - { name: excerpt, type: string, label: "Job Excerpt", description: "Short summary shown in listings.", required: true }
+      - { name: heroHeading, type: string, label: "Hero Heading", description: "Job title in hero section (optional)." }
+      - { name: heroSubheading, type: string, label: "Hero Subheading", description: "Subtext in hero section (optional)." }
+      - { name: ctaHeading, type: string, label: "CTA Heading", description: "Call-to-action heading (optional)." }
+      - { name: ctaBody, type: string, label: "CTA Body", description: "Call-to-action body text (optional)." }
+      - { name: ctaButtonText, type: string, label: "CTA Button Text", description: "Application button text (optional)." }
+      - { name: applyUrl, type: string, label: "Application URL", description: "External URL for job application (optional)." }
+      - { name: featured, type: boolean, label: "Featured", description: "Display this job prominently.", default: false }
+      - { name: active, type: boolean, label: "Active", description: "Job is open and accepting applications.", default: true }
+      - { name: sortOrder, type: number, label: "Sort Order", description: "Display order (0 = first).", default: 0 }
+      - name: schemaData
+        type: text
+        label: "Schema Data (JSON-LD)"
+        description: "Paste JSON-LD structured data script for this page. Include full <script type=\"application/ld+json\">...</script> tags. Leave empty if not needed."
+        required: false
+      - { name: body, type: rich-text, label: "Job Description", description: "Full job description in Markdown.", required: true }
+
+  - name: schema-config
+    type: file
+    path: src/data/schema-config.yaml
+    format: yaml
+    label: "Schema / Structured Data"
+    description: "Global JSON-LD schema scripts for the entire website (Organization, LocalBusiness, WebSite, etc.)"
+    fields:
+      - name: schemaData
+        type: text
+        label: "Global Schema Data (JSON-LD)"
+        description: "Paste site-wide JSON-LD structured data scripts here. Include full <script> tags. This schema applies to every page on the site."
+        required: false
+      - name: notes
+        type: text
+        label: "SEO Notes"
+        description: "Internal notes about the schema implementation (not rendered on site)."
+        required: false
+
+  - name: navigation
+    type: file
+    path: src/data/navigation.yaml
+    format: yaml
+    label: "Site Navigation"
+    description: "Main header navigation (including mega-menus) and top utility bar. Changes affect every page on the site."
+    fields:
+      - name: mainNav
+        type: object
+        list: true
+        label: "Main Navigation Items"
+        description: "Top-level nav items shown in the site header."
+        fields:
+          - { name: label, type: string, label: "Label", required: true }
+          - { name: url, type: string, label: "URL", required: true }
+          - { name: megaMenu, type: boolean, label: "Use Mega Menu", description: "If true, hovering shows a multi-column dropdown.", default: false }
+          - name: featured
+            type: object
+            label: "Featured Promo (mega-menu only)"
+            description: "Optional featured block shown in the mega-menu."
+            fields:
+              - { name: label, type: string, label: "Title" }
+              - { name: url, type: string, label: "URL" }
+              - { name: description, type: string, label: "Description" }
+              - { name: badge, type: string, label: "Badge Text" }
+              - { name: buttonText, type: string, label: "Button Text" }
+              - { name: image, type: string, label: "Image Key", description: "Image identifier (maps to a file in src/assets/images/hero/)." }
+          - name: columns
+            type: object
+            list: true
+            label: "Mega-Menu Columns"
+            fields:
+              - { name: heading, type: string, label: "Column Heading" }
+              - { name: viewAllUrl, type: string, label: "View All URL" }
+              - name: children
+                type: object
+                list: true
+                label: "Column Links"
+                fields:
+                  - { name: label, type: string, label: "Label", required: true }
+                  - { name: url, type: string, label: "URL", required: true }
+                  - { name: description, type: string, label: "Description" }
+                  - { name: icon, type: string, label: "Icon (optional)" }
+          - name: children
+            type: object
+            list: true
+            label: "Simple Dropdown Links (non-mega-menu)"
+            fields:
+              - { name: label, type: string, label: "Label", required: true }
+              - { name: url, type: string, label: "URL", required: true }
+      - name: utilityNav
+        type: object
+        list: true
+        label: "Utility Bar (top of page)"
+        description: "Phone number and email shown above the main header."
+        fields:
+          - { name: label, type: string, label: "Display Text", required: true }
+          - { name: url, type: string, label: "URL (tel: or mailto: supported)", required: true }
+          - { name: icon, type: string, label: "Icon Name" }
+
+  - name: ctas
+    type: file
+    path: src/data/ctas.yaml
+    format: yaml
+    label: "Call-to-Action Blocks"
+    description: "Global CTAs used on the home page, service pages, and in the footer. These appear in many places — edits have wide impact."
+    fields:
+      - name: hero
+        type: object
+        label: "Home Hero"
+        fields:
+          - { name: heading, type: string, label: "Heading" }
+          - { name: subheading, type: string, label: "Subheading" }
+          - name: primaryButton
+            type: object
+            label: "Primary Button"
+            fields:
+              - { name: text, type: string, label: "Button Text", required: true }
+              - { name: url, type: string, label: "Button URL", required: true }
+          - name: secondaryButton
+            type: object
+            label: "Secondary Button"
+            fields:
+              - { name: text, type: string, label: "Button Text", required: true }
+              - { name: url, type: string, label: "Button URL", required: true }
+      - name: servicesCta
+        type: object
+        label: "Services Section CTA"
+        fields:
+          - { name: heading, type: string, label: "Heading" }
+          - { name: body, type: string, label: "Body Text" }
+          - { name: buttonText, type: string, label: "Button Text" }
+          - { name: buttonUrl, type: string, label: "Button URL" }
+      - name: maintenancePlanCta
+        type: object
+        label: "Maintenance Plan CTA"
+        fields:
+          - { name: eyebrow, type: string, label: "Eyebrow Text" }
+          - { name: heading, type: string, label: "Heading" }
+          - { name: body, type: string, label: "Body Text" }
+          - { name: buttonText, type: string, label: "Button Text" }
+          - { name: buttonUrl, type: string, label: "Button URL" }
+          - { name: disclaimer, type: string, label: "Disclaimer" }
+      - name: emergencyCta
+        type: object
+        label: "Emergency CTA"
+        description: "Shown on pages with showEmergencyCta enabled."
+        fields:
+          - { name: heading, type: string, label: "Heading" }
+          - { name: body, type: string, label: "Body Text" }
+          - { name: buttonText, type: string, label: "Button Text" }
+          - { name: phone, type: string, label: "Phone (formatted)" }
+          - { name: phoneRaw, type: string, label: "Phone (raw digits)" }
+      - name: footerCta
+        type: object
+        label: "Footer CTA"
+        fields:
+          - { name: heading, type: string, label: "Heading" }
+          - { name: body, type: string, label: "Body Text" }
+          - { name: buttonText, type: string, label: "Button Text" }
+          - { name: buttonUrl, type: string, label: "Button URL" }
+
+  - name: faqs
+    type: file
+    path: src/data/faqs.yaml
+    format: yaml
+    label: "FAQs"
+    description: "Frequently asked questions grouped by category. Appears on /faqs and on page-specific FAQ sections that reference these categories."
+    fields:
+      - name: categories
+        type: object
+        list: true
+        label: "Categories"
+        fields:
+          - { name: name, type: string, label: "Category Name", required: true }
+          - { name: slug, type: string, label: "Category Slug", description: "URL-safe identifier used in anchors.", required: true }
+          - name: questions
+            type: object
+            list: true
+            label: "Questions"
+            fields:
+              - { name: question, type: string, label: "Question", required: true }
+              - { name: answer, type: text, label: "Answer", description: "Markdown supported for links and emphasis.", required: true }
+
+  - name: coupons
+    type: file
+    path: src/data/coupons.yaml
+    format: yaml
+    label: "Coupons & Promotions"
+    description: "Promotional offers shown on the coupons page and in the homepage offers section. High-churn — set active=false to hide without deleting."
+    fields:
+      - name: coupons
+        type: object
+        list: true
+        label: "Coupons"
+        fields:
+          - { name: id, type: string, label: "Coupon ID", description: "Unique identifier (kebab-case).", required: true }
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: description, type: text, label: "Description" }
+          - name: discountType
+            type: select
+            label: "Discount Type"
+            description: "Determines how the discount is displayed."
+            options:
+              values: [fixed, percentage, free]
+            default: fixed
+            required: true
+          - { name: discountValue, type: number, label: "Discount Value", description: "Dollar amount or percent (0 for 'free').", default: 0 }
+          - { name: code, type: string, label: "Promo Code", description: "Code customers mention. Leave blank if none." }
+          - { name: validUntil, type: string, label: "Valid Until", description: "Expiration date (YYYY-MM-DD). Leave blank for no expiry." }
+          - { name: terms, type: text, label: "Terms & Conditions" }
+          - { name: category, type: string, label: "Category", description: "e.g., air-conditioning, general." }
+          - { name: featured, type: boolean, label: "Featured", description: "Show on homepage offer section.", default: false }
+          - { name: active, type: boolean, label: "Active", description: "Display on the site. Set to false to hide without deleting.", default: true }
+
+  - name: service-areas
+    type: file
+    path: src/data/service-areas.yaml
+    format: yaml
+    label: "Service Area Config"
+    description: "Content for the homepage 'Areas We Serve' section and the main /service-areas page. Individual city pages are managed in the Service Area Pages collection."
+    fields:
+      - { name: badge, type: string, label: "Section Badge (home)" }
+      - { name: heading, type: string, label: "Section Heading (home)" }
+      - { name: subheading, type: text, label: "Section Subheading (home)" }
+      - { name: cities, type: string, list: true, label: "Flat City List", description: "Used by the homepage component. Keep in sync with regions below." }
+      - { name: ctaText, type: string, label: "Section CTA Button Text" }
+      - { name: ctaUrl, type: string, label: "Section CTA URL" }
+      - { name: pageHeading, type: string, label: "Service Areas Page Heading" }
+      - { name: pageSubheading, type: text, label: "Service Areas Page Subheading" }
+      - { name: pageIntro, type: text, label: "Service Areas Page Intro Paragraph" }
+      - { name: coverageRadius, type: number, label: "Coverage Radius" }
+      - { name: coverageUnit, type: string, label: "Coverage Unit", description: "e.g., miles, km" }
+      - name: headquarters
+        type: object
+        label: "Headquarters (map center)"
+        description: "Coordinates used to center the service-area map."
+        fields:
+          - { name: lat, type: number, label: "Latitude" }
+          - { name: lng, type: number, label: "Longitude" }
+          - { name: label, type: string, label: "Map Marker Label" }
+      - name: regions
+        type: object
+        list: true
+        label: "Regions (grouped by county)"
+        fields:
+          - { name: name, type: string, label: "County Name", required: true }
+          - { name: description, type: text, label: "County Description" }
+          - { name: cities, type: string, list: true, label: "Cities in this County" }
+      - name: localBenefits
+        type: object
+        list: true
+        label: "Why Choose Local Benefits"
+        fields:
+          - { name: icon, type: string, label: "Icon Name" }
+          - { name: title, type: string, label: "Title", required: true }
+          - { name: description, type: text, label: "Description" }
+
+  - name: modals
+    type: file
+    path: src/data/modals.yaml
+    format: yaml
+    label: "Modal Copy (Exit-Intent & Thank You)"
+    description: "Exit-intent modal (shown when a visitor goes to leave) and thank-you modal (shown after form submission)."
+    fields:
+      - name: exitIntent
+        type: object
+        label: "Exit-Intent Modal"
+        fields:
+          - { name: enabled, type: boolean, label: "Enabled", default: true }
+          - { name: heading, type: string, label: "Heading" }
+          - { name: subheading, type: text, label: "Subheading" }
+          - name: secondaryButton
+            type: object
+            label: "Secondary Button"
+            fields:
+              - { name: text, type: string, label: "Button Text" }
+          - { name: activationDelay, type: number, label: "Activation Delay (ms)", description: "Delay before the modal can trigger (in milliseconds)." }
+          - { name: excludePaths, type: string, list: true, label: "Excluded Paths", description: "URLs where the modal should never appear." }
+      - name: thankYou
+        type: object
+        label: "Thank You Modal"
+        description: "Shown after successful form submission."
+        fields:
+          - { name: heading, type: string, label: "Heading" }
+          - { name: subheading, type: text, label: "Subheading" }
+          - { name: body, type: text, label: "Body Copy" }
+          - { name: icon, type: string, label: "Icon Name" }
+          - name: primaryButton
+            type: object
+            label: "Primary Button"
+            fields:
+              - { name: text, type: string, label: "Button Text" }
+              - { name: url, type: string, label: "Button URL" }
+          - name: secondaryButton
+            type: object
+            label: "Secondary Button"
+            fields:
+              - { name: text, type: string, label: "Button Text" }
+
+  - name: floating-contact
+    type: file
+    path: src/data/floating-contact.yaml
+    format: yaml
+    label: "Floating Contact Widget"
+    description: "The floating contact button and speech-bubble messages shown on most pages."
+    fields:
+      - { name: enabled, type: boolean, label: "Widget Enabled", default: true }
+      - name: button
+        type: object
+        label: "Button Config"
+        fields:
+          - { name: ariaLabel, type: string, label: "ARIA Label", description: "Accessible label read by screen readers." }
+          - { name: icon, type: string, label: "Icon (closed state)" }
+          - { name: closeIcon, type: string, label: "Icon (open state)" }
+      - name: speechBubble
+        type: object
+        label: "Speech Bubble Messages"
+        fields:
+          - { name: enabled, type: boolean, label: "Speech Bubble Enabled", default: true }
+          - { name: intervalMs, type: number, label: "Interval (ms)", description: "Time between messages rotating." }
+          - { name: displayMs, type: number, label: "Display Duration (ms)" }
+          - { name: initialDelayMs, type: number, label: "Initial Delay (ms)", description: "Wait before first message appears." }
+          - { name: messages, type: string, list: true, label: "Rotating Messages" }
+      - name: form
+        type: object
+        label: "Popup Form Copy"
+        fields:
+          - { name: heading, type: string, label: "Form Heading" }
+          - { name: subtitle, type: string, label: "Form Subtitle" }
+          - { name: submitText, type: string, label: "Submit Button Text" }
+      - { name: hideOnPaths, type: string, list: true, label: "Hide On Paths", description: "URLs where the widget should not appear (e.g., /thank-you/)." }
+
+  - name: blog-config
+    type: file
+    path: src/data/blog-config.yaml
+    format: yaml
+    label: "Blog Index Config"
+    description: "Settings for the blog index page (/blog). Individual posts are managed in the Blog Posts collection."
+    fields:
+      - { name: indexHeading, type: string, label: "Index Heading" }
+      - { name: indexSubheading, type: string, label: "Index Subheading" }
+      - { name: indexBadge, type: string, label: "Index Badge" }
+      - { name: postsPerPage, type: number, label: "Posts Per Page", default: 12 }
+      - { name: defaultAuthor, type: string, label: "Default Author" }
+      - { name: categories, type: string, list: true, label: "Categories", description: "Display order for the filter bar. Keep in sync with the Blog Posts category dropdown." }
+
+  - name: careers-config
+    type: file
+    path: src/data/careers-config.yaml
+    format: yaml
+    label: "Careers Index Config"
+    description: "Settings for the careers index page (/careers). Individual job postings are managed in the Careers collection."
+    fields:
+      - { name: indexHeading, type: string, label: "Index Heading" }
+      - { name: indexSubheading, type: string, label: "Index Subheading" }
+      - { name: indexBadge, type: string, label: "Index Badge" }
+      - { name: departments, type: string, list: true, label: "Departments", description: "Display order for the department filter." }
+
+  - name: form-config
+    type: file
+    path: src/data/form-config.yaml
+    format: yaml
+    label: "Form & Email Routing"
+    description: "Controls where contact-form submissions are sent and the consent disclaimer. Switch activeProfile to 'test' before going live to route emails to the test inbox."
+    fields:
+      - name: activeProfile
+        type: select
+        label: "Active Profile"
+        description: "Which profile is currently in use."
+        options:
+          values: [test, production]
+        required: true
+      - { name: consentDisclaimer, type: text, label: "Consent Disclaimer (legal)", description: "Shown under the form's submit button. Supports inline HTML for links.", required: true }
+      - name: profiles
+        type: object
+        label: "Email Profiles"
+        description: "Test and production email routing config."
+        fields:
+          - name: test
+            type: object
+            label: "Test Profile"
+            fields:
+              - { name: toEmail, type: string, list: true, label: "To Addresses" }
+              - { name: fromEmail, type: string, label: "From Address" }
+              - { name: fromName, type: string, label: "From Name" }
+          - name: production
+            type: object
+            label: "Production Profile"
+            fields:
+              - { name: toEmail, type: string, list: true, label: "To Addresses" }
+              - { name: fromEmail, type: string, label: "From Address" }
+              - { name: fromName, type: string, label: "From Name" }
+
+  - name: analytics-config
+    type: file
+    path: src/data/analytics-config.yaml
+    format: yaml
+    label: "Analytics Config (GTM)"
+    description: "Google Tag Manager configuration. Rarely changes — typically dev-managed."
+    fields:
+      - name: gtm
+        type: object
+        label: "Google Tag Manager"
+        fields:
+          - { name: id, type: string, label: "GTM Container ID", description: "e.g., GTM-XXXXXXX" }
+          - { name: enabled, type: boolean, label: "Enabled", default: true }
+
+  - name: reviews-config
+    type: file
+    path: src/data/reviews_config.yaml
+    format: yaml
+    label: "Reviews Display Config"
+    description: "Controls how Google / Facebook reviews appear on the site. Review content itself is fetched live or from the auto-generated fallback (not editable here)."
+    fields:
+      - name: mode
+        type: select
+        label: "Mode"
+        description: "How to source review data."
+        options:
+          values: [auto, google_places, outscraper, static_fallback]
+        default: auto
+      - { name: providerOrder, type: string, list: true, label: "Provider Order", description: "Fallback chain: tries each source in order." }
+      - { name: reviewUrl, type: string, label: "Review URL (primary)" }
+      - { name: scrapeUrl, type: string, label: "Scrape Source URL" }
+      - { name: placeId, type: string, label: "Google Place ID" }
+      - name: display
+        type: object
+        label: "Display Settings"
+        fields:
+          - { name: maxReviews, type: number, label: "Max Reviews to Show", default: 5 }
+      - { name: cacheTtlMinutes, type: number, label: "Cache TTL (minutes)", default: 60 }
+      - name: googlePlaces
+        type: object
+        label: "Google Places Provider"
+        fields:
+          - { name: enabled, type: boolean, label: "Enabled", default: false }
+      - name: outscraper
+        type: object
+        label: "Outscraper Provider"
+        fields:
+          - { name: enabled, type: boolean, label: "Enabled", default: false }
+      - name: staticFallback
+        type: object
+        label: "Static Fallback Provider"
+        fields:
+          - { name: enabled, type: boolean, label: "Enabled", default: true }
+      - name: google
+        type: object
+        label: "Google Badge"
+        description: "Displayed ratings used by ReviewsBadge component."
+        fields:
+          - { name: overallRating, type: number, label: "Overall Rating (0-5)" }
+          - { name: totalReviewCount, type: number, label: "Total Review Count" }
+          - { name: reviewUrl, type: string, label: "Review URL" }
+      - name: facebook
+        type: object
+        label: "Facebook Badge"
+        fields:
+          - { name: overallRating, type: number, label: "Overall Rating (0-5)" }
+          - { name: totalReviewCount, type: number, label: "Total Review Count" }
+          - { name: reviewUrl, type: string, label: "Review URL" }
+
+settings:
+  merge: direct
+
+# Managed by Pages CMS - https://pagescms.org/docs/
+# Note: src/data/reviews_fallback.yaml is machine-generated by scripts/generate-reviews-fallback.mjs
+# and intentionally not exposed here — editor saves would be overwritten by the next scraper run.

@@ -1,0 +1,77 @@
+---
+import { getCtas } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import techOutdoor from '@/assets/images/hero/tech-outdoor.jpg';
+
+const { servicesCta } = getCtas();
+
+const trustIndicators = [
+  { icon: 'material-symbols:request-quote-outline', label: 'Free Estimates' },
+  { icon: 'material-symbols:schedule-outline', label: 'Same-Day Service' },
+  { icon: 'material-symbols:verified-user-outline', label: 'Licensed & Insured' },
+];
+---
+
+<SectionWrapper background="white" id="contact">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+    <!-- Left Column: CTA Content -->
+    <div class="relative" data-animate="fade-up">
+      <div class="absolute -top-8 -left-8 w-48 h-48 rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(255,17,0,0.06) 0%, transparent 70%);" aria-hidden="true"></div>
+      <Badge text="Get in Touch" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-6">{servicesCta.heading}</h2>
+      <p class="text-lg text-text-muted mb-8 max-w-lg leading-relaxed">
+        {servicesCta.body}
+      </p>
+
+      <!-- Phone CTA -->
+      <div class="mb-8">
+        <p class="text-sm font-medium text-text-muted mb-3">
+          Prefer to talk? Give us a call:
+        </p>
+        <PhoneButton size="lg" />
+      </div>
+
+      <!-- Trust indicators -->
+      <div class="flex flex-wrap gap-x-6 gap-y-3">
+        {trustIndicators.map((indicator) => (
+          <span class="flex items-center gap-2 text-sm text-text-muted">
+            <span class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0">
+              <Icon
+                name={indicator.icon}
+                class="w-4 h-4 text-success"
+              />
+            </span>
+            <span class="font-medium">{indicator.label}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form + Tech image -->
+    <div class="space-y-6" data-animate="fade-up">
+      <!-- Contact Form Card -->
+      <div class="relative bg-bg rounded-(--radius-card) shadow-lg p-6 sm:p-8 border border-neutral-100">
+        <div class="absolute left-0 top-6 bottom-6 w-1 rounded-full" style="background: linear-gradient(to bottom, var(--color-primary), var(--color-accent));" aria-hidden="true"></div>
+        <ContactForm heading="Request Service" showHeading={false} />
+      </div>
+
+      <!-- Tech image thumbnail -->
+      <div class="rounded-(--radius-lg) overflow-hidden shadow-md">
+        <Image
+          src={techOutdoor}
+          alt="HVAC technician working on an outdoor unit"
+          width={600}
+          height={250}
+          class="w-full h-48 object-cover"
+        />
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>

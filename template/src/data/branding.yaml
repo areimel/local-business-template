@@ -1,0 +1,87 @@
+# Company Identity
+companyName: "Your Company Name"
+companyNameShort: "Your Company"
+tagline: "Your Company Tagline Here"
+headerTagline: "Your Company Tagline Here"
+yearEstablished: 1990
+
+# Contact
+phone: "(555) 555-5555"
+phoneRaw: "5555555555"
+email: "info@example.com"
+address:
+  street: "123 Main Street"
+  suite: ""
+  city: "Anytown"
+  state: "ST"
+  zip: "12345"
+  full: "123 Main Street, Anytown, ST 12345"
+
+# Business Hours (drives the contact-page hours card + LocalBusiness schema OpeningHoursSpecification)
+# One entry per distinct schedule. Use 24h "HH:MM". For 24/7 use opens "00:00" / closes "23:59".
+businessHours:
+  - days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    opens: "08:00"
+    closes: "22:00"
+# Schema.org priceRange hint (e.g. "$", "$$", "$$$")
+priceRange: "$$"
+
+# Online Presence
+website: "https://example.com"
+googleMapsUrl: "https://maps.google.com/?q=123+Main+Street+Anytown+ST+12345"
+googleReviewUrl: ""
+socialMedia:
+  facebook: "https://facebook.com/yourcompany"
+  instagram: "https://instagram.com/yourcompany"
+  youtube: "https://youtube.com/@yourcompany"
+  nextdoor: ""
+
+# Logos (paths relative to src/assets/)
+logo: "logos/logo-full.svg"
+logoIcon: "logos/logo-icon.svg"
+logoText: "logos/logo-text.svg"
+
+# SEO Defaults
+seo:
+  titleTemplate: "%s | Your Company Name"
+  defaultTitle: "Your Company Name | Local HVAC Experts Since 1990"
+  defaultDescription: "Family-owned since 1990, Your Company Name provides expert AC repair, installation, and maintenance to Anytown and the surrounding area. Call (555) 555-5555."
+  defaultImage: "/images/og-default.jpg"
+  locale: "en_US"
+
+# Service Area
+serviceArea:
+  primary: "Your City"
+  regions:
+    - "Region One"
+    - "Region Two"
+    - "Region Three"
+  map:
+    centerLat: 39.8283
+    centerLon: -98.5795
+    zoom: 4
+
+# Licenses
+licenses:
+  ac: "LICENSE-#00000"
+  plumbing: "LICENSE-#00000"
+  gas: "LICENSE-#00000"
+  gasPlumbing: "LICENSE-#00000"
+  electrical: "LICENSE-#00000"
+
+# Theme Colors (reference only — actual theming in global.css)
+theme:
+  primary: "#ff1100"
+  primaryDark: "#cc0e00"
+  secondary: "#02c0f3"
+  accent: "#ff8707"
+  neutral: "#171717"
+  neutralLight: "#f4f4f4"
+  white: "#ffffff"
+
+# Footer developer credit (shown at the bottom of site footers).
+# Set enabled to false to hide it entirely.
+credit:
+  enabled: true
+  text: "Website developed by Alec Reimel"
+  url: "https://alecreimel.com"

@@ -1,0 +1,30 @@
+{
+  "name": "@areimel/create-localbiz",
+  "version": "1.0.0",
+  "description": "Scaffold a new local-business Astro website from the create-localbiz template.",
+  "type": "module",
+  "bin": { "create-localbiz": "bin/create.mjs" },
+  "files": [
+    "bin",
+    "template",
+    "!template/node_modules",
+    "!template/dist",
+    "!template/.astro",
+    "!template/.netlify",
+    "!template/test-results",
+    "!template/playwright-report",
+    "!template/coverage"
+  ],
+  "engines": { "node": ">=18" },
+  "publishConfig": { "registry": "https://registry.npmjs.org", "access": "public" },
+  "repository": { "type": "git", "url": "git+https://github.com/areimel/local-business-template.git" },
+  "license": "MIT",
+  "author": "Alec Reimel (https://alecreimel.com)",
+  "homepage": "https://alecreimel.com",
+  "private": false,
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "js-yaml": "^5.3.0",
+    "picocolors": "^1.1.1"
+  }
+}

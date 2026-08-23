@@ -1,0 +1,40 @@
+---
+interface Props {
+  variant?: 'default' | 'outlined' | 'elevated';
+  padding?: 'sm' | 'md' | 'lg';
+  href?: string;
+}
+
+const {
+  variant = 'default',
+  padding = 'md',
+  href,
+} = Astro.props;
+
+const paddingClasses: Record<string, string> = {
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+};
+
+const variantClasses: Record<string, string> = {
+  default: 'card',
+  outlined: 'bg-bg rounded-(--radius-card) border border-neutral-200 transition-shadow hover:shadow-md',
+  elevated: 'bg-bg rounded-(--radius-card) shadow-lg transition-all hover:shadow-xl hover:-translate-y-1',
+};
+
+const baseClasses = [
+  variantClasses[variant],
+  paddingClasses[padding],
+].join(' ');
+---
+
+{href ? (
+  <a href={href} class:list={[baseClasses, 'block no-underline text-text hover:text-text']}>
+    <slot />
+  </a>
+) : (
+  <div class={baseClasses}>
+    <slot />
+  </div>
+)}

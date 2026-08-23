@@ -1,0 +1,32 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { gatedPaths } from '@/utils/features';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  return gatedPaths('devPages', async () => {
+    const docs = await getCollection('documentation');
+    return docs.map((doc) => ({
+      params: { slug: doc.id },
+      props: { doc },
+    }));
+  });
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+const allDocs = await getCollection('documentation');
+const docList = allDocs.map((d) => ({
+  title: d.data.title,
+  slug: d.id,
+  order: d.data.order,
+}));
+---
+
+<DocsLayout title={doc.data.title} docs={docList} currentSlug={doc.id}>
+  <h1 class="font-heading text-3xl lg:text-4xl font-bold mb-8">{doc.data.title}</h1>
+  <div class="prose">
+    <Content />
+  </div>
+</DocsLayout>

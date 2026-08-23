@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding, getCtas } from '@/utils/data';
+
+import heroImage from '@/assets/images/hero/tech-outdoor.jpg';
+
+const branding = getBranding();
+const ctas = getCtas();
+
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const stats = [
+  { value: `${yearsInBusiness}+`, label: 'Years Experience' },
+  { value: '24/7', label: 'Emergency Service' },
+  { value: '4.9', label: 'Google Rating' },
+  { value: '10K+', label: 'Homes Served' },
+];
+---
+
+<section class="bg-neutral-900 relative overflow-hidden">
+  <div class="section-container">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[70vh] lg:min-h-[85vh] py-16 lg:py-0">
+      {/* Left column: Content */}
+      <div class="relative z-10 max-w-xl" data-animate="fade-up">
+        {/* Availability badge */}
+        <div class="inline-flex items-center gap-2 bg-accent/15 border border-accent/30 rounded-full px-4 py-1.5 mb-6" data-animate="fade-up">
+          <div class="w-2 h-2 rounded-full bg-accent" aria-hidden="true"></div>
+          <span class="text-accent font-heading font-semibold text-sm tracking-wide uppercase">Available 24/7</span>
+        </div>
+
+        {/* Green accent bar */}
+        <div class="w-10 h-1 bg-secondary rounded-full mb-5" aria-hidden="true"></div>
+
+        <h1 class="heading-hero text-white" style="line-height: 1.05;">
+          {ctas.hero.heading}
+        </h1>
+
+        <p class="text-lg lg:text-xl text-white/80 mt-6 mb-8 max-w-md">
+          {ctas.hero.subheading}
+        </p>
+
+        <ButtonGroup stack="mobile">
+          <PrimaryButton
+            text={ctas.hero.primaryButton.text}
+            href={ctas.hero.primaryButton.url}
+            icon="material-symbols:calendar-month-outline"
+            size="lg"
+          />
+          <a
+            href={`tel:${branding.phoneRaw}`}
+            class="btn btn-outline border-accent text-accent hover:bg-accent hover:text-neutral-900 hover:border-accent"
+            style="font-size: var(--font-size-lg); padding: 1rem 2rem;"
+            aria-label={`Call us at ${branding.phone}`}
+          >
+            <Icon name="material-symbols:call" class="w-5 h-5 shrink-0" />
+            <span>{branding.phone}</span>
+          </a>
+        </ButtonGroup>
+
+        {/* Stats row */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12">
+          {stats.map((stat) => (
+            <div class="border border-accent/30 rounded-(--radius-md) p-3 text-center">
+              <div class="text-2xl lg:text-3xl font-heading font-bold text-secondary">
+                {stat.value}
+              </div>
+              <div class="text-xs lg:text-sm text-white/60 mt-1">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right column: Hero image with geometric clip-path (hidden on mobile) */}
+      <div class="hidden lg:block relative" data-animate="fade-up">
+        {/* Cyan accent triangle - top left decoration */}
+        <div
+          class="absolute -top-4 -left-6 w-32 h-32 bg-accent/20 z-10"
+          style="clip-path: polygon(0 0, 100% 0, 0 100%);"
+          aria-hidden="true"
+        />
+
+        {/* Main image with geometric clip */}
+        <div
+          class="relative overflow-hidden rounded-(--radius-lg) shadow-xl"
+          style="clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);"
+        >
+          <Image
+            src={heroImage}
+            alt={`${branding.companyName} technician providing professional HVAC service`}
+            class="w-full h-[70vh] object-cover"
+            widths={[600, 900, 1200]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
+        </div>
+
+        {/* Orange accent square - bottom right decoration */}
+        <div
+          class="absolute -bottom-3 -right-3 w-20 h-20 bg-secondary/30 rounded-(--radius-sm) z-10"
+          aria-hidden="true"
+        />
+
+        {/* Accent ring decoration - bottom right */}
+        <div class="absolute -bottom-2 right-10 w-10 h-10 border-2 border-accent/40 rounded-(--radius-sm) z-10" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  {/* Subtle background gradient overlay for depth */}
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background: radial-gradient(ellipse at 20% 50%, color-mix(in srgb, var(--color-accent) 5%, transparent), transparent 60%);"
+    aria-hidden="true"
+  />
+
+  {/* Second radial gradient orb - bottom left accent */}
+  <div class="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-accent/15 blur-3xl pointer-events-none" aria-hidden="true"></div>
+</section>

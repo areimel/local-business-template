@@ -1,0 +1,85 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import CoverageOverview from '@/components/InnerPageComponents/CoverageOverview.astro';
+import CitiesByRegion from '@/components/InnerPageComponents/CitiesByRegion.astro';
+import LocalBenefits from '@/components/InnerPageComponents/LocalBenefits.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+import { getServiceAreas, getBranding } from '@/utils/data';
+import { getCollection } from 'astro:content';
+import { gatedPaths } from '@/utils/features';
+
+// Rest-param route so the index page can be flag-gated: when 'serviceAreas'
+// is off, no paths are returned and /service-areas/ is never built.
+export async function getStaticPaths() {
+  return gatedPaths('serviceAreas', () => [{ params: { index: undefined } }]);
+}
+
+const serviceAreas = getServiceAreas();
+const branding = getBranding();
+const totalCities = serviceAreas.cities.length;
+
+const allLocations = await getCollection('locations');
+const sortedLocations = allLocations.sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0));
+---
+
+<PageLayout
+  title="Service Areas"
+  description={`${branding.companyName} proudly serves ${totalCities}+ cities across ${branding.serviceArea.primary}. Find out if we cover your area — call ${branding.phone}.`}
+>
+  <InnerHero
+    heading={serviceAreas.pageHeading ?? 'Areas We Serve'}
+    subheading={serviceAreas.pageSubheading}
+    badge="Service Area"
+  />
+
+  <CoverageOverview />
+  <CitiesByRegion />
+  <LocalBenefits />
+
+  <!-- ========== LOCATION PAGES INDEX ========== -->
+  {sortedLocations.length > 0 && (
+    <SectionWrapper background="alt">
+      <div class="text-center mb-12" data-animate="fade-up">
+        <Badge text="Location Guides" variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4 mb-4">
+          Local HVAC Guides by City
+        </h2>
+        <p class="text-text-muted text-lg max-w-2xl mx-auto">
+          Explore our city-specific pages for local tips, service details, and area coverage information.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedLocations.map((location) => (
+          <a
+            href={`/service-areas/${location.data.slug}/`}
+            class="group block bg-bg rounded-(--radius-card) border border-neutral-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6"
+            data-animate="fade-up"
+          >
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <Icon name="material-symbols:location-on-outline" class="w-5 h-5 text-primary" aria-hidden="true" />
+            </div>
+            <h3 class="text-lg font-heading font-bold text-text mb-1 group-hover:text-primary transition-colors">
+              {location.data.title}
+            </h3>
+            <p class="text-text-muted text-sm mb-4">{location.data.region}</p>
+            <span class="inline-flex items-center gap-1 text-primary text-sm font-medium">
+              View Guide
+              <Icon
+                name="material-symbols:arrow-forward"
+                class="w-4 h-4 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </span>
+          </a>
+        ))}
+      </div>
+    </SectionWrapper>
+  )}
+
+  <CtaBanner />
+</PageLayout>

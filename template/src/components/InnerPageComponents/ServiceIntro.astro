@@ -1,0 +1,107 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+
+interface Props {
+  intro: string;
+  categoryLabel: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  freeEstimate?: boolean;
+}
+
+const {
+  intro,
+  categoryLabel,
+  ctaText,
+  ctaUrl = '/contact/',
+  freeEstimate = false,
+} = Astro.props;
+
+const resolvedCtaText: string = ctaText ?? (freeEstimate ? 'Get a Free Estimate' : 'Schedule Service');
+
+const trustBullets = [
+  { icon: 'material-symbols:check-circle-outline', text: 'Background Checked' },
+  { icon: 'material-symbols:check-circle-outline', text: 'Upfront Pricing' },
+  { icon: 'material-symbols:check-circle-outline', text: 'Satisfaction Guaranteed' },
+];
+---
+
+<SectionWrapper background="white">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+
+    <!-- Content Column -->
+    <div class="lg:col-span-7" data-animate="fade-up">
+      <Badge text={categoryLabel} variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-5">
+        About This Service
+      </h2>
+      <p class="text-lg text-text-muted leading-relaxed mb-6">
+        {intro}
+      </p>
+
+      <!-- Trust Bullets -->
+      <ul class="space-y-3 mb-8" aria-label="Service guarantees">
+        {trustBullets.map((bullet) => (
+          <li class="flex items-center gap-3">
+            <Icon
+              name={bullet.icon}
+              class="w-5 h-5 text-secondary shrink-0"
+              aria-hidden="true"
+            />
+            <span class="text-text font-medium">{bullet.text}</span>
+          </li>
+        ))}
+      </ul>
+
+      <PrimaryButton text={resolvedCtaText} href={ctaUrl} size="md" />
+    </div>
+
+    <!-- Visual Column -->
+    <div class="lg:col-span-5 hidden lg:block" data-animate="fade-up">
+      <div class="relative">
+        <!-- Decorative card -->
+        <div class="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10 rounded-(--radius-card) p-8 lg:p-10">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Icon
+                name="material-symbols:home-repair-service-outline"
+                class="w-10 h-10 text-primary"
+                aria-hidden="true"
+              />
+            </div>
+            <div>
+              <p class="font-heading font-bold text-text text-lg">{categoryLabel}</p>
+              <p class="text-text-muted text-sm mt-1">Professional Service</p>
+            </div>
+          </div>
+
+          <!-- Mini stat row -->
+          <div class="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-primary/10">
+            <div class="text-center">
+              <p class="font-heading font-bold text-primary text-xl">Fast</p>
+              <p class="text-text-muted text-xs mt-0.5">Response</p>
+            </div>
+            <div class="text-center">
+              <p class="font-heading font-bold text-primary text-xl">Fair</p>
+              <p class="text-text-muted text-xs mt-0.5">Pricing</p>
+            </div>
+            <div class="text-center">
+              <p class="font-heading font-bold text-primary text-xl">Pro</p>
+              <p class="text-text-muted text-xs mt-0.5">Technicians</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decorative accent -->
+        <div
+          class="absolute -bottom-3 -right-3 w-full h-full rounded-(--radius-card) border-2 border-secondary/15 -z-10"
+          aria-hidden="true"
+        ></div>
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>

@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import Card from '@/components/SharedComponents/Card.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/**/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
+
+interface Props {
+  title: string;
+  slug: string;
+  excerpt: string;
+  publishDate: Date;
+  category: string;
+  featuredImage?: string;
+  featuredImageAlt?: string;
+  readingTime?: number;
+  author?: string;
+}
+
+const {
+  title,
+  slug,
+  excerpt,
+  publishDate,
+  category,
+  featuredImage,
+  featuredImageAlt,
+  readingTime,
+  author,
+} = Astro.props;
+
+const resolvedImage = featuredImage ? images[featuredImage]?.default : undefined;
+
+const formattedDate = publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<div class="blog-card" data-animate="fade-up" data-category={category}>
+  <Card variant="elevated" padding="sm" href={`/blog/${slug}/`}>
+    <div class="aspect-video bg-neutral-100 rounded-(--radius-md) mb-4 flex items-center justify-center overflow-hidden">
+      {resolvedImage ? (
+        <Image
+          src={resolvedImage}
+          alt={featuredImageAlt ?? title}
+          class="w-full h-full object-cover"
+          loading="lazy"
+          widths={[400, 800]}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      ) : (
+        <Icon
+          name="material-symbols:photo-camera-outline"
+          class="text-neutral-300"
+          style="width: 48px; height: 48px;"
+        />
+      )}
+    </div>
+
+    <div class="mb-3">
+      <Badge text={category} variant="primary" size="sm" />
+    </div>
+
+    <h3 class="font-heading font-bold text-lg text-text mb-2 leading-snug">
+      {title}
+    </h3>
+
+    <p class="text-text-muted text-sm line-clamp-3 mb-4">
+      {excerpt}
+    </p>
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-3 border-t border-neutral-100">
+      <span class="inline-flex items-center gap-1 text-xs text-text-muted">
+        <Icon
+          name="material-symbols:calendar-month-outline"
+          style="width: 14px; height: 14px;"
+          aria-hidden="true"
+        />
+        <time datetime={publishDate.toISOString()}>{formattedDate}</time>
+      </span>
+
+      {readingTime && (
+        <span class="inline-flex items-center gap-1 text-xs text-text-muted">
+          <Icon
+            name="material-symbols:schedule-outline"
+            style="width: 14px; height: 14px;"
+            aria-hidden="true"
+          />
+          {readingTime} min read
+        </span>
+      )}
+
+      {author && (
+        <span class="inline-flex items-center gap-1 text-xs text-text-muted ml-auto">
+          <Icon
+            name="material-symbols:person"
+            style="width: 14px; height: 14px;"
+            aria-hidden="true"
+          />
+          {author}
+        </span>
+      )}
+    </div>
+  </Card>
+</div>

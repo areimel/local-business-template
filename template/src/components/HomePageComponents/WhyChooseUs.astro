@@ -1,0 +1,67 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Card from '@/components/SharedComponents/Card.astro';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const differentiators = [
+  {
+    icon: 'material-symbols:workspace-premium-outline',
+    title: `${yearsInBusiness}+ Years Experience`,
+    description: `Proudly serving ${branding.serviceArea.primary} homeowners since ${branding.yearEstablished}.`,
+  },
+  {
+    icon: 'material-symbols:handshake-outline',
+    title: 'Family Owned & Operated',
+    description: 'A local, family-run business that treats every customer like a neighbor.',
+  },
+  {
+    icon: 'material-symbols:verified-user-outline',
+    title: 'Licensed & Insured',
+    description: 'Fully licensed, bonded, and insured for your complete peace of mind.',
+  },
+  {
+    icon: 'material-symbols:speed-outline',
+    title: 'Same-Day Service',
+    description: 'Emergency repairs available — we offer same-day service to get your home comfortable fast.',
+  },
+];
+---
+
+<SectionWrapper id="why-choose-us" background="alt">
+  <div class="text-center mb-12" data-animate="fade-up">
+    <h2 class="heading-display text-text mb-4">
+      Why {branding.serviceArea.primary} Homeowners Trust {branding.companyNameShort}
+    </h2>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      For more than {yearsInBusiness} years, homeowners throughout {branding.serviceArea.primary} have
+      trusted {branding.companyName} for reliable, honest home comfort solutions.
+    </p>
+  </div>
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+  >
+    {differentiators.map((item, index) => (
+      <Card variant="default" padding="lg">
+        <div class="flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-5">
+            <Icon name={item.icon} class="w-8 h-8 text-secondary" />
+          </div>
+          <h3 class="text-lg font-heading font-bold text-text mb-2">
+            {index === 0 ? (
+              <><span data-animate="counter" data-count-to={yearsInBusiness}>0</span>+ Years Experience</>
+            ) : (
+              item.title
+            )}
+          </h3>
+          <p class="text-sm text-text-muted">{item.description}</p>
+        </div>
+      </Card>
+    ))}
+  </div>
+</SectionWrapper>

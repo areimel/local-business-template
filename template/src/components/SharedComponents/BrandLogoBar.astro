@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+
+import partnerLogo1 from '@/assets/images/logos/partner-logo-1.png';
+import partnerLogo2 from '@/assets/images/logos/partner-logo-2.png';
+import partnerLogo3 from '@/assets/images/logos/partner-logo-3.png';
+import partnerLogo4 from '@/assets/images/logos/partner-logo-4.png';
+import partnerLogo5 from '@/assets/images/logos/partner-logo-5.png';
+
+interface Props {
+  grayscale?: boolean;
+  heading?: string;
+  background?: 'white' | 'alt';
+  inline?: boolean;
+}
+
+const {
+  grayscale = true,
+  heading,
+  background,
+  inline = false,
+} = Astro.props;
+
+const logos = [
+  { src: partnerLogo1, alt: 'Partner logo 1', width: 100 },
+  { src: partnerLogo2, alt: 'Partner logo 2', width: 120 },
+  { src: partnerLogo3, alt: 'Partner logo 3', width: 100 },
+  { src: partnerLogo4, alt: 'Partner logo 4', width: 100 },
+  { src: partnerLogo5, alt: 'Partner logo 5', width: 120 },
+];
+
+const bgClass = background === 'alt' ? 'bg-bg-alt' : background === 'white' ? 'bg-bg' : 'bg-bg-alt';
+const sectionPadding = background ? 'py-8' : 'py-8';
+---
+
+{inline ? (
+  <div>
+    {heading && (
+      <h3 class="text-center text-text-muted font-heading font-semibold text-sm uppercase tracking-wider mb-8" data-animate="fade-up">
+        {heading}
+      </h3>
+    )}
+    {!heading && (
+      <p class="text-center text-text-muted text-sm mb-6">Trusted Partners &amp; Certifications</p>
+    )}
+    <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12" data-animate="fade-up">
+      {logos.map((logo) => (
+        <div class:list={['flex items-center justify-center h-10', grayscale && 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300']}>
+          <Image
+            src={logo.src}
+            alt={logo.alt}
+            width={logo.width}
+            height={40}
+            class="max-h-10 w-auto object-contain"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+) : (
+  <section class:list={[bgClass, sectionPadding]}>
+    <div class="section-container">
+      {heading && (
+        <h3 class="text-center text-text-muted font-heading font-semibold text-sm uppercase tracking-wider mb-8" data-animate="fade-up">
+          {heading}
+        </h3>
+      )}
+      {!heading && (
+        <p class="text-center text-text-muted text-sm mb-6">Trusted Partners &amp; Certifications</p>
+      )}
+      <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12" data-animate="fade-up">
+        {logos.map((logo) => (
+          <div class:list={['flex items-center justify-center h-10', grayscale && 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300']}>
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              width={logo.width}
+              height={40}
+              class="max-h-10 w-auto object-contain"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

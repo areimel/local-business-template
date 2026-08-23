@@ -1,0 +1,50 @@
+meta:
+  title: "Lume Salon | Gallery of Our Work"
+  description: "Explore our latest hair color, cuts, and styling work. See the artistry and expertise of Lume Salon's award-winning stylists."
+
+hero:
+  heading: "Our Work"
+  subheading: "Every service is a collaboration between you and our stylists. Here's what we've been creating lately."
+  badge: "Gallery"
+
+gallery:
+  heading: "From the Chair"
+  subheading: "Bold color, precision cuts, and transformations you'll love."
+  items:
+    - icon: "material-symbols:colorize"
+      caption: "Balayage & Dimension"
+    - icon: "material-symbols:content-cut"
+      caption: "Precision Cuts"
+    - icon: "material-symbols:brush-outline"
+      caption: "Bridal Styling"
+    - icon: "material-symbols:face-outline"
+      caption: "Face-Framing & Layers"
+    - icon: "material-symbols:water-drop-outline"
+      caption: "Keratin & Treatments"
+    - icon: "material-symbols:storefront-outline"
+      caption: "Color Corrections"
+    - icon: "material-symbols:spa"
+      caption: "Blowouts & Finish"
+    - icon: "material-symbols:colorize"
+      caption: "Vivid & Fashion Color"
+    - icon: "material-symbols:content-cut"
+      caption: "Men's Cuts"
+    - icon: "material-symbols:brush-outline"
+      caption: "Extensions & Density"
+    - icon: "material-symbols:face-outline"
+      caption: "Texture & Waves"
+    - icon: "material-symbols:water-drop-outline"
+      caption: "Damage Repair"
+
+testimonial:
+  name: "Maya K."
+  location: "Downtown"
+  rating: 5
+  text: "Nina's hands are magic. I walked in uncertain about trying something bold and left feeling like the best version of myself. Lume isn't just a salon — it's a creative studio."
+
+cta:
+  heading: "Ready for Your Transformation?"
+  body: "We'd love to bring your vision to life. Book a consultation with one of our stylists, or call to discuss your perfect look."
+  buttonText: "Book Your Appointment"
+  buttonUrl: "/contact/"
+  variant: "primary"

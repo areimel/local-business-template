@@ -1,0 +1,59 @@
+---
+/**
+ * LandingPageLayout.astro
+ *
+ * Layout for single-page "landing site" home variants (/landing/*).
+ * Wraps BaseLayout with a simplified anchor-nav header and a minimal
+ * footer that keeps legal links + a configurable developer credit. Slot-driven:
+ * each page composes its own section stack.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LandingHeader from '@/components/LandingComponents/LandingHeader.astro';
+import LandingFooter from '@/components/LandingComponents/LandingFooter.astro';
+import StickyMobileCta from '@/components/CampaignComponents/StickyMobileCta.astro';
+import ThankYouModal from '@/components/PopUpComponents/ThankYouModal.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Landing variants are template previews — indexable only once adopted. */
+  noindex?: boolean;
+  schemaData?: object[];
+  headerLinks?: { label: string; anchor: string }[];
+  ctaAnchor?: string;
+  /** Requires an element with id="campaign-hero" on the page (StickyMobileCta reveals after it scrolls out). */
+  stickyBar?: { text: string; subtext?: string; ctaText: string; scrollTarget: string };
+  showThankYouModal?: boolean;
+}
+
+const {
+  title,
+  description,
+  noindex = true,
+  schemaData,
+  headerLinks = [],
+  ctaAnchor,
+  stickyBar,
+  showThankYouModal = true,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} noindex={noindex} schemaData={schemaData}>
+  <LandingHeader links={headerLinks} ctaAnchor={ctaAnchor} />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <LandingFooter />
+
+  {stickyBar && <StickyMobileCta stickyBar={stickyBar} />}
+  {showThankYouModal && <ThankYouModal />}
+</BaseLayout>
+
+<style is:global>
+  /* Anchor targets land below the sticky header. */
+  [id] {
+    scroll-margin-top: 7rem;
+  }
+</style>

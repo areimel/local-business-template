@@ -1,0 +1,38 @@
+# Coupons & Promotions — Your Company Name
+# Replace placeholder content with actual offers from the client.
+coupons:
+  - id: "ac-tuneup"
+    title: "$49 AC Tune-Up Special"
+    description: "Complete system inspection, coil cleaning, and performance check to keep your AC running at peak efficiency."
+    discountType: "fixed"
+    discountValue: 49
+    code: "SAVE49"
+    validUntil: "2026-06-30"
+    terms: "New customers only. Cannot be combined with other offers. One coupon per household."
+    category: "air-conditioning"
+    featured: true
+    active: true
+
+  - id: "free-estimate"
+    title: "Free Installation Estimate"
+    description: "No-obligation quote on any new AC, heating, plumbing, or electrical installation."
+    discountType: "free"
+    discountValue: 0
+    code: ""
+    validUntil: ""
+    terms: "Residential customers only."
+    category: "general"
+    featured: true
+    active: true
+
+  - id: "repair-discount"
+    title: "10% Off Any Repair"
+    description: "Save on your next AC, heating, plumbing, or electrical repair service."
+    discountType: "percentage"
+    discountValue: 10
+    code: "SAVE10"
+    validUntil: "2026-12-31"
+    terms: "Cannot be combined with other offers. Maximum discount $100."
+    category: "general"
+    featured: true
+    active: true

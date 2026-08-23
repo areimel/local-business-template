@@ -1,0 +1,57 @@
+---
+import { Icon } from 'astro-icon/components';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import { getCtas } from '@/utils/data';
+import { isFeatureEnabled } from '@/utils/features';
+
+// Root gate for every EmergencyCtaBanner call site. Note: 24/7 copy in
+// ctas.yaml/branding/heroes is content and still needs manual edits.
+if (!isFeatureEnabled('emergencyCta')) return;
+
+const ctas = getCtas();
+const emergency = ctas.emergencyCta;
+---
+
+<section
+  class="relative overflow-hidden py-10 lg:py-12"
+  style="background: linear-gradient(135deg, var(--color-secondary-dark) 0%, var(--color-secondary) 60%, var(--color-secondary-light) 100%);"
+>
+  <!-- Diagonal stripe texture -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 20px);"
+    aria-hidden="true"
+  ></div>
+
+  <div class="section-container relative z-10">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-white">
+      <div class="flex items-center gap-4" data-animate="fade-up">
+        <!-- Emergency icon with pulse ring -->
+        <div class="relative shrink-0">
+          <div class="w-14 h-14 rounded-full bg-white/25 border border-white/30 flex items-center justify-center">
+            <Icon name="material-symbols:emergency-home-outline" class="w-8 h-8 text-white" />
+          </div>
+          <div
+            class="absolute inset-0 rounded-full border-2 border-white/40 motion-safe:animate-ping"
+            aria-hidden="true"
+            style="animation-duration: 2s;"
+          ></div>
+        </div>
+        <div>
+          <h3 class="font-heading font-bold text-xl lg:text-2xl">{emergency.heading}</h3>
+          <p class="text-white/90 mt-1">{emergency.body}</p>
+        </div>
+      </div>
+      <div class="shrink-0" data-animate="fade-up">
+        <a
+          href={`tel:${emergency.phoneRaw}`}
+          class="inline-flex items-center gap-2.5 bg-white text-secondary-dark font-heading font-bold px-7 py-3.5 rounded-(--radius-btn) shadow-lg hover:bg-neutral-50 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 text-base"
+          aria-label={`Call us at ${emergency.phone}`}
+        >
+          <Icon name="material-symbols:call" class="w-5 h-5" />
+          {emergency.buttonText} — {emergency.phone}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

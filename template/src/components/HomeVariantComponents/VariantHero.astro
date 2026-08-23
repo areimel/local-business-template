@@ -1,0 +1,82 @@
+---
+import { Icon } from 'astro-icon/components';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import SecondaryButton from '@/components/ButtonComponents/SecondaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import type { CTAButton, TrustPill } from '@/utils/data';
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  headingAccent?: string;
+  subheading: string;
+  primaryCta: CTAButton;
+  secondaryCta?: CTAButton;
+  trustPills?: TrustPill[];
+}
+
+const { eyebrow, heading, headingAccent, subheading, primaryCta, secondaryCta, trustPills } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden min-h-[70vh] lg:min-h-[85vh] flex items-center bg-neutral-900"
+  aria-label="Hero"
+>
+  <!-- Dark gradient background: primary-dark into near-black -->
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-neutral-900) 65%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative radial glow -->
+  <div
+    class="absolute top-0 right-0 w-2/3 h-full pointer-events-none"
+    style="background: radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--color-accent) 18%, transparent) 0%, transparent 60%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10 py-20 lg:py-28">
+    <div class="max-w-2xl">
+
+      {eyebrow && (
+        <div class="mb-6" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+          <span class="inline-flex items-center gap-2 rounded-full font-medium text-sm px-4 py-1.5 bg-white/15 text-white backdrop-blur-sm border border-white/10">
+            {eyebrow}
+          </span>
+        </div>
+      )}
+
+      <h1 class="heading-hero text-white mb-6" data-animate="fade-up" data-on="load" data-delay="150">
+        {heading}
+        {headingAccent && <span class="text-accent"> {headingAccent}</span>}
+      </h1>
+
+      <p class="text-lg lg:text-xl text-white/90 mb-10 max-w-xl leading-relaxed" data-animate="fade-up" data-on="load" data-delay="300" data-distance="30" data-duration="600">
+        {subheading}
+      </p>
+
+      <div data-animate="fade-up" data-on="load" data-delay="450" data-distance="20" data-duration="500">
+        <ButtonGroup stack="mobile">
+          <PrimaryButton text={primaryCta.text} href={primaryCta.url} size="lg" />
+          {secondaryCta && (
+            <SecondaryButton text={secondaryCta.text} href={secondaryCta.url} size="lg" />
+          )}
+        </ButtonGroup>
+      </div>
+
+      {trustPills && trustPills.length > 0 && (
+        <div class="mt-10 flex flex-wrap gap-3" data-animate="fade-up">
+          {trustPills.map((pill) => (
+            <span class="inline-flex items-center gap-1.5 rounded-full text-xs font-medium px-4 py-2 bg-white/20 text-white/90 backdrop-blur-md border border-white/25 shadow-sm">
+              <Icon name={pill.icon} class="w-4 h-4 text-accent-light" aria-hidden="true" />
+              {pill.label}
+            </span>
+          ))}
+        </div>
+      )}
+
+    </div>
+  </div>
+</section>

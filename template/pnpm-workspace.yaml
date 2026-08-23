@@ -1,0 +1,7 @@
+# pnpm settings for this site. pnpm 10+ reads build-script approvals from here
+# (the old `pnpm.onlyBuiltDependencies` package.json field is no longer honored).
+# These native deps need their install scripts to run to build their binaries.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true

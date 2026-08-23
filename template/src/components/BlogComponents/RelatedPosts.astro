@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import BlogPostCard from './BlogPostCard.astro';
+
+interface Props {
+  currentSlug: string;
+  category: string;
+  tags?: string[];
+  maxPosts?: number;
+}
+
+const { currentSlug, category, tags = [], maxPosts = 3 } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const otherPosts = allPosts.filter(
+  (post) => !post.data.draft && post.data.slug !== currentSlug
+);
+
+// Score by relevance: same category = 2 points, matching tag = 1 point each
+const scored = otherPosts.map((post) => {
+  let score = 0;
+  if (post.data.category === category) score += 2;
+  tags.forEach((tag) => {
+    if (post.data.tags?.includes(tag)) score += 1;
+  });
+  return { post, score };
+});
+
+const relatedPosts = scored
+  .sort(
+    (a, b) =>
+      b.score - a.score ||
+      b.post.data.publishDate.getTime() - a.post.data.publishDate.getTime()
+  )
+  .slice(0, maxPosts)
+  .map((s) => s.post);
+---
+
+{relatedPosts.length > 0 && (
+  <SectionWrapper background="alt">
+    <h2 class="heading-display text-text text-center mb-10" data-animate="fade-up">
+      Related Articles
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {relatedPosts.map((post) => (
+        <BlogPostCard
+          title={post.data.title}
+          slug={post.data.slug ?? post.id}
+          excerpt={post.data.excerpt}
+          publishDate={post.data.publishDate}
+          category={post.data.category}
+          featuredImage={post.data.featuredImage}
+          featuredImageAlt={post.data.featuredImageAlt}
+          readingTime={post.data.readingTime}
+          author={post.data.author}
+        />
+      ))}
+    </div>
+  </SectionWrapper>
+)}

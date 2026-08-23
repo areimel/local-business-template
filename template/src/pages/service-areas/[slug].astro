@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import LocationPageLayout from '@/layouts/LocationPageLayout.astro';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('serviceAreas', async () => {
+    const allLocations = await getCollection('locations');
+    return allLocations.map(entry => ({
+      params: { slug: entry.data.slug },
+      props: { entry },
+    }));
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<LocationPageLayout frontmatter={entry.data}>
+  <Content />
+</LocationPageLayout>

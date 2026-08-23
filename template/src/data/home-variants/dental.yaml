@@ -1,0 +1,107 @@
+meta:
+  title: "Brightside Dental | Family & Cosmetic Dentistry"
+  description: "Warm, comforting family and cosmetic dental care. Book your appointment today and experience gentle, modern dentistry."
+
+hero:
+  eyebrow: "Family & Cosmetic Dentistry"
+  heading: "A Smile You'll Love,"
+  headingAccent: "Care You Can Trust"
+  subheading: "Brightside Dental offers gentle, modern dentistry for every member of your family — from routine cleanings to complete smile makeovers."
+  primaryCta:
+    text: "Book an Appointment"
+    url: "/contact/"
+  secondaryCta:
+    text: "Book an Appointment"
+    url: "/dental-booking/"
+  trustPills:
+    - icon: "material-symbols:verified-outline"
+      label: "Most Insurance Accepted"
+    - icon: "material-symbols:handshake-outline"
+      label: "Gentle, Judgment-Free Care"
+    - icon: "material-symbols:schedule-outline"
+      label: "Same-Day Emergency Visits"
+
+featuresHeading: "Complete Care for Every Smile"
+features:
+  - icon: "mdi:tooth-outline"
+    title: "General Dentistry"
+    description: "Cleanings, exams, and fillings to keep your whole family's smile healthy."
+  - icon: "material-symbols:star-outline"
+    title: "Cosmetic Dentistry"
+    description: "Whitening, veneers, and smile makeovers to help you feel confident."
+  - icon: "material-symbols:straighten-outline"
+    title: "Orthodontics"
+    description: "Traditional braces and clear aligners for a straighter, healthier smile."
+  - icon: "material-symbols:emergency-outline"
+    title: "Emergency Dental Care"
+    description: "Same-day appointments for toothaches, breaks, and dental emergencies."
+
+stepsHeading: "Your First Visit"
+steps:
+  - step: 1
+    title: "Book Online or By Phone"
+    description: "Schedule your visit in minutes — new patients are always welcome."
+  - step: 2
+    title: "Meet Your Care Team"
+    description: "We'll review your history and get to know your smile goals."
+  - step: 3
+    title: "Comprehensive Exam"
+    description: "A gentle exam and digital X-rays give us the full picture of your oral health."
+  - step: 4
+    title: "Your Personalized Plan"
+    description: "We'll walk you through a treatment plan built around your needs and budget."
+
+team:
+  badge: "Our Team"
+  heading: "Meet Your Care Team"
+  subheading: "Experienced, caring professionals dedicated to your comfort."
+  members:
+    - name: "Dr. Elena Marsh, DDS"
+      role: "General & Family Dentist"
+      bio: "Over 15 years helping families maintain healthy, happy smiles."
+    - name: "Dr. James Okafor, DDS"
+      role: "Cosmetic Dentist"
+      bio: "Specializes in smile makeovers, veneers, and whitening treatments."
+    - name: "Lisa Nguyen, RDH"
+      role: "Lead Dental Hygienist"
+      bio: "Gentle, thorough cleanings that keep patients coming back with a smile."
+
+stats:
+  - value: 12000
+    suffix: "+"
+    label: "Patients Served"
+    icon: "material-symbols:groups-outline"
+    counter: true
+  - value: 18
+    suffix: "+"
+    label: "Years in Practice"
+    icon: "material-symbols:workspace-premium-outline"
+    counter: true
+  - value: 4.9
+    suffix: ""
+    label: "Star Rating"
+    icon: "material-symbols:star-outline"
+    counter: false
+  - value: 30
+    suffix: "+"
+    label: "Insurance Plans Accepted"
+    icon: "material-symbols:policy-outline"
+    counter: true
+
+faqs:
+  - question: "Do you accept my dental insurance?"
+    answer: "We work with over 30 insurance plans and will verify your benefits before your visit."
+  - question: "Will my treatment hurt?"
+    answer: "We use modern techniques and gentle anesthesia options to keep you comfortable throughout every procedure."
+  - question: "Do you see children?"
+    answer: "Yes! We welcome patients of all ages, from a child's first visit to adult and senior care."
+  - question: "What if I have a dental emergency?"
+    answer: "Call us right away — we reserve same-day slots for toothaches, breaks, and other urgent dental needs."
+  - question: "How often should I get a checkup?"
+    answer: "We recommend a cleaning and exam every six months to keep your smile healthy year-round."
+
+cta:
+  heading: "Book Your Visit Today"
+  body: "New patients are always welcome. Schedule your appointment and see why families trust Brightside Dental."
+  buttonText: "Book Your Visit Today"
+  buttonUrl: "/contact/"

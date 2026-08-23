@@ -1,0 +1,229 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getServiceAreas, getBranding } from '@/utils/data';
+
+interface Props {
+  /** Aspect ratio as "width/height", e.g. "520/480" */
+  aspectRatio?: string;
+  /** Map zoom level */
+  zoom?: number;
+  /** Show the coverage radius badge overlay */
+  showRadiusBadge?: boolean;
+  /** Show the "Since YYYY" badge overlay */
+  showSinceBadge?: boolean;
+  /** Visual variant — controls tile style and container border */
+  variant?: 'light' | 'dark';
+  /** Accessible label for the map */
+  ariaLabel?: string;
+}
+
+const {
+  aspectRatio = '520/480',
+  zoom = 10,
+  showRadiusBadge = false,
+  showSinceBadge = false,
+  variant = 'light',
+  ariaLabel = 'Service area map',
+} = Astro.props;
+
+const serviceAreas = getServiceAreas();
+const branding = getBranding();
+
+const hq = serviceAreas.headquarters ?? { lat: 39.8283, lng: -98.5795, label: "Headquarters" };
+const coverageRadius = serviceAreas.coverageRadius ?? 45;
+const primaryColor = branding.theme.primary;
+const mapId = `map-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<!-- Leaflet CSS — Astro hoists <link> tags to <head> automatically -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  crossorigin=""
+/>
+
+<div class="service-area-map-wrapper relative w-full">
+  <div
+    class:list={[
+      'leaflet-map-container w-full overflow-hidden',
+      variant === 'dark'
+        ? 'rounded-xl border border-white/10'
+        : 'rounded-2xl border border-neutral-200 shadow-xl',
+    ]}
+    id={mapId}
+    style={`aspect-ratio: ${aspectRatio};`}
+    data-lat={hq.lat}
+    data-lng={hq.lng}
+    data-radius-miles={coverageRadius}
+    data-zoom={zoom}
+    data-hq-label={hq.label}
+    data-primary-color={primaryColor}
+    data-variant={variant}
+    role="img"
+    aria-label={ariaLabel}
+  >
+    <noscript>
+      <div class="flex items-center justify-center h-full bg-neutral-100 text-neutral-600 text-sm p-6 text-center">
+        Interactive map requires JavaScript. We serve a {coverageRadius}-mile radius from {branding.serviceArea.primary}.
+      </div>
+    </noscript>
+  </div>
+
+  {showRadiusBadge && (
+    <div class="absolute bottom-4 left-4 flex items-center gap-2 px-4 py-2 rounded-full glass-dark z-10">
+      <Icon name="material-symbols:my-location-outline" class="w-4 h-4 text-accent" />
+      <span class="text-sm text-white font-medium">
+        {coverageRadius}-mile service radius
+      </span>
+    </div>
+  )}
+
+  {showSinceBadge && (
+    <div class:list={[
+      'absolute flex items-center gap-2 px-3 py-1.5 rounded-full z-10',
+      variant === 'dark'
+        ? 'bottom-4 left-4 lg:bottom-6 lg:left-6 bg-neutral-900/80 border border-white/10 backdrop-blur-sm'
+        : 'top-4 right-4 glass-dark',
+    ]}>
+      <Icon
+        name={variant === 'dark' ? 'material-symbols:location-on-outline' : 'material-symbols:verified-outline'}
+        class:list={['w-4 h-4', variant === 'dark' ? 'text-accent' : 'text-secondary']}
+      />
+      <span class:list={['text-sm font-medium', variant === 'dark' ? 'text-xs text-neutral-300' : 'text-white']}>
+        {variant === 'dark' ? `Serving since ${branding.yearEstablished}` : `Since ${branding.yearEstablished}`}
+      </span>
+    </div>
+  )}
+</div>
+
+<style>
+  /* Prevent Tailwind's base img reset from breaking Leaflet tiles */
+  :global(.leaflet-container img) {
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  :global(.leaflet-container) {
+    font-family: var(--font-body);
+    z-index: 0;
+  }
+
+  :global(.leaflet-control-attribution) {
+    font-size: 0.6875rem;
+    background: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  /* Loading state background before JS initializes the map */
+  .leaflet-map-container:not(.leaflet-container) {
+    background: var(--color-neutral-100);
+  }
+
+  .leaflet-map-container[data-variant="dark"]:not(.leaflet-container) {
+    background: var(--color-neutral-800);
+  }
+</style>
+
+<script>
+  let leafletLoaded = false;
+  let leafletPromise: Promise<void> | null = null;
+
+  function loadLeaflet(): Promise<void> {
+    if (leafletLoaded) return Promise.resolve();
+    if (leafletPromise) return leafletPromise;
+
+    leafletPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.crossOrigin = '';
+      script.onload = () => {
+        leafletLoaded = true;
+        resolve();
+      };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    return leafletPromise;
+  }
+
+  async function initMap(container: HTMLElement) {
+    await loadLeaflet();
+
+    const lat = parseFloat(container.dataset.lat!);
+    const lng = parseFloat(container.dataset.lng!);
+    const radiusMiles = parseFloat(container.dataset.radiusMiles!);
+    const zoom = parseInt(container.dataset.zoom!, 10);
+    const label = container.dataset.hqLabel!;
+    const primaryColor = container.dataset.primaryColor || '#ff1100';
+    const variant = container.dataset.variant || 'light';
+
+    const radiusMeters = radiusMiles * 1609.34;
+    const L = (window as any).L;
+
+    const map = L.map(container, {
+      center: [lat, lng],
+      zoom: zoom,
+      scrollWheelZoom: false,
+      attributionControl: true,
+    });
+
+    // Tile layer — dark tiles for dark variant, light for everything else
+    const tileUrl =
+      variant === 'dark'
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    const tileAttribution =
+      variant === 'dark'
+        ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
+        : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+    L.tileLayer(tileUrl, {
+      attribution: tileAttribution,
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Service area circle overlay
+    L.circle([lat, lng], {
+      radius: radiusMeters,
+      color: primaryColor,
+      weight: 2,
+      opacity: 0.6,
+      fillColor: primaryColor,
+      fillOpacity: 0.08,
+      interactive: false,
+    }).addTo(map);
+
+    // HQ marker
+    const marker = L.marker([lat, lng]).addTo(map);
+    marker.bindPopup(`<strong>${label}</strong>`);
+
+    // Enable scroll zoom after first click
+    map.on('click', () => {
+      map.scrollWheelZoom.enable();
+    });
+  }
+
+  function initAllMaps() {
+    const containers = document.querySelectorAll<HTMLElement>('.leaflet-map-container');
+    if (!containers.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            observer.unobserve(entry.target);
+            initMap(entry.target as HTMLElement);
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+
+    containers.forEach((el) => observer.observe(el));
+  }
+
+  // Initialize on DOM ready and on Astro page transitions
+  document.addEventListener('DOMContentLoaded', initAllMaps);
+  document.addEventListener('astro:page-load', initAllMaps);
+</script>

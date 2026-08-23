@@ -1,0 +1,96 @@
+---
+import Card from '../SharedComponents/Card.astro';
+import Badge from '../SharedComponents/Badge.astro';
+import Divider from '../SharedComponents/Divider.astro';
+import StarRating from '../SharedComponents/StarRating.astro';
+---
+
+<!-- Cards -->
+<h3 class="font-heading font-bold text-lg mb-4">Card</h3>
+<p class="text-sm text-text-muted mb-4">Content container with variants for visual hierarchy.</p>
+
+<span class="text-xs font-mono text-text-muted block mb-2">Variants</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <Card variant="default">
+    <h4 class="font-heading font-bold mb-2">Default Card</h4>
+    <p class="text-sm text-text-muted">Shadow with hover lift effect.</p>
+  </Card>
+  <Card variant="outlined">
+    <h4 class="font-heading font-bold mb-2">Outlined Card</h4>
+    <p class="text-sm text-text-muted">Border only, minimal shadow.</p>
+  </Card>
+  <Card variant="elevated">
+    <h4 class="font-heading font-bold mb-2">Elevated Card</h4>
+    <p class="text-sm text-text-muted">Heavy shadow, strong emphasis.</p>
+  </Card>
+</div>
+
+<span class="text-xs font-mono text-text-muted block mb-2">Padding sizes</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <Card padding="sm"><p class="text-sm">padding="sm"</p></Card>
+  <Card padding="md"><p class="text-sm">padding="md" (default)</p></Card>
+  <Card padding="lg"><p class="text-sm">padding="lg"</p></Card>
+</div>
+
+<!-- Badges -->
+<h3 class="font-heading font-bold text-lg mb-4">Badge</h3>
+<p class="text-sm text-text-muted mb-4">Inline pill labels for categorization and status.</p>
+
+<div class="mb-4">
+  <span class="text-xs font-mono text-text-muted block mb-2">size="sm"</span>
+  <div class="flex flex-wrap gap-3">
+    <Badge text="Primary" variant="primary" size="sm" />
+    <Badge text="Secondary" variant="secondary" size="sm" />
+    <Badge text="Success" variant="success" size="sm" />
+    <Badge text="Warning" variant="warning" size="sm" />
+  </div>
+</div>
+<div class="mb-8">
+  <span class="text-xs font-mono text-text-muted block mb-2">size="md"</span>
+  <div class="flex flex-wrap gap-3">
+    <Badge text="Primary" variant="primary" size="md" />
+    <Badge text="Secondary" variant="secondary" size="md" />
+    <Badge text="Success" variant="success" size="md" />
+    <Badge text="Warning" variant="warning" size="md" />
+  </div>
+</div>
+
+<!-- Dividers -->
+<h3 class="font-heading font-bold text-lg mb-4">Divider</h3>
+<p class="text-sm text-text-muted mb-4">Visual separators with multiple styles.</p>
+<div class="space-y-2 mb-8">
+  <div>
+    <span class="text-xs font-mono text-text-muted">variant="line"</span>
+    <Divider variant="line" spacing="sm" />
+  </div>
+  <div>
+    <span class="text-xs font-mono text-text-muted">variant="dots"</span>
+    <Divider variant="dots" spacing="sm" />
+  </div>
+  <div>
+    <span class="text-xs font-mono text-text-muted">variant="gradient"</span>
+    <Divider variant="gradient" spacing="sm" />
+  </div>
+</div>
+
+<!-- Star Rating -->
+<h3 class="font-heading font-bold text-lg mb-4">Star Rating</h3>
+<p class="text-sm text-text-muted mb-4">Star display for ratings with optional review count.</p>
+<div class="space-y-4">
+  <div class="flex items-center gap-4">
+    <span class="text-xs font-mono text-text-muted w-24">5.0 / lg</span>
+    <StarRating rating={5} size="lg" />
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="text-xs font-mono text-text-muted w-24">4.5 / md</span>
+    <StarRating rating={4.5} size="md" showCount={true} count={127} />
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="text-xs font-mono text-text-muted w-24">3.0 / sm</span>
+    <StarRating rating={3} size="sm" />
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="text-xs font-mono text-text-muted w-24">0.0 / md</span>
+    <StarRating rating={0} size="md" />
+  </div>
+</div>

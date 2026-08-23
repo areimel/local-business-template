@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import BlogPostCard from '@/components/BlogComponents/BlogPostCard.astro';
+import BlogCategoryFilter from '@/components/BlogComponents/BlogCategoryFilter.astro';
+import { getBlogConfig, getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+// Rest-param route so the index page can be flag-gated: when 'blog' is off,
+// no paths are returned and /blog/ is never built.
+export async function getStaticPaths() {
+  return gatedPaths('blog', () => [{ params: { index: undefined } }]);
+}
+
+const blogConfig = getBlogConfig();
+const branding = getBranding();
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+const postCategories = new Set(posts.map((p) => p.data.category));
+const categories = blogConfig.categories.filter((cat: string) => postCategories.has(cat));
+---
+
+<PageLayout
+  title={`${blogConfig.indexHeading} | ${branding.companyName}`}
+  description={blogConfig.indexSubheading}
+>
+  <InnerHero
+    heading={blogConfig.indexHeading}
+    subheading={blogConfig.indexSubheading}
+    badge={blogConfig.indexBadge}
+  />
+
+  <SectionWrapper background="white">
+    {categories.length > 1 && (
+      <BlogCategoryFilter categories={categories} />
+    )}
+
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {posts.map((post) => (
+          <div class="blog-card" data-category={post.data.category}>
+            <BlogPostCard
+              title={post.data.title}
+              slug={post.data.slug}
+              excerpt={post.data.excerpt}
+              publishDate={post.data.publishDate}
+              category={post.data.category}
+              featuredImage={post.data.featuredImage}
+              featuredImageAlt={post.data.featuredImageAlt}
+              readingTime={post.data.readingTime}
+              author={post.data.author}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-text-muted text-lg">No blog posts yet. Check back soon!</p>
+      </div>
+    )}
+  </SectionWrapper>
+
+  <CtaBanner />
+</PageLayout>

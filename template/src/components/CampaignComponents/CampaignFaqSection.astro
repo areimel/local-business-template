@@ -1,0 +1,42 @@
+---
+/**
+ * CampaignFaqSection.astro
+ *
+ * Campaign-specific FAQ section that accepts faq data as a prop.
+ * Renders nothing if no items are provided.
+ */
+import FaqAccordion from '@/components/InnerPageComponents/FaqAccordion.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+
+interface Props {
+  faq: {
+    eyebrow?: string;
+    headline: string;
+    defaultOpen?: number;
+    items: Array<{
+      question: string;
+      answer: string;
+    }>;
+  };
+}
+
+const { faq } = Astro.props;
+---
+
+{faq && faq.items.length > 0 && (
+  <SectionWrapper background="alt">
+    <div class="mx-auto max-w-4xl">
+      <div class="mb-10 text-center" data-animate="fade-up">
+        {faq.eyebrow && (
+          <Badge text={faq.eyebrow} variant="primary" size="md" />
+        )}
+        <h2 class="heading-display mt-4 text-text">
+          {faq.headline}
+        </h2>
+      </div>
+
+      <FaqAccordion faqs={faq.items} />
+    </div>
+  </SectionWrapper>
+)}

@@ -1,0 +1,142 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import TrustBar from '@/components/InnerPageComponents/TrustBar.astro';
+import ServiceIntro from '@/components/InnerPageComponents/ServiceIntro.astro';
+import FeatureCards from '@/components/InnerPageComponents/FeatureCards.astro';
+import TestimonialHighlight from '@/components/InnerPageComponents/TestimonialHighlight.astro';
+import LocationMap from '@/components/InnerPageComponents/LocationMap.astro';
+import ContentSection from '@/components/InnerPageComponents/ContentSection.astro';
+import FaqAccordion from '@/components/InnerPageComponents/FaqAccordion.astro';
+import FaqCtaFooter from '@/components/InnerPageComponents/FaqCtaFooter.astro';
+import NearbyLocations from '@/components/InnerPageComponents/NearbyLocations.astro';
+import FeaturedServiceCards from '@/components/InnerPageComponents/FeaturedServiceCards.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import EmergencyCtaBanner from '@/components/SharedComponents/EmergencyCtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import { getBranding } from '@/utils/data';
+import { getLocationBusinessJsonLd, getFaqPageJsonLd } from '@/utils/seo';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    slug: string;
+    region: string;
+    seoTitle?: string;
+    seoDescription: string;
+    heroHeading: string;
+    heroSubheading?: string;
+    intro: string;
+    highlights?: Array<{ title: string; description: string; icon?: string }>;
+    featuredServices?: Array<{ title: string; slug: string; description: string }>;
+    nearbyLocations?: string[];
+    mapEmbedQuery?: string;
+    faqs?: Array<{ question: string; answer: string }>;
+    ctaHeading?: string;
+    ctaBody?: string;
+    ctaButtonText?: string;
+    showContactForm: boolean;
+    showEmergencyCta: boolean;
+    schemaData?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const branding = getBranding();
+
+const schemaData = [
+  getLocationBusinessJsonLd({
+    title: frontmatter.title,
+    slug: frontmatter.slug,
+    region: frontmatter.region,
+    seoDescription: frontmatter.seoDescription,
+  }),
+  ...(frontmatter.faqs?.length ? [getFaqPageJsonLd(frontmatter.faqs)] : []),
+];
+---
+
+<PageLayout
+  title={frontmatter.seoTitle || `${frontmatter.title} HVAC Services | ${branding.companyName}`}
+  description={frontmatter.seoDescription}
+  schemaData={schemaData}
+  rawSchema={frontmatter.schemaData}
+>
+  <!-- Hero -->
+  <InnerHero
+    heading={frontmatter.heroHeading}
+    subheading={frontmatter.heroSubheading}
+    badge={frontmatter.region}
+  />
+
+  <!-- Trust Bar -->
+  <TrustBar />
+
+  <!-- City Intro -->
+  <ServiceIntro
+    intro={frontmatter.intro}
+    categoryLabel={frontmatter.title}
+  />
+
+  <!-- Highlights (reuses FeatureCards) -->
+  {frontmatter.highlights && frontmatter.highlights.length > 0 && (
+    <FeatureCards
+      features={frontmatter.highlights}
+      heading={`Why Choose Us in ${frontmatter.title}`}
+    />
+  )}
+
+  <!-- Featured Services -->
+  {frontmatter.featuredServices && frontmatter.featuredServices.length > 0 && (
+    <FeaturedServiceCards
+      services={frontmatter.featuredServices}
+      heading={`Our Services in ${frontmatter.title}`}
+    />
+  )}
+
+  <!-- Testimonial -->
+  <TestimonialHighlight />
+
+  <!-- City Map -->
+  {frontmatter.mapEmbedQuery && (
+    <LocationMap
+      mapQuery={frontmatter.mapEmbedQuery}
+      city={frontmatter.title}
+    />
+  )}
+
+  <!-- Markdown Body Content -->
+  <ContentSection>
+    <slot />
+  </ContentSection>
+
+  <!-- FAQs -->
+  {frontmatter.faqs && frontmatter.faqs.length > 0 && (
+    <SectionWrapper background="alt">
+      <h2 class="heading-display text-text text-center mb-12" data-animate="fade-up">
+        Frequently Asked Questions
+      </h2>
+      <div class="max-w-3xl mx-auto">
+        <FaqAccordion faqs={frontmatter.faqs} />
+        <FaqCtaFooter />
+      </div>
+    </SectionWrapper>
+  )}
+
+  <!-- Nearby Locations -->
+  <NearbyLocations
+    currentSlug={frontmatter.slug}
+    nearbyLocationSlugs={frontmatter.nearbyLocations}
+  />
+
+  <!-- Emergency CTA -->
+  {frontmatter.showEmergencyCta && (
+    <EmergencyCtaBanner />
+  )}
+
+  <!-- Final CTA Banner -->
+  <CtaBanner
+    heading={frontmatter.ctaHeading || `Ready for Service in ${frontmatter.title}?`}
+    body={frontmatter.ctaBody}
+    buttonText={frontmatter.ctaButtonText}
+  />
+</PageLayout>

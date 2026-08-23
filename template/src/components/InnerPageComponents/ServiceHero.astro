@@ -1,0 +1,270 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import TextInput from '@/components/FormComponents/TextInput.astro';
+import SelectInput from '@/components/FormComponents/SelectInput.astro';
+import FormMessage from '@/components/FormComponents/FormMessage.astro';
+
+interface Props {
+  heading: string;
+  subheading?: string;
+  badge?: string;
+  /** Trust bullets shown below the subheading */
+  trustItems?: string[];
+  /** Whether to show "Free Estimate" language in the contact form. Defaults to true. */
+  freeEstimate?: boolean;
+}
+
+const {
+  heading,
+  subheading,
+  badge,
+  trustItems = ['Same-Day Appointments', 'Upfront, No-Surprise Pricing', 'Licensed & Insured Technicians'],
+  freeEstimate = false,
+} = Astro.props;
+
+const branding = getBranding();
+
+const serviceOptions = [
+  { value: 'ac-repair', label: 'AC Repair & Service' },
+  { value: 'heating', label: 'Heating Service' },
+  { value: 'plumbing', label: 'Plumbing Service' },
+  { value: 'electrical', label: 'Electrical Service' },
+  { value: 'gas', label: 'Gas Service' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<section
+  class="relative overflow-hidden py-16 lg:py-0"
+  style="background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);"
+  aria-label="Page header"
+>
+  <!-- Radial gradient overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background: radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 60%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Dot-grid overlay -->
+  <div
+    class="absolute inset-0 pointer-events-none"
+    style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0); background-size: 28px 28px;"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative blobs -->
+  <div
+    class="absolute -top-20 -right-20 w-64 h-64 lg:w-96 lg:h-96 rounded-full bg-secondary/12 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="absolute -bottom-24 -left-24 w-48 h-48 lg:w-72 lg:h-72 rounded-full bg-accent/8 blur-3xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10 lg:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+      <!-- Left: Marketing copy -->
+      <div class="order-2 lg:order-1" data-animate="fade-up">
+        {badge && (
+          <div class="mb-4">
+            <Badge text={badge} variant="light" size="md" />
+          </div>
+        )}
+
+        <h1 class="heading-hero text-white mb-5 leading-tight">
+          {heading}
+        </h1>
+
+        {subheading && (
+          <p class="text-lg lg:text-xl text-white/85 mb-6 max-w-lg leading-relaxed">
+            {subheading}
+          </p>
+        )}
+
+        <!-- Trust bullets -->
+        <ul class="space-y-3 mb-8" aria-label="Service guarantees">
+          {trustItems.map((item) => (
+            <li class="flex items-center gap-3">
+              <div class="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center shrink-0">
+                <Icon name="material-symbols:check" class="w-4 h-4 text-secondary" aria-hidden="true" />
+              </div>
+              <span class="text-white/90 font-medium">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Social proof row -->
+        <div class="flex flex-wrap items-center gap-6">
+          <div class="flex items-center gap-2">
+            <StarRating rating={5} size="sm" />
+            <span class="text-white/90 text-sm font-medium">4.9 / 5 Stars</span>
+          </div>
+          <div class="h-5 w-px bg-white/20 hidden sm:block" aria-hidden="true"></div>
+          <a
+            href={`tel:${branding.phoneRaw}`}
+            class="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm font-medium"
+            aria-label={`Call us at ${branding.phone}`}
+          >
+            <Icon name="material-symbols:call-outline" class="w-4 h-4" aria-hidden="true" />
+            {branding.phone}
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Hero contact form -->
+      <div class="order-1 lg:order-2" data-animate="fade-up">
+        <div class="service-hero-form relative bg-neutral-900/95 backdrop-blur-sm border border-neutral-700/50 rounded-2xl p-6 sm:p-8 shadow-2xl">
+          <!-- Form chrome — top bar accent -->
+          <div class="absolute top-0 left-6 right-6 h-1 bg-gradient-to-r from-secondary via-secondary-light to-accent rounded-b-full" aria-hidden="true"></div>
+
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-heading font-bold text-white mb-1">{freeEstimate ? 'Get a Free Estimate' : 'Schedule Service'}</h2>
+            <p class="text-white/80 text-sm">Typically respond within 30 minutes</p>
+          </div>
+
+          <FormMessage id="hero-form-message" />
+
+          <form
+            id="hero-contact-form"
+            action="/api/contact"
+            method="POST"
+            class="space-y-4"
+          >
+            <!-- Honeypot spam protection -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display:none" aria-hidden="true" />
+
+            <div class="hero-form-fields">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <TextInput name="name" label="Name" type="text" required placeholder="Your name" />
+                <TextInput name="phone" label="Phone" type="tel" required placeholder="(555) 555-0123" />
+              </div>
+
+              <TextInput name="email" label="Email" type="email" placeholder="email@example.com" />
+
+              <SelectInput
+                name="service"
+                label="Service Needed"
+                options={serviceOptions}
+                required
+                placeholder="Select a service"
+              />
+            </div>
+
+            <button
+              type="submit"
+              id="hero-submit-btn"
+              class="btn btn-primary w-full text-lg py-4"
+            >
+              <Icon name="material-symbols:calendar-month-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+              <span>{freeEstimate ? 'Request Free Estimate' : 'Schedule Service'}</span>
+            </button>
+
+            <p class="text-center text-white/40 text-xs mt-2">
+              No obligation. We'll contact you to confirm details.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Hero form dark-mode field overrides -->
+<style>
+  .hero-form-fields :global(.form-label) {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .hero-form-fields :global(.form-input) {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.20);
+    color: #ffffff;
+  }
+  .hero-form-fields :global(.form-input::placeholder) {
+    color: rgba(255, 255, 255, 0.35);
+  }
+  .hero-form-fields :global(.form-input:focus) {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(2, 192, 243, 0.2);
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  /* Select arrow icon */
+  .hero-form-fields :global(select option) {
+    background-color: var(--color-neutral-900);
+    color: #ffffff;
+  }
+  /* Required asterisk */
+  .hero-form-fields :global(.text-error) {
+    color: var(--color-secondary-light);
+  }
+  .hero-form-fields :global(.space-y-5) {
+    gap: 1rem;
+  }
+
+  /* Form fields spacing override */
+  .hero-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('hero-contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('hero-submit-btn') as HTMLButtonElement;
+  const messageContainer = document.getElementById('hero-form-message') as HTMLElement;
+  const successMsg = document.getElementById('hero-form-message-success') as HTMLElement;
+  const errorMsg = document.getElementById('hero-form-message-error') as HTMLElement;
+
+  if (form && submitBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      messageContainer?.classList.add('hidden');
+      successMsg?.classList.add('hidden');
+      errorMsg?.classList.add('hidden');
+
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+          <path fill="currentColor" class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span>Sending...</span>
+      `;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          messageContainer?.classList.remove('hidden');
+          successMsg?.classList.remove('hidden');
+          form.reset();
+        } else {
+          messageContainer?.classList.remove('hidden');
+          errorMsg?.classList.remove('hidden');
+        }
+      } catch {
+        messageContainer?.classList.remove('hidden');
+        errorMsg?.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+</script>

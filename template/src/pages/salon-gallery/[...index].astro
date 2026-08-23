@@ -1,0 +1,55 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import InnerHero from "@/components/InnerPageComponents/InnerHero.astro";
+import ShowcaseGallery from "@/components/HomeVariantComponents/ShowcaseGallery.astro";
+import TestimonialHighlight from "@/components/InnerPageComponents/TestimonialHighlight.astro";
+import CtaBanner from "@/components/InnerPageComponents/CtaBanner.astro";
+import Alt1ContactSection from "@/components/HomeAlt1Components/Alt1ContactSection.astro";
+import { getInnerPage } from "@/utils/data";
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const v = getInnerPage("salon");
+---
+
+<PageLayout
+  title={v.meta.title}
+  description={v.meta.description}
+  noindex={true}
+  showBreadcrumbs={false}
+>
+  <InnerHero
+    heading={v.hero.heading}
+    subheading={v.hero.subheading}
+    badge={v.hero.badge}
+  />
+
+  {
+    v.gallery && (
+      <ShowcaseGallery
+        heading={v.gallery.heading}
+        subheading={v.gallery.subheading}
+        items={v.gallery.items}
+      />
+    )
+  }
+
+  {v.testimonial && <TestimonialHighlight testimonial={v.testimonial} />}
+
+  {
+    v.cta && (
+      <CtaBanner
+        heading={v.cta.heading}
+        body={v.cta.body}
+        buttonText={v.cta.buttonText}
+        buttonUrl={v.cta.buttonUrl}
+        variant={v.cta.variant as "primary" | "dark" | undefined}
+      />
+    )
+  }
+
+  <Alt1ContactSection />
+</PageLayout>

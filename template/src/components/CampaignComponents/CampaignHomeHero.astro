@@ -1,0 +1,200 @@
+---
+/**
+ * CampaignHomeHero.astro
+ *
+ * Full-viewport hero for campaign landing pages.
+ * Layout: 12-col grid — 7 cols content left, 5 cols form right (lg+).
+ * Includes mobile offer banner, trust signals, and a compact contact form.
+ *
+ * Note: uses QuickContactForm (the compact inline variant already in this project)
+ * in place of the BP-specific ContactFormSmall. Contest formType falls back to
+ * the same form — add a ContestEntryForm component if contest campaigns are needed.
+ */
+import { getBranding, getCoupons } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import QuickContactForm from '@/components/FormComponents/QuickContactForm.astro';
+import heroImageDefault from '@/assets/images/hero/team-van.jpg';
+
+interface Props {
+  hero: {
+    eyebrow?: string;
+    headline: string;
+    headlineAccent?: string;
+    description: string;
+    backgroundImage?: string;
+    trustSignals: string[];
+  };
+  offer: {
+    badge: string;
+    headline: string;
+    deadline?: string;
+    deadlineText?: string;
+    ctaText: string;
+    disclaimer?: string;
+    couponId?: string;
+  };
+  formType?: 'quote' | 'contest';
+  heroCompact?: boolean;
+}
+
+const { hero, offer, formType = 'quote', heroCompact = false } = Astro.props;
+const branding = getBranding();
+
+const coupon = offer.couponId
+  ? getCoupons().coupons.find((c) => c.id === offer.couponId && c.active)
+  : undefined;
+---
+
+<div class="bg-bg">
+  <!-- Mobile offer banner (above hero content) -->
+  <div class="lg:hidden bg-secondary text-neutral-900 px-4 py-3 text-center">
+    <p class="font-heading font-bold text-sm flex items-center justify-center gap-2">
+      <Icon name="material-symbols:schedule-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+      <span>{offer.badge}</span>
+      {offer.deadlineText && (
+        <span class="font-semibold">&mdash; {offer.deadlineText}</span>
+      )}
+    </p>
+  </div>
+
+  <section
+    id="campaign-hero"
+    class="relative w-full bg-bg overflow-hidden min-h-auto pb-[80px] lg:min-h-[80svh] [clip-path:polygon(0_0,100%_0,100%_calc(100%-60px),50%_100%,0_calc(100%-60px))]"
+    aria-label="Campaign hero"
+  >
+    <!-- Background image -->
+    <div class="absolute inset-0 z-0" aria-hidden="true">
+      {hero.backgroundImage ? (
+        <img
+          src={hero.backgroundImage}
+          alt=""
+          class="w-full h-full object-cover scale-[1.02] origin-center"
+          loading="eager"
+          aria-hidden="true"
+        />
+      ) : (
+        <Image
+          src={heroImageDefault}
+          alt=""
+          width={1920}
+          height={1080}
+          loading="eager"
+          fetchpriority="high"
+          class="w-full h-full object-cover scale-[1.02] origin-center"
+          aria-hidden="true"
+        />
+      )}
+    </div>
+
+    <!-- Dark gradient scrim -->
+    <div
+      class="absolute inset-0 z-[1] bg-[linear-gradient(135deg,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.35)_35%,rgba(0,0,0,0.20)_65%,rgba(0,0,0,0.10)_100%)]"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Content layer -->
+    <div
+      class:list={[
+        'section-container relative z-10 py-10 flex items-start min-h-[inherit]',
+        heroCompact ? 'lg:pt-[30px]' : 'lg:pt-[80px]',
+        'lg:pb-[0]',
+      ]}
+    >
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 w-full items-start">
+
+        <!-- Left column: copy + CTAs -->
+        <div class="lg:col-span-7 flex flex-col gap-5">
+
+          {hero.eyebrow && (
+            <span
+              class="text-secondary font-heading font-bold text-xs uppercase tracking-widest"
+              data-animate="fade-up" data-on="load" data-distance="30" data-duration="600"
+            >
+              {hero.eyebrow}
+            </span>
+          )}
+
+          <h1
+            class="heading-hero text-white text-balance [text-shadow:0_2px_4px_rgba(0,0,0,0.8),0_4px_16px_rgba(0,0,0,0.5),0_0_40px_rgba(0,0,0,0.3)]"
+            data-animate="fade-up" data-on="load" data-delay="150"
+          >
+            {hero.headline}
+            {hero.headlineAccent && (
+              <>
+                <br /><span class="text-primary-light">{hero.headlineAccent}</span>
+              </>
+            )}
+          </h1>
+
+          <div class="max-w-xl" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+            <p class="text-white/90 text-lg leading-relaxed bg-black/30 backdrop-blur-md border border-white/10 rounded-lg px-5 py-4">
+              {hero.description}
+            </p>
+          </div>
+
+          {hero.trustSignals && hero.trustSignals.length > 0 && (
+            <div class="flex flex-wrap gap-x-5 gap-y-2" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+              {hero.trustSignals.map((signal) => (
+                <span class="inline-flex items-center gap-1.5 text-sm text-white/90 font-medium">
+                  <Icon name="material-symbols:check-circle-outline" class="w-4 h-4 text-secondary shrink-0" aria-hidden="true" />
+                  {signal}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div data-animate="fade-up" data-on="load" data-delay="450" data-distance="20" data-duration="500">
+            <ButtonGroup align="left" stack="mobile">
+              <a
+                href={`tel:${branding.phoneRaw}`}
+                class="btn btn-glass text-base px-6 py-3 lg:text-lg lg:px-8 lg:py-4"
+                aria-label={`Call us at ${branding.phone}`}
+              >
+                <Icon name="material-symbols:call-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+                Call {branding.phone}
+              </a>
+            </ButtonGroup>
+          </div>
+
+        </div>
+
+        <!-- Right column: form card -->
+        <div class="lg:col-span-5" id="hero-form" data-animate="fade-up">
+          <!-- ponytail: QuickContactForm used here; add a dedicated ContactFormSmall/ContestEntryForm if campaigns need richer form fields or a separate contest variant -->
+          <div class="bg-bg rounded-(--radius-card) shadow-xl p-6 border border-neutral-200">
+            <QuickContactForm heading={offer.headline} showHeading={true} />
+          </div>
+
+          {offer.disclaimer && (
+            <p class="text-white/50 text-xs text-center mt-3 max-w-sm mx-auto">
+              {offer.disclaimer}
+            </p>
+          )}
+
+          {coupon && (
+            <div class="mt-3 pt-4 relative">
+              <div class="relative flex flex-col bg-bg rounded-(--radius-card) border-2 border-dashed border-primary/50 p-6">
+                <h3 class="text-xl font-heading font-bold text-text mb-3">{coupon.title}</h3>
+                <p class="text-sm text-text-muted leading-relaxed mb-4">{coupon.description}</p>
+                {coupon.validUntil && (
+                  <div class="flex items-center gap-2 text-sm text-text-muted">
+                    <Icon name="material-symbols:calendar-month-outline" class="w-4.5 h-4.5 shrink-0" aria-hidden="true" />
+                    <span>Valid through {coupon.validUntil}</span>
+                  </div>
+                )}
+                {coupon.terms && (
+                  <p class="text-xs text-text-muted leading-relaxed mt-3">
+                    <span class="font-bold">Terms:</span> {coupon.terms}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,29 @@
+# Feature Flags — single source of truth for toggling template features per client.
+#
+# Disabled features: pages are NOT built (visiting the URL 404s), nav/footer
+# links are hidden automatically, and nothing appears in the sitemap.
+#
+# Flags are read at BUILD TIME only — restart `pnpm dev` after editing.
+# See FEATURE_FLAGS_PLAN.md for what each flag controls.
+
+blog: true
+careers: true
+offers: true
+coupons: true
+serviceAreas: true
+reviews: true
+faqs: true
+search: true
+translate: true
+exitIntentModal: true
+stickyPhoneBar: true
+floatingContactButton: true
+analytics: false # template default off — matches the placeholder GTM id; flip on once a real id is set
+emergencyCta: true # hides EmergencyCtaBanner sections; 24/7 copy in ctas.yaml/branding still needs manual edits
+
+# Internal tooling flags (consolidated from the old "Dev Mode" system — build-time only).
+# Scaffolded projects ship with these OFF. Flip any to `true` locally to browse the
+# internal docs, styleguide, animation examples, or demo/variant pages, then restart dev.
+devTools: true # reserved for future dev-tool features (e.g. a site theme picker); no consumer wired yet
+devPages: true # internal-team pages: /docs, /styleguide, /animation-examples — off = not built (404)
+demoPages: true # client-facing demo/variant pages + floating demo navigator

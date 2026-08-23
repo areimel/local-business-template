@@ -1,0 +1,89 @@
+---
+import { getImage } from 'astro:assets';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding, getCtas } from '@/utils/data';
+
+import teamVanSrc from '@/assets/images/hero/team-van.jpg';
+
+const branding = getBranding();
+const ctas = getCtas();
+
+const optimizedBg = await getImage({
+  src: teamVanSrc,
+  width: 1920,
+  format: 'webp',
+  quality: 80,
+});
+---
+
+<section
+  class="relative py-(--spacing-section) overflow-hidden"
+  id="photo-cta"
+>
+  {/* Background image */}
+  <div
+    class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={`background-image: url('${optimizedBg.src}');`}
+    aria-hidden="true"
+  />
+
+  {/* Directional gradient overlay */}
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(135deg, rgba(26,26,46,0.92) 0%, rgba(26,26,46,0.72) 50%, rgba(255,17,0,0.45) 100%);"
+    aria-hidden="true"
+  />
+
+  {/* Geometric decorations */}
+  <div
+    class="absolute top-0 left-0 w-40 h-40 bg-accent/15 pointer-events-none"
+    style="clip-path: polygon(0 0, 100% 0, 0 100%);"
+    aria-hidden="true"
+  />
+  <div
+    class="absolute bottom-8 right-8 w-16 h-16 border-2 border-secondary/30 rounded-full pointer-events-none"
+    aria-hidden="true"
+  />
+  <div
+    class="absolute top-1/2 left-0 right-0 h-px bg-white/8 pointer-events-none"
+    aria-hidden="true"
+  />
+
+  {/* Content */}
+  <div class="section-container relative z-10 text-center" data-animate="fade-up">
+    {/* Centered accent rule */}
+    <div class="flex items-center justify-center gap-3 mb-6" aria-hidden="true">
+      <div class="h-px w-12 bg-accent/60"></div>
+      <div class="w-2 h-2 rounded-full bg-accent"></div>
+      <div class="h-px w-12 bg-accent/60"></div>
+    </div>
+
+    <h2 class="heading-display text-white max-w-3xl mx-auto">
+      Ready for Reliable Home Comfort?
+    </h2>
+
+    <p class="text-lg text-white/80 mt-4 mb-8 max-w-xl mx-auto">
+      {ctas.servicesCta.body}
+    </p>
+
+    <ButtonGroup align="center" stack="mobile">
+      <PrimaryButton
+        text={ctas.servicesCta.buttonText}
+        href={ctas.servicesCta.buttonUrl}
+        icon="material-symbols:calendar-month-outline"
+        size="lg"
+      />
+      <a
+        href={`tel:${branding.phoneRaw}`}
+        class="btn btn-outline border-white text-white hover:bg-white hover:text-neutral-900"
+        style="font-size: var(--font-size-lg); padding: 1rem 2rem;"
+        aria-label={`Call us at ${branding.phone}`}
+      >
+        <Icon name="material-symbols:call" class="w-5 h-5 shrink-0" />
+        <span>Call {branding.phone}</span>
+      </a>
+    </ButtonGroup>
+  </div>
+</section>

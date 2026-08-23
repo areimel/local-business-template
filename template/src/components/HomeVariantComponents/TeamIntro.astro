@@ -1,0 +1,40 @@
+---
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import type { TeamMember } from '@/utils/data';
+
+interface Props {
+  badge?: string;
+  heading: string;
+  subheading?: string;
+  members: TeamMember[];
+}
+
+const { badge, heading, subheading, members } = Astro.props;
+---
+
+<SectionWrapper background="white">
+  <div class="text-center max-w-2xl mx-auto mb-12" data-animate="fade-up">
+    {badge && (
+      <div class="mb-4 flex justify-center">
+        <Badge text={badge} />
+      </div>
+    )}
+    <h2 class="heading-display text-text mb-3">{heading}</h2>
+    {subheading && <p class="text-text-muted text-lg">{subheading}</p>}
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {members.map((member) => (
+      <div class="bg-bg rounded-(--radius-card) border border-neutral-200 p-6 text-center shadow-sm">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <Icon name={member.icon || 'material-symbols:person'} class="w-8 h-8 text-primary" aria-hidden="true" />
+        </div>
+        <h3 class="font-heading font-bold text-text text-lg">{member.name}</h3>
+        <p class="text-primary text-sm font-medium mb-2">{member.role}</p>
+        {member.bio && <p class="text-text-muted text-sm">{member.bio}</p>}
+      </div>
+    ))}
+  </div>
+</SectionWrapper>

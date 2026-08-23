@@ -1,0 +1,47 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  text: string;
+  href?: string;
+  icon?: string;
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+  type?: 'button' | 'submit' | 'link';
+}
+
+const {
+  text,
+  href,
+  icon,
+  size = 'md',
+  fullWidth = false,
+  type = 'link',
+} = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: 'text-sm px-4 py-2',
+  md: '',
+  lg: 'text-lg px-8 py-4',
+};
+
+const classes = [
+  'btn btn-primary',
+  sizeClasses[size],
+  fullWidth ? 'w-full' : '',
+].filter(Boolean).join(' ');
+
+const isLink = href || type === 'link';
+---
+
+{isLink ? (
+  <a href={href || '#'} class={classes}>
+    {icon && <Icon name={icon} class="w-5 h-5 shrink-0" />}
+    <span>{text}</span>
+  </a>
+) : (
+  <button type={type} class={classes}>
+    {icon && <Icon name={icon} class="w-5 h-5 shrink-0" />}
+    <span>{text}</span>
+  </button>
+)}

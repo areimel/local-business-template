@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import JobListingCard from '@/components/CareersComponents/JobListingCard.astro';
+import { getCareersConfig, getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+// Rest-param route so the index page can be flag-gated: when 'careers' is off,
+// no paths are returned and /careers/ is never built.
+export async function getStaticPaths() {
+  return gatedPaths('careers', () => [{ params: { index: undefined } }]);
+}
+
+const careersConfig = getCareersConfig();
+const branding = getBranding();
+
+// Fetch all active job postings, sorted by sortOrder then publishDate desc
+const allJobs = await getCollection('careers');
+const jobs = allJobs
+  .filter((job) => job.data.active)
+  .sort((a, b) => {
+    if (a.data.sortOrder !== b.data.sortOrder) return a.data.sortOrder - b.data.sortOrder;
+    return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+  });
+
+// Extract unique departments from actual postings (preserving config order)
+const jobDepartments = new Set(jobs.map((j) => j.data.department));
+const departments = careersConfig.departments.filter((dept) => jobDepartments.has(dept));
+---
+
+<PageLayout
+  title={`${careersConfig.indexHeading} | ${branding.companyName}`}
+  description={careersConfig.indexSubheading}
+>
+  {/* Inline header section */}
+  <SectionWrapper background="alt" padding="tight">
+    <div class="text-center">
+      <div class="mb-4">
+        <Badge text={careersConfig.indexBadge} variant="primary" size="md" />
+      </div>
+      <h1
+        class="font-heading font-bold text-text mb-4"
+        style="font-size: var(--font-size-2xl);"
+      >
+        {careersConfig.indexHeading}
+      </h1>
+      <p class="text-text-muted text-lg max-w-2xl mx-auto mb-8">
+        {careersConfig.indexSubheading}
+      </p>
+
+      {/* Department filter bar */}
+      {departments.length > 1 && (
+        <div
+          class="flex flex-wrap justify-center gap-2 md:gap-3"
+          role="group"
+          aria-label="Filter jobs by department"
+        >
+          <button
+            type="button"
+            class="px-4 py-2 rounded-(--radius-full) text-sm font-medium transition-colors bg-primary text-white"
+            data-filter-btn
+            data-filter="all"
+            aria-pressed="true"
+          >
+            All
+          </button>
+          {departments.map((dept) => (
+            <button
+              type="button"
+              class="px-4 py-2 rounded-(--radius-full) text-sm font-medium transition-colors bg-neutral-100 text-text-muted hover:bg-neutral-200"
+              data-filter-btn
+              data-filter={dept}
+              aria-pressed="false"
+            >
+              {dept}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  </SectionWrapper>
+
+  {/* Job listings grid */}
+  <SectionWrapper background="white">
+    {jobs.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {jobs.map((job) => (
+          <div class="job-card" data-department={job.data.department}>
+            <JobListingCard
+              title={job.data.title}
+              slug={job.data.slug}
+              excerpt={job.data.excerpt}
+              department={job.data.department}
+              jobType={job.data.jobType}
+              location={job.data.location}
+              salary={job.data.salary}
+              publishDate={job.data.publishDate}
+              featured={job.data.featured}
+              applyUrl={job.data.applyUrl}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-text-muted text-lg">No open positions at this time. Check back soon!</p>
+      </div>
+    )}
+  </SectionWrapper>
+
+  <CtaBanner />
+</PageLayout>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-btn]');
+  const jobCards = document.querySelectorAll<HTMLElement>('.job-card');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selected = btn.dataset.filter ?? 'all';
+
+      // Update active state on all buttons
+      filterButtons.forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle('bg-primary', isActive);
+        b.classList.toggle('text-white', isActive);
+        b.classList.toggle('bg-neutral-100', !isActive);
+        b.classList.toggle('text-text-muted', !isActive);
+        b.classList.toggle('hover:bg-neutral-200', !isActive);
+        b.setAttribute('aria-pressed', String(isActive));
+      });
+
+      // Show/hide job cards
+      jobCards.forEach((card) => {
+        const cardDepartment = card.dataset.department ?? '';
+        const visible = selected === 'all' || cardDepartment === selected;
+        card.style.display = visible ? '' : 'none';
+      });
+    });
+  });
+</script>

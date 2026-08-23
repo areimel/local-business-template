@@ -1,0 +1,5 @@
+[
+  { "path": "/", "label": "Homepage" },
+  { "path": "/contact/", "label": "Contact" },
+  { "path": "/air-conditioning/ac-repair/", "label": "AC Repair" }
+]

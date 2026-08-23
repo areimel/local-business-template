@@ -1,0 +1,83 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+
+const branding = getBranding();
+
+const nextSteps = [
+  {
+    title: 'Confirmation',
+    description: 'Your message has been received by our team.',
+  },
+  {
+    title: 'Review',
+    description: 'A team member will review your request and prepare a response.',
+  },
+  {
+    title: 'Follow-up',
+    description: `We'll reach out within one business day to discuss your needs.`,
+  },
+];
+---
+
+<PageLayout title="Thank You" showBreadcrumbs={false}>
+  <InnerHero
+    heading="Thank You!"
+    subheading="Your message has been received"
+  />
+
+  <SectionWrapper background="white">
+    <div class="max-w-2xl mx-auto text-center">
+
+      <!-- Success Icon -->
+      <div class="mb-8" data-animate="fade-up">
+        <div class="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto">
+          <Icon name="material-symbols:check-circle" class="w-12 h-12 text-success" aria-hidden="true" />
+        </div>
+      </div>
+
+      <!-- Confirmation Text -->
+      <div class="mb-12" data-animate="fade-up">
+        <h2 class="heading-display text-text mb-4">We've Got Your Message</h2>
+        <p class="text-lg text-text-muted max-w-lg mx-auto">
+          Thank you for reaching out to {branding.companyName}. One of our team members
+          will get back to you shortly.
+        </p>
+      </div>
+
+      <!-- What Happens Next -->
+      <div class="mb-12" data-animate="fade-up">
+        <h3 class="text-xl font-heading font-bold text-text mb-8">What Happens Next</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          {nextSteps.map((step, index) => (
+            <div class="flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-heading font-bold text-lg mb-3">
+                {index + 1}
+              </div>
+              <h4 class="font-heading font-bold text-text mb-1">{step.title}</h4>
+              <p class="text-sm text-text-muted">{step.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div data-animate="fade-up">
+        <p class="text-text-muted mb-4">
+          Need immediate assistance? Give us a call.
+        </p>
+        <ButtonGroup align="center" stack="mobile">
+          <PrimaryButton text="Back to Homepage" href="/" icon="material-symbols:home-outline" />
+          <PhoneButton size="md" variant="primary" />
+        </ButtonGroup>
+      </div>
+
+    </div>
+  </SectionWrapper>
+</PageLayout>

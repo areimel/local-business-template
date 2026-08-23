@@ -1,0 +1,24 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import FaqAccordion from '@/components/InnerPageComponents/FaqAccordion.astro';
+import type { FAQQuestion } from '@/utils/data';
+
+interface Props {
+  faqs: FAQQuestion[];
+  heading?: string;
+  background?: 'white' | 'alt' | 'primary' | 'dark';
+}
+
+const {
+  faqs,
+  heading = 'Frequently Asked Questions',
+  background = 'alt',
+} = Astro.props;
+---
+
+<SectionWrapper background={background}>
+  <div class="max-w-3xl mx-auto">
+    <h2 class="heading-display text-text text-center mb-12" data-animate="fade-up">{heading}</h2>
+    <FaqAccordion faqs={faqs} />
+  </div>
+</SectionWrapper>

@@ -1,0 +1,123 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import StarRating from '@/components/SharedComponents/StarRating.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Image } from 'astro:assets';
+import { getBranding } from '@/utils/data';
+import staffFistbump from '@/assets/images/team/staff-fistbump.jpg';
+import reviewsBadge from '@/assets/images/logos/reviews-badge.png';
+
+const branding = getBranding();
+
+const testimonials = [
+  {
+    quote: "They came out the same day our AC stopped working. The technician was professional, explained everything clearly, and had us back up and running in no time. Highly recommend!",
+    name: "Sarah M.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+  {
+    quote: "We've used them for both our AC and heating needs. Always on time, fair pricing, and quality work. They've been our go-to for years and we wouldn't trust anyone else.",
+    name: "James R.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+  {
+    quote: "From the initial call to the completed installation, every step was handled with care. The team was respectful of our home and the new system works perfectly. Five stars!",
+    name: "Linda K.",
+    location: branding.serviceArea.primary,
+    rating: 5,
+  },
+];
+---
+
+<SectionWrapper background="alt" id="testimonials">
+  <div class="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
+
+    <!-- Left: Header + Cards -->
+    <div class="flex-1 min-w-0">
+      <!-- Section Header -->
+      <div class="mb-10" data-animate="fade-up">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-0.5 bg-primary rounded-full"></div>
+          <div class="w-4 h-0.5 bg-secondary rounded-full"></div>
+        </div>
+        <Badge text="Customer Reviews" variant="primary" size="md" />
+        <h2 class="heading-display text-text mt-4 mb-4">What Our Customers Say</h2>
+        <p class="text-text-muted text-lg max-w-xl">
+          Don't just take our word for it — hear from the homeowners we've served
+          across {branding.serviceArea.primary}.
+        </p>
+      </div>
+
+      <!-- Testimonial Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {testimonials.map((testimonial) => (
+          <div class="relative bg-bg rounded-(--radius-card) border border-neutral-200 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            {/* Decorative open-quote */}
+            <div class="absolute top-4 right-5 font-heading font-black text-6xl leading-none select-none pointer-events-none" style="color: rgba(255, 17, 0, 0.08);" aria-hidden="true">&ldquo;</div>
+
+            <StarRating rating={testimonial.rating} size="sm" />
+            <blockquote class="mt-3 flex-1">
+              <p class="text-sm text-text leading-relaxed italic">
+                &ldquo;{testimonial.quote}&rdquo;
+              </p>
+            </blockquote>
+            <footer class="mt-4 pt-3 border-t border-neutral-200">
+              <cite class="not-italic flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-heading font-bold text-primary shrink-0">{testimonial.name.charAt(0)}</span>
+                <div>
+                  <span class="font-heading font-bold text-text text-sm block">{testimonial.name}</span>
+                  <span class="text-xs text-text-muted">{testimonial.location}</span>
+                </div>
+              </cite>
+            </footer>
+          </div>
+        ))}
+      </div>
+
+      <!-- Reviews Badge -->
+      <div class="mt-8 flex items-center gap-4" data-animate="fade-up">
+        <a
+          href={branding.googleReviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 bg-bg rounded-(--radius-lg) shadow-sm border border-neutral-200 px-5 py-3 hover:shadow-md transition-shadow no-underline"
+          aria-label="See our reviews"
+        >
+          <Image
+            src={reviewsBadge}
+            alt="Customer reviews badge"
+            width={100}
+            height={32}
+            class="h-8 w-auto"
+          />
+          <div class="border-l border-neutral-200 pl-3">
+            <div class="flex items-center gap-1">
+              <StarRating rating={4.9} size="sm" />
+              <span class="text-sm font-bold text-text ml-1">4.9</span>
+            </div>
+            <span class="text-xs text-text-muted">Based on 500+ reviews</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Side image (hidden on mobile) -->
+    <div class="hidden lg:block w-64 xl:w-80 shrink-0" data-animate="fade-up">
+      <div class="relative">
+        <div class="absolute -bottom-3 -right-3 w-full h-full rounded-(--radius-xl) bg-primary/8" aria-hidden="true"></div>
+        <div class="relative rounded-(--radius-xl) overflow-hidden shadow-lg">
+          <Image
+            src={staffFistbump}
+            alt={`${branding.companyName} team fist bump at service van`}
+            width={400}
+            height={500}
+            class="w-full h-auto object-cover aspect-[4/5]"
+          />
+        </div>
+      </div>
+    </div>
+
+  </div>
+</SectionWrapper>

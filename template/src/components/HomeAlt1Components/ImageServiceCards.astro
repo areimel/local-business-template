@@ -1,0 +1,108 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+
+const serviceCategories = [
+  {
+    name: 'Air Conditioning',
+    description: 'AC repair, installation, maintenance, and emergency service for year-round comfort.',
+    icon: 'material-symbols:ac-unit',
+    url: '/air-conditioning/',
+    accentColor: 'bg-primary',
+    iconBg: 'bg-primary/10',
+    iconText: 'text-primary',
+  },
+  {
+    name: 'Heating',
+    description: 'Expert heating repair, installation, and maintenance to keep your home warm year-round.',
+    icon: 'material-symbols:heat',
+    url: '/heating/',
+    accentColor: 'bg-accent',
+    iconBg: 'bg-accent/10',
+    iconText: 'text-accent',
+  },
+  {
+    name: 'Plumbing',
+    description: 'Leak repairs, water heaters, drain cleaning, and repiping from licensed plumbers.',
+    icon: 'material-symbols:plumbing',
+    url: '/plumbing/',
+    accentColor: 'bg-secondary',
+    iconBg: 'bg-secondary/10',
+    iconText: 'text-secondary',
+  },
+  {
+    name: 'Electrical',
+    description: 'Safe, code-compliant electrical installations, panel upgrades, and repairs.',
+    icon: 'material-symbols:electric-bolt',
+    url: '/electrical-services/',
+    accentColor: 'bg-info',
+    iconBg: 'bg-info/10',
+    iconText: 'text-info',
+  },
+  {
+    name: 'Gas Services',
+    description: 'Gas leak detection, safety inspections, and appliance hookups you can trust.',
+    icon: 'material-symbols:gas-meter',
+    url: '/gas/',
+    accentColor: 'bg-warning',
+    iconBg: 'bg-warning/10',
+    iconText: 'text-warning',
+  },
+];
+---
+
+<SectionWrapper id="services" background="alt">
+  <!-- Section Header -->
+  <div class="text-center mb-12" data-animate="fade-up">
+    <Badge text="Our Services" variant="primary" size="md" />
+    <h2 class="heading-display text-text mt-4 mb-4">What We Do</h2>
+    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+      From routine maintenance to emergency repairs, we provide complete home comfort
+      and maintenance solutions you can count on.
+    </p>
+  </div>
+
+  <!-- Service Cards Grid -->
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"
+  >
+    {serviceCategories.map((service) => (
+      <a
+        href={service.url}
+        class="group block bg-bg rounded-(--radius-card) shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 no-underline"
+      >
+        {/* Colored accent bar */}
+        <div class:list={['h-2 w-full transition-all duration-300 group-hover:h-2.5', service.accentColor]} aria-hidden="true"></div>
+
+        {/* Card content */}
+        <div class="p-6">
+          <div class="flex items-start gap-4">
+            <div class:list={['w-12 h-12 rounded-lg flex items-center justify-center shrink-0', service.iconBg]}>
+              <Icon name={service.icon} class:list={['w-6 h-6', service.iconText]} />
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-lg font-heading font-bold text-text mb-1 group-hover:text-primary transition-colors">
+                {service.name}
+              </h3>
+              <p class="text-sm text-text-muted leading-relaxed">
+                {service.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Learn more link */}
+          <div class="mt-4 pt-4 border-t border-neutral-200 flex items-center justify-between">
+            <span class="text-sm font-medium text-primary group-hover:text-primary-dark transition-colors">
+              Learn More
+            </span>
+            <Icon
+              name="material-symbols:arrow-forward"
+              class="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform"
+            />
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</SectionWrapper>

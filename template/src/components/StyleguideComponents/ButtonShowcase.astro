@@ -1,0 +1,93 @@
+---
+import PrimaryButton from '../ButtonComponents/PrimaryButton.astro';
+import SecondaryButton from '../ButtonComponents/SecondaryButton.astro';
+import PhoneButton from '../ButtonComponents/PhoneButton.astro';
+import IconButton from '../ButtonComponents/IconButton.astro';
+import ButtonGroup from '../ButtonComponents/ButtonGroup.astro';
+---
+
+<!-- Primary Button -->
+<h3 class="font-heading font-bold text-lg mb-4">Primary Button</h3>
+<p class="text-sm text-text-muted mb-4">Main call-to-action button (secondary/orange color). Used for primary conversion actions.</p>
+<div class="flex flex-wrap items-end gap-4 mb-4">
+  <PrimaryButton text="Small" href="#" size="sm" />
+  <PrimaryButton text="Medium (Default)" href="#" size="md" />
+  <PrimaryButton text="Large" href="#" size="lg" />
+</div>
+<div class="flex flex-wrap items-end gap-4 mb-8">
+  <PrimaryButton text="With Icon" href="#" icon="material-symbols:arrow-forward" />
+  <div class="w-64">
+    <PrimaryButton text="Full Width" href="#" fullWidth={true} />
+  </div>
+</div>
+
+<!-- Secondary Button -->
+<h3 class="font-heading font-bold text-lg mb-4">Secondary Button</h3>
+<p class="text-sm text-text-muted mb-4">Outline button with primary color border. Used for secondary actions.</p>
+<div class="flex flex-wrap items-end gap-4 mb-4">
+  <SecondaryButton text="Small" href="#" size="sm" />
+  <SecondaryButton text="Medium (Default)" href="#" size="md" />
+  <SecondaryButton text="Large" href="#" size="lg" />
+</div>
+<div class="flex flex-wrap items-end gap-4 mb-8">
+  <SecondaryButton text="With Icon" href="#" icon="material-symbols:arrow-forward" />
+  <div class="w-64">
+    <SecondaryButton text="Full Width" href="#" fullWidth={true} />
+  </div>
+</div>
+
+<!-- Phone Button -->
+<h3 class="font-heading font-bold text-lg mb-4">Phone Button</h3>
+<p class="text-sm text-text-muted mb-4">Click-to-call button. Reads phone number from branding.yaml automatically.</p>
+<div class="flex flex-wrap items-end gap-4 mb-4">
+  <PhoneButton variant="secondary" size="sm" />
+  <PhoneButton variant="secondary" size="md" />
+  <PhoneButton variant="secondary" size="lg" />
+</div>
+<div class="flex flex-wrap items-end gap-4 mb-8">
+  <PhoneButton variant="primary" />
+  <PhoneButton showIcon={false} />
+</div>
+
+<!-- Icon Button -->
+<h3 class="font-heading font-bold text-lg mb-4">Icon Button</h3>
+<p class="text-sm text-text-muted mb-4">Circular icon-only buttons. Ghost (transparent) or filled variants.</p>
+<div class="flex flex-wrap items-center gap-4 mb-4">
+  <span class="text-sm text-text-muted w-16">Ghost:</span>
+  <IconButton icon="material-symbols:call" ariaLabel="Call" size="sm" />
+  <IconButton icon="material-symbols:call" ariaLabel="Call" size="md" />
+  <IconButton icon="material-symbols:call" ariaLabel="Call" size="lg" />
+</div>
+<div class="flex flex-wrap items-center gap-4 mb-8">
+  <span class="text-sm text-text-muted w-16">Filled:</span>
+  <IconButton icon="material-symbols:close" ariaLabel="Close" variant="filled" size="sm" />
+  <IconButton icon="material-symbols:close" ariaLabel="Close" variant="filled" size="md" />
+  <IconButton icon="material-symbols:close" ariaLabel="Close" variant="filled" size="lg" />
+</div>
+
+<!-- Button Group -->
+<h3 class="font-heading font-bold text-lg mb-4">Button Group</h3>
+<p class="text-sm text-text-muted mb-4">Flex container for button pairs. Controls alignment and responsive stacking.</p>
+<div class="space-y-6">
+  <div>
+    <span class="text-xs font-mono text-text-muted block mb-2">align="left" stack="mobile"</span>
+    <ButtonGroup align="left" stack="mobile">
+      <PrimaryButton text="Get Quote" href="#" />
+      <SecondaryButton text="Learn More" href="#" />
+    </ButtonGroup>
+  </div>
+  <div>
+    <span class="text-xs font-mono text-text-muted block mb-2">align="center" stack="never"</span>
+    <ButtonGroup align="center" stack="never">
+      <PrimaryButton text="Get Quote" href="#" />
+      <SecondaryButton text="Learn More" href="#" />
+    </ButtonGroup>
+  </div>
+  <div>
+    <span class="text-xs font-mono text-text-muted block mb-2">align="right" stack="always"</span>
+    <ButtonGroup align="right" stack="always">
+      <PrimaryButton text="Get Quote" href="#" />
+      <SecondaryButton text="Learn More" href="#" />
+    </ButtonGroup>
+  </div>
+</div>

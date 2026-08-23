@@ -1,0 +1,87 @@
+---
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import ServiceAreaMap from '@/components/SharedComponents/ServiceAreaMap.astro';
+import { getServiceAreas, getBranding } from '@/utils/data';
+
+const serviceAreas = getServiceAreas();
+const branding = getBranding();
+
+const currentYear = new Date().getFullYear();
+const yearsServing = currentYear - branding.yearEstablished;
+const totalCities = serviceAreas.cities.length;
+---
+
+<SectionWrapper background="white">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+    <!-- Text + Stats -->
+    <div data-animate="fade-up">
+      <Badge text="Our Coverage" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-6">
+        {branding.serviceArea.primary}'s Trusted Home Service Team
+      </h2>
+      <p class="text-text-muted text-lg leading-relaxed mb-8">
+        {serviceAreas.pageIntro}
+      </p>
+
+      <!-- Stats strip -->
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="stat-card">
+          <div class="text-3xl font-heading font-extrabold text-primary">
+            <span data-animate="counter" data-count-to={String(yearsServing)}>0</span>+
+          </div>
+          <div class="text-xs font-medium text-text-muted mt-1 uppercase tracking-wider">Years Serving</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-3xl font-heading font-extrabold text-primary">
+            <span data-animate="counter" data-count-to={String(totalCities)}>0</span>+
+          </div>
+          <div class="text-xs font-medium text-text-muted mt-1 uppercase tracking-wider">Cities Covered</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-3xl font-heading font-extrabold text-primary">
+            {serviceAreas.coverageRadius ?? 30}
+          </div>
+          <div class="text-xs font-medium text-text-muted mt-1 uppercase tracking-wider">Mile Radius</div>
+        </div>
+      </div>
+
+      <ButtonGroup>
+        <PrimaryButton
+          text="Schedule a Service Call"
+          href="/contact/"
+          icon="material-symbols:calendar-month-outline"
+          size="lg"
+        />
+        <PhoneButton size="lg" variant="secondary" />
+      </ButtonGroup>
+    </div>
+
+    <!-- Map -->
+    <div class="relative" data-animate="fade-up">
+      <ServiceAreaMap
+        aspectRatio="640/520"
+        zoom={10}
+        showRadiusBadge={true}
+        showSinceBadge={true}
+        variant="light"
+        ariaLabel={`Map of the ${branding.serviceArea.primary} service area`}
+      />
+      <div class="absolute -inset-3 rounded-3xl bg-primary/5 -z-10 -rotate-1" aria-hidden="true"></div>
+    </div>
+  </div>
+</SectionWrapper>
+
+<style>
+  .stat-card {
+    text-align: center;
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-card);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-neutral-200);
+  }
+</style>

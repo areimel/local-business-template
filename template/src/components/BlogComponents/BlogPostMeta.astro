@@ -1,0 +1,70 @@
+---
+import Badge from '@/components/SharedComponents/Badge.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  publishDate: Date;
+  updatedDate?: Date;
+  author: string;
+  category: string;
+  readingTime?: number;
+}
+
+const { publishDate, updatedDate, author, category, readingTime } = Astro.props;
+
+const formattedPublishDate = publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<div class="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-8" aria-label="Article metadata">
+  <Badge text={category} variant="primary" size="sm" />
+
+  <span class="inline-flex items-center gap-1.5 text-sm text-text-muted">
+    <Icon
+      name="material-symbols:calendar-month-outline"
+      style="width: 18px; height: 18px;"
+      aria-hidden="true"
+    />
+    <time datetime={publishDate.toISOString()}>{formattedPublishDate}</time>
+  </span>
+
+  {updatedDate && formattedUpdatedDate && (
+    <span class="inline-flex items-center gap-1.5 text-sm text-text-muted">
+      <Icon
+        name="material-symbols:event-repeat-outline"
+        style="width: 18px; height: 18px;"
+        aria-hidden="true"
+      />
+      Updated: <time datetime={updatedDate.toISOString()}>{formattedUpdatedDate}</time>
+    </span>
+  )}
+
+  <span class="inline-flex items-center gap-1.5 text-sm text-text-muted">
+    <Icon
+      name="material-symbols:person"
+      style="width: 18px; height: 18px;"
+      aria-hidden="true"
+    />
+    {author}
+  </span>
+
+  {readingTime && (
+    <span class="inline-flex items-center gap-1.5 text-sm text-text-muted">
+      <Icon
+        name="material-symbols:schedule-outline"
+        style="width: 18px; height: 18px;"
+        aria-hidden="true"
+      />
+      {readingTime} min read
+    </span>
+  )}
+</div>

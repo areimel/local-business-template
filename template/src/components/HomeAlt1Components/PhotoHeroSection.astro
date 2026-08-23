@@ -1,0 +1,115 @@
+---
+import { getBranding, getCtas } from '@/utils/data';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import ButtonGroup from '@/components/ButtonComponents/ButtonGroup.astro';
+import { Icon } from 'astro-icon/components';
+import { getImage } from 'astro:assets';
+import teamVanImg from '@/assets/images/hero/team-van.jpg';
+
+const branding = getBranding();
+const { hero } = getCtas();
+
+const currentYear = new Date().getFullYear();
+const yearsInBusiness = currentYear - branding.yearEstablished;
+
+const optimizedBg = await getImage({ src: teamVanImg, width: 1920, quality: 80, format: 'webp' });
+
+const trustPills = [
+  { icon: 'material-symbols:verified-user-outline', label: 'Licensed & Insured' },
+  { icon: 'material-symbols:schedule-outline', label: 'Same-Day Service' },
+  { icon: 'material-symbols:star-outline', label: '4.9 Star Rating' },
+];
+---
+
+<section
+  class="relative overflow-hidden min-h-[70vh] lg:min-h-[90vh] flex items-center"
+  aria-label="Hero"
+>
+  <!-- Background image -->
+  <div
+    class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={`background-image: url('${optimizedBg.src}');`}
+    aria-hidden="true"
+  ></div>
+
+  <!-- Dark gradient overlay: strong left, fading right -->
+  <div
+    class="absolute inset-0"
+    style="background: linear-gradient(to right, rgba(26,26,46,0.92) 0%, rgba(26,26,46,0.75) 40%, rgba(26,26,46,0.4) 70%, rgba(26,26,46,0.2) 100%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Bottom-to-white transition vignette -->
+  <div
+    class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+    style="background: linear-gradient(to top, rgba(255,255,255,0.15) 0%, transparent 100%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Subtle cyan radial glow -->
+  <div
+    class="absolute top-0 right-0 w-1/2 h-full pointer-events-none"
+    style="background: radial-gradient(ellipse at 80% 30%, rgba(255,135,7,0.08) 0%, transparent 60%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="section-container relative z-10 py-20 lg:py-28">
+    <div class="max-w-2xl">
+
+      <!-- Tagline badge -->
+      <div class="mb-6" data-animate="fade-up" data-on="load" data-distance="30" data-duration="600">
+        <span class="inline-flex items-center gap-2 rounded-full font-medium text-sm px-4 py-1.5 bg-white/15 text-white backdrop-blur-sm border border-white/10">
+          <Icon name="material-symbols:location-on-outline" class="w-4 h-4" aria-hidden="true" />
+          Serving {branding.serviceArea.primary} Since {branding.yearEstablished}
+        </span>
+      </div>
+
+      <!-- Heading -->
+      <h1
+        class="heading-hero text-white mb-6"
+        data-animate="fade-up" data-on="load" data-delay="150"
+      >
+        {hero.heading}
+      </h1>
+
+      <!-- Subheading -->
+      <p
+        class="text-lg lg:text-xl text-white/90 mb-10 max-w-xl leading-relaxed"
+        data-animate="fade-up" data-on="load" data-delay="300" data-distance="30" data-duration="600"
+      >
+        {hero.subheading}
+      </p>
+
+      <!-- CTA Buttons -->
+      <div data-animate="fade-up" data-on="load" data-delay="450" data-distance="20" data-duration="500">
+        <ButtonGroup stack="mobile">
+          <PrimaryButton
+            text={hero.primaryButton.text}
+            href={hero.primaryButton.url}
+            size="lg"
+          />
+          <a
+            href={`tel:${branding.phoneRaw}`}
+            class="btn border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4 focus-visible:outline-white"
+            aria-label={`Call us at ${branding.phone}`}
+          >
+            <Icon name="material-symbols:call-outline" class="w-5 h-5 shrink-0" aria-hidden="true" />
+            Call {branding.phone}
+          </a>
+        </ButtonGroup>
+      </div>
+
+      <!-- Trust pills -->
+      <div class="mt-10 flex flex-wrap gap-3" data-animate="fade-up">
+        {trustPills.map((pill) => (
+          <span class="inline-flex items-center gap-1.5 rounded-full text-xs font-medium px-4 py-2 bg-white/20 text-white/90 backdrop-blur-md border border-white/25 shadow-sm">
+            <Icon name={pill.icon} class="w-4 h-4 text-secondary-light" aria-hidden="true" />
+            {pill.label}
+          </span>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,127 @@
+---
+import Modal from '@/components/PopUpComponents/Modal.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import { Icon } from 'astro-icon/components';
+import { getModals, getCoupons } from '@/utils/data';
+import { isFeatureEnabled } from '@/utils/features';
+
+const { exitIntent } = getModals();
+
+const currentPath = Astro.url.pathname;
+const isExcluded = exitIntent.excludePaths?.some((p: string) => currentPath.startsWith(p));
+if (isExcluded) return;
+
+// Modal content is coupons — when the coupons feature is off there is
+// nothing to offer, so the empty-coupons early return below hides it.
+const couponsData = isFeatureEnabled('coupons') ? getCoupons() : { coupons: [] };
+const activeCoupons = couponsData.coupons.filter((c) => c.active);
+
+if (activeCoupons.length === 0) return;
+
+function formatPriceBadge(discountType: string, discountValue: number): string {
+  if (discountType === 'fixed') return `$${discountValue} OFF`;
+  if (discountType === 'percentage') return `${discountValue}% OFF`;
+  return 'FREE';
+}
+---
+
+<Modal id="exit-intent-modal" labelledBy="exit-intent-heading" size="md">
+  <div class="p-6 sm:p-8">
+    <div class="text-center mb-6">
+      <div class="mx-auto mb-4 w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+        <Icon name="material-symbols:sell-outline" class="w-7 h-7 text-primary" />
+      </div>
+      <h2 id="exit-intent-heading" class="font-heading text-2xl font-bold text-text mb-2">
+        {exitIntent.heading}
+      </h2>
+      <p class="text-text-muted">{exitIntent.subheading}</p>
+    </div>
+
+    <div class="exit-intent-coupons overflow-visible pt-4">
+      {activeCoupons.map((coupon) => (
+        <div class="exit-intent-coupon hidden" data-exit-coupon>
+          <div class="rounded-[var(--radius-card)] border-2 border-primary bg-bg shadow-md p-5 text-center">
+            <div class="inline-block bg-primary text-text-on-primary font-heading font-bold text-2xl px-4 py-1.5 rounded-[var(--radius-sm)] mb-3">
+              {formatPriceBadge(coupon.discountType, coupon.discountValue)}
+            </div>
+            <h3 class="font-heading font-bold text-xl text-text mb-1">{coupon.title}</h3>
+            {coupon.description && (
+              <p class="text-text-muted text-sm mb-3">{coupon.description}</p>
+            )}
+            {coupon.code && (
+              <p class="text-sm text-text mb-1">
+                Code: <span class="font-mono font-bold tracking-wider text-primary">{coupon.code}</span>
+              </p>
+            )}
+            {coupon.validUntil && (
+              <p class="text-xs text-text-muted mb-4">Valid through {coupon.validUntil}</p>
+            )}
+            <PrimaryButton text="Redeem Offer" href="/contact" icon="material-symbols:redeem" />
+            {coupon.terms && (
+              <p class="text-xs text-text-muted mt-3">{coupon.terms}</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-5">
+      <button
+        type="button"
+        class="text-sm text-text-muted hover:text-text transition-colors py-2"
+        data-modal-close
+      >
+        {exitIntent.secondaryButton.text}
+      </button>
+    </div>
+  </div>
+</Modal>
+
+<script define:vars={{ activationDelay: exitIntent.activationDelay }}>
+  (function () {
+    const MODAL_ID = 'exit-intent-modal';
+    const SESSION_KEY = 'exit_intent_shown';
+
+    if (sessionStorage.getItem(SESSION_KEY)) return;
+
+    let isActive = false;
+
+    function revealRandomCoupon() {
+      const modal = document.getElementById(MODAL_ID);
+      if (!modal) return;
+
+      const coupons = modal.querySelectorAll('[data-exit-coupon]');
+      if (coupons.length === 0) return;
+
+      coupons.forEach(function (el) {
+        el.classList.add('hidden');
+      });
+
+      const idx = Math.floor(Math.random() * coupons.length);
+      coupons[idx].classList.remove('hidden');
+    }
+
+    setTimeout(function () {
+      isActive = true;
+    }, activationDelay || 5000);
+
+    function showModal() {
+      if (!isActive) return;
+      if (sessionStorage.getItem(SESSION_KEY)) return;
+
+      sessionStorage.setItem(SESSION_KEY, 'true');
+      revealRandomCoupon();
+      window.dispatchEvent(new CustomEvent('modal:open:' + MODAL_ID));
+
+      document.removeEventListener('mouseout', handleMouseOut);
+    }
+
+    function handleMouseOut(e) {
+      if (e.clientY <= 0 && e.relatedTarget === null) {
+        showModal();
+      }
+    }
+
+    document.addEventListener('mouseout', handleMouseOut);
+  })();
+</script>

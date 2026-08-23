@@ -1,0 +1,47 @@
+---
+interface Props {
+  heading: string;
+  subheading?: string;
+}
+
+const { heading, subheading } = Astro.props;
+---
+
+<section
+  class="relative bg-bg-alt pt-10 pb-8 lg:pt-14 lg:pb-10 border-b border-neutral-200"
+  aria-label="Page header"
+>
+  <!-- Subtle top accent line -->
+  <div
+    class="absolute top-0 left-0 right-0 h-1 bg-primary"
+    aria-hidden="true"
+  ></div>
+
+  <div class="section-container">
+    <div class="flex items-start gap-5">
+      <!-- Thick left accent bar -->
+      <div
+        class="hidden sm:block w-1.5 self-stretch rounded-(--radius-full) bg-primary shrink-0"
+        aria-hidden="true"
+      ></div>
+
+      <div>
+        <h1
+          class="heading-display text-text"
+          data-animate="fade-up"
+        >
+          {heading}
+        </h1>
+
+        {subheading && (
+          <p
+            class="mt-2 text-lg text-text-muted max-w-2xl"
+            data-animate="fade-up"
+          >
+            {subheading}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

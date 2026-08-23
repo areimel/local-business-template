@@ -1,0 +1,131 @@
+meta:
+  title: "Trattoria Rosa | Italian Kitchen & Wine Bar"
+  description: "Handmade pasta, wood-fired classics, and a curated wine list in the heart of downtown. Reserve your table at Trattoria Rosa tonight."
+
+hero:
+  eyebrow: "Est. 2010 · Downtown Riverside"
+  heading: "Trattoria Rosa"
+  headingAccent: "Italian Kitchen & Wine Bar"
+  subheading: "Handmade pasta, wood-fired classics, and a wine list worth lingering over — in the heart of downtown."
+  primaryCta:
+    text: "Reserve a Table"
+    url: "/contact/"
+  secondaryCta:
+    text: "View Full Menu"
+    url: "/restaurant-menu/"
+  trustPills:
+    - icon: "material-symbols:restaurant"
+      label: "Family Recipes Since 2010"
+    - icon: "mdi:chef-hat"
+      label: "Chef-Driven Menu"
+    - icon: "material-symbols:wine-bar"
+      label: "Curated Wine List"
+
+featuresHeading: "Why Dine With Us"
+features:
+  - icon: "material-symbols:eco-outline"
+    title: "Farm-to-Table"
+    description: "We source produce, meat, and cheese from local growers and purveyors every single morning."
+  - icon: "material-symbols:outdoor-grill"
+    title: "Wood-Fired Classics"
+    description: "Our imported wood-fired oven turns out blistered pizzas and roasted mains with real char and smoke."
+  - icon: "material-symbols:celebration"
+    title: "Private Events"
+    description: "Book our private dining room for rehearsal dinners, birthdays, and corporate gatherings up to 40 guests."
+  - icon: "material-symbols:wine-bar"
+    title: "Curated Wine List"
+    description: "An Italian-leaning list of 60+ bottles hand-picked by our sommelier, with new additions each season."
+
+pricing:
+  badge: "Menu"
+  heading: "Menu Highlights"
+  subheading: "A taste of what's cooking tonight — the full menu awaits at your table."
+  layout: list
+  groups:
+    - name: "Antipasti"
+      items:
+        - name: "Burrata al Forno"
+          description: "Baked burrata, blistered tomatoes, grilled bread"
+          price: "$14"
+        - name: "Bruschetta Trio"
+          description: "Classic tomato, mushroom truffle, white bean"
+          price: "$12"
+        - name: "Calamari Fritti"
+          description: "Crispy calamari, lemon aioli, calabrian chili"
+          price: "$15"
+        - name: "Arancini"
+          description: "Saffron risotto balls, marinara, pecorino"
+          price: "$11"
+    - name: "Mains"
+      items:
+        - name: "Tagliatelle al Ragù"
+          description: "House-made pasta, slow-braised beef and pork ragù"
+          price: "$24"
+          badge: "Chef's Pick"
+        - name: "Wood-Fired Margherita"
+          description: "San Marzano tomato, fior di latte, basil"
+          price: "$18"
+        - name: "Osso Buco"
+          description: "Braised veal shank, saffron risotto, gremolata"
+          price: "$32"
+        - name: "Branzino al Forno"
+          description: "Whole roasted branzino, salsa verde, charred lemon"
+          price: "$28"
+    - name: "Desserts"
+      items:
+        - name: "Tiramisu"
+          description: "Espresso-soaked ladyfingers, mascarpone cream"
+          price: "$9"
+        - name: "Panna Cotta"
+          description: "Vanilla bean, seasonal berry compote"
+          price: "$8"
+        - name: "Cannoli Trio"
+          description: "Ricotta filling, pistachio, chocolate chip"
+          price: "$10"
+
+gallery:
+  heading: "Inside the Restaurant"
+  subheading: "A warm dining room, a wood-fired kitchen, and a wine cellar worth exploring."
+  items:
+    - icon: "material-symbols:dining"
+      caption: "Dining Room"
+    - icon: "material-symbols:outdoor-grill"
+      caption: "Wood-Fired Oven"
+    - icon: "material-symbols:wine-bar"
+      caption: "Wine Cellar"
+    - icon: "material-symbols:deck-outline"
+      caption: "Patio Seating"
+    - icon: "material-symbols:celebration"
+      caption: "Private Event Room"
+    - icon: "material-symbols:local-bar"
+      caption: "The Bar"
+
+team:
+  heading: "Meet the Kitchen"
+  subheading: "The hands behind every plate that leaves our kitchen."
+  members:
+    - name: "Marco Bellini"
+      role: "Executive Chef"
+      bio: "Trained in Bologna, Marco has led our kitchen since opening day, rooted in his grandmother's recipes."
+      icon: "mdi:chef-hat"
+    - name: "Elena Ricci"
+      role: "Sous Chef"
+      bio: "Elena runs the line with precision and keeps every ragù simmering exactly the way it should."
+      icon: "material-symbols:soup-kitchen"
+    - name: "Giulia Conti"
+      role: "Pastry Chef"
+      bio: "From tiramisu to cannoli, Giulia handles every dessert on the menu — and most of them daily."
+      icon: "material-symbols:bakery-dining"
+
+testimonial:
+  name: "Angela D."
+  location: "Riverside"
+  rating: 5
+  text: "Trattoria Rosa is our go-to for date night. The tagliatelle is unreal and the staff treats you like family every time."
+
+cta:
+  heading: "Book Your Table Tonight"
+  body: "Tables fill up fast on weekends — reserve yours now and let us take care of the rest."
+  buttonText: "Reserve a Table"
+  buttonUrl: "/contact/"
+  variant: "primary"

@@ -1,0 +1,104 @@
+---
+/**
+ * LandingFooter.astro
+ *
+ * Minimal dark footer for landing/campaign pages. Keeps the legally
+ * required links (privacy, terms, accessibility) plus a configurable
+ * developer credit (from branding.yaml, hideable) even on stripped-down
+ * single-page sites.
+ */
+import { getBranding } from '@/utils/data';
+
+const branding = getBranding();
+const currentYear = new Date().getFullYear();
+
+const credit = branding.credit ?? {
+  enabled: true,
+  text: 'Website developed by Alec Reimel',
+  url: 'https://alecreimel.com',
+};
+
+const legalLinks = [
+  { label: 'Privacy Policy', url: '/privacy-policy/' },
+  { label: 'Terms of Service', url: '/terms-of-service/' },
+  { label: 'Accessibility Statement', url: '/accessibility-statement/' },
+];
+---
+
+<footer class="landing-footer relative overflow-hidden" aria-label="Site footer">
+  <!-- Layered background -->
+  <div class="absolute inset-0 bg-gradient-to-b from-neutral-900 via-[#0a0f1e] to-[#060a14]"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(0,102,204,0.08),transparent)]"></div>
+
+  <!-- Top accent lines -->
+  <div class="relative h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+  <div class="relative h-px bg-gradient-to-r from-transparent from-20% via-secondary/40 to-transparent to-80%"></div>
+
+  <!-- Content -->
+  <div class="relative section-container py-8 sm:py-10">
+    <!-- Info row -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[0.8125rem] tracking-wide">
+      <p class="text-white/40 text-center sm:text-left">
+        &copy; {currentYear} {branding.companyName}. All rights reserved.
+        {branding.licenses?.ac && (
+          <>
+            <span class="hidden sm:inline">&nbsp;&middot;&nbsp;</span>
+            <br class="sm:hidden" />
+            <span class="text-white/30">License #{branding.licenses.ac}</span>
+          </>
+        )}
+      </p>
+      <nav class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1" aria-label="Footer links">
+        {legalLinks.map((link, i) => (
+          <>
+            {i > 0 && <span class="text-white/15 text-xs">&bull;</span>}
+            <a
+              href={link.url}
+              class="landing-footer-link text-white/40 hover:text-white px-2 py-1 transition-all duration-300"
+            >{link.label}</a>
+          </>
+        ))}
+        <span class="text-white/15 text-xs">&bull;</span>
+        <a
+          href={`tel:${branding.phoneRaw}`}
+          class="landing-footer-link text-white/40 hover:text-secondary px-2 py-1 transition-all duration-300"
+        >{branding.phone}</a>
+      </nav>
+    </div>
+
+    <!-- Credit row -->
+    {credit.enabled !== false && (
+      <div class="mt-4 text-center text-[0.8125rem] tracking-wide">
+        <a
+          href={credit.url}
+          class="landing-footer-link text-white/40 hover:text-white px-2 py-1 transition-all duration-300"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{credit.text}</a>
+      </div>
+    )}
+  </div>
+
+  <!-- Bottom accent line -->
+  <div class="relative h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+</footer>
+
+<style>
+  .landing-footer-link {
+    position: relative;
+  }
+  .landing-footer-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  .landing-footer-link:hover::after {
+    width: 100%;
+    left: 0;
+  }
+</style>

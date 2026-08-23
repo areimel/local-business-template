@@ -1,0 +1,39 @@
+---
+interface Props {
+  id?: string;
+  background?: 'white' | 'alt' | 'primary' | 'dark';
+  padding?: 'default' | 'tight' | 'none';
+  maxWidth?: string;
+}
+
+const {
+  id,
+  background = 'white',
+  padding = 'default',
+  maxWidth,
+} = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  white: 'bg-bg',
+  alt: 'bg-bg-alt',
+  primary: 'bg-primary text-text-on-primary',
+  dark: 'bg-neutral-900 text-neutral-100',
+};
+
+const paddingClasses: Record<string, string> = {
+  default: 'py-(--spacing-section)',
+  tight: 'py-12',
+  none: '',
+};
+
+const sectionClasses = [
+  bgClasses[background],
+  paddingClasses[padding],
+].filter(Boolean).join(' ');
+---
+
+<section id={id} class={sectionClasses}>
+  <div class="section-container" style={maxWidth ? `max-width: ${maxWidth}` : undefined}>
+    <slot />
+  </div>
+</section>

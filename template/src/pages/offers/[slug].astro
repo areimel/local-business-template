@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from 'astro:content';
+import CampaignPageLayout from '@/layouts/CampaignPageLayout.astro';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('offers', async () => {
+    const allCampaigns = await getCollection('campaigns');
+    const activeCampaigns = allCampaigns.filter(c => c.data.status === 'active');
+    return activeCampaigns.map(entry => ({
+      params: { slug: entry.data.slug },
+      props: { entry },
+    }));
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<CampaignPageLayout frontmatter={entry.data}>
+  <Content />
+</CampaignPageLayout>

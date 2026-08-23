@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  icon: string;
+  href?: string;
+  ariaLabel: string;
+  variant?: 'ghost' | 'filled';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  icon,
+  href,
+  ariaLabel,
+  variant = 'ghost',
+  size = 'md',
+} = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  sm: 'w-8 h-8',
+  md: 'w-10 h-10',
+  lg: 'w-12 h-12',
+};
+
+const iconSizeClasses: Record<string, string> = {
+  sm: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
+};
+
+const variantClasses: Record<string, string> = {
+  ghost: 'bg-transparent text-neutral-600 hover:bg-neutral-100 hover:text-primary',
+  filled: 'bg-primary text-text-on-primary hover:bg-primary-dark',
+};
+
+const classes = [
+  'inline-flex items-center justify-center rounded-full cursor-pointer transition-colors',
+  sizeClasses[size],
+  variantClasses[variant],
+].join(' ');
+---
+
+{href ? (
+  <a href={href} class={classes} aria-label={ariaLabel}>
+    <Icon name={icon} class={iconSizeClasses[size]} />
+  </a>
+) : (
+  <button type="button" class={classes} aria-label={ariaLabel}>
+    <Icon name={icon} class={iconSizeClasses[size]} />
+  </button>
+)}

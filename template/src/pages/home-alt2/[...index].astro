@@ -1,0 +1,30 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import CompactHeroWithForm from '@/components/HomeAlt2Components/CompactHeroWithForm.astro';
+import BrandLogoBar from '@/components/SharedComponents/BrandLogoBar.astro';
+import ServicesOverview from '@/components/HomePageComponents/ServicesOverview.astro';
+import SocialProofBand from '@/components/HomeAlt2Components/SocialProofBand.astro';
+import StatCounterBar from '@/components/SharedComponents/StatCounterBar.astro';
+import WhyChooseUsWithImage from '@/components/HomeAlt2Components/WhyChooseUsWithImage.astro';
+import EmergencyCtaBanner from '@/components/SharedComponents/EmergencyCtaBanner.astro';
+import Alt2ContactSection from '@/components/HomeAlt2Components/Alt2ContactSection.astro';
+import { getBranding } from '@/utils/data';
+import { gatedPaths } from '@/utils/features';
+
+export async function getStaticPaths() {
+  return gatedPaths('demoPages', () => [{ params: { index: undefined } }]);
+}
+
+const branding = getBranding();
+---
+
+<PageLayout title="Home - Trust First" description={branding.seo.defaultDescription} showBreadcrumbs={false} noindex={true}>
+  <CompactHeroWithForm />
+  <BrandLogoBar grayscale={true} />
+  <ServicesOverview />
+  <SocialProofBand />
+  <StatCounterBar background="dark" />
+  <WhyChooseUsWithImage />
+  <EmergencyCtaBanner />
+  <Alt2ContactSection />
+</PageLayout>

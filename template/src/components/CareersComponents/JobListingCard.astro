@@ -1,0 +1,141 @@
+---
+import { Icon } from 'astro-icon/components';
+import Badge from '@/components/SharedComponents/Badge.astro';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+import SecondaryButton from '@/components/ButtonComponents/SecondaryButton.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  excerpt: string;
+  department: string;
+  jobType: string;
+  location: string;
+  salary?: string;
+  publishDate: Date;
+  featured?: boolean;
+  applyUrl?: string;
+}
+
+const {
+  title,
+  slug,
+  excerpt,
+  department,
+  jobType,
+  location,
+  salary,
+  publishDate,
+  featured = false,
+  applyUrl,
+} = Astro.props;
+
+const formattedDate = publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<div
+  class:list={[
+    'job-listing-card flex flex-col overflow-hidden rounded-(--radius-card) bg-bg transition-all duration-300 hover:-translate-y-1',
+    featured
+      ? 'shadow-lg ring-2 ring-secondary/60 hover:shadow-xl'
+      : 'shadow-md hover:shadow-xl',
+  ]}
+  data-animate="fade-up"
+  data-department={department}
+>
+  {/* Colored top banner with dot-pattern overlay */}
+  <div class="relative overflow-hidden bg-gradient-to-r from-primary to-primary-dark px-5 py-4">
+    <div class="pointer-events-none absolute inset-0 opacity-10" aria-hidden="true">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id={`dots-${slug}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.5" fill="white" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#dots-${slug})`} />
+      </svg>
+    </div>
+    <div class="relative flex items-center justify-between gap-3">
+      <span class="text-xs font-bold tracking-widest text-white/80 uppercase">
+        {department}
+      </span>
+      {featured && (
+        <Badge text="Featured" variant="primary" size="sm" />
+      )}
+    </div>
+  </div>
+
+  {/* Card body */}
+  <div class="flex flex-grow flex-col p-5">
+    {/* Job type + location meta */}
+    <div class="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
+      <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">
+        <Icon name="material-symbols:work-outline" style="width: 13px; height: 13px;" aria-hidden="true" />
+        {jobType}
+      </span>
+      <span class="text-neutral-300" aria-hidden="true">·</span>
+      <span class="inline-flex items-center gap-1 text-xs text-text-muted">
+        <Icon name="material-symbols:location-on-outline" style="width: 13px; height: 13px;" aria-hidden="true" />
+        {location}
+      </span>
+    </div>
+
+    {/* Title */}
+    <h3
+      class="font-heading font-bold text-text mb-3 leading-snug"
+      style="font-size: var(--font-size-lg);"
+    >
+      {title}
+    </h3>
+
+    {/* Excerpt */}
+    <p class="text-sm text-text-muted line-clamp-3 mb-4 leading-relaxed">
+      {excerpt}
+    </p>
+
+    {/* Salary highlight */}
+    {salary && (
+      <div class="mb-3 flex items-center gap-2 rounded-(--radius-md) bg-bg-primary-tint px-3 py-2">
+        <Icon
+          name="material-symbols:payments-outline"
+          class="text-primary shrink-0"
+          style="width: 16px; height: 16px;"
+          aria-hidden="true"
+        />
+        <span class="text-sm font-semibold text-primary">{salary}</span>
+      </div>
+    )}
+
+    {/* Posted date */}
+    <div class="mt-auto flex items-center gap-1 text-xs text-neutral-400">
+      <Icon
+        name="material-symbols:calendar-month-outline"
+        style="width: 13px; height: 13px;"
+        aria-hidden="true"
+      />
+      <time datetime={publishDate.toISOString()}>Posted {formattedDate}</time>
+    </div>
+  </div>
+
+  {/* Button section */}
+  <div class="mt-auto border-t border-neutral-100 p-5 flex flex-col gap-2">
+    <PrimaryButton
+      text="View Details"
+      href={`/careers/${slug}/`}
+      icon="material-symbols:arrow-forward"
+      fullWidth={true}
+    />
+    {applyUrl && (
+      <SecondaryButton
+        text="Apply Now"
+        href={applyUrl}
+        icon="material-symbols:open-in-new"
+        fullWidth={true}
+      />
+    )}
+  </div>
+</div>

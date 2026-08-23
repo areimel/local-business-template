@@ -1,0 +1,124 @@
+---
+import { Icon } from 'astro-icon/components';
+import PrimaryButton from '@/components/ButtonComponents/PrimaryButton.astro';
+
+interface Props {
+  department: string;
+  jobType: string;
+  location: string;
+  salary?: string;
+  publishDate: Date;
+  closingDate?: Date;
+  applyUrl?: string;
+}
+
+const { department, jobType, location, salary, publishDate, closingDate, applyUrl } = Astro.props;
+
+const formattedPublishDate = publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedClosingDate = closingDate?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<div class="bg-bg rounded-(--radius-card) shadow-lg p-6 sticky top-24" data-animate="fade-up" aria-label="Job listing details">
+
+  <h2 class="font-heading font-bold text-lg mb-5">Job Details</h2>
+
+  <dl class="space-y-4 text-sm">
+
+    <div class="flex items-start gap-3">
+      <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+        <Icon name="material-symbols:work-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+      </div>
+      <div>
+        <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Department</dt>
+        <dd class="font-semibold text-text">{department}</dd>
+      </div>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+        <Icon name="material-symbols:schedule-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+      </div>
+      <div>
+        <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Job Type</dt>
+        <dd class="font-semibold text-text">{jobType}</dd>
+      </div>
+    </div>
+
+    <div class="flex items-start gap-3">
+      <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+        <Icon name="material-symbols:location-on-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+      </div>
+      <div>
+        <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Location</dt>
+        <dd class="font-semibold text-text">{location}</dd>
+      </div>
+    </div>
+
+    {salary && (
+      <div class="flex items-start gap-3">
+        <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+          <Icon name="material-symbols:payments-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+        </div>
+        <div>
+          <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Salary</dt>
+          <dd class="font-semibold text-text">{salary}</dd>
+        </div>
+      </div>
+    )}
+
+    <div class="flex items-start gap-3">
+      <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+        <Icon name="material-symbols:calendar-month-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+      </div>
+      <div>
+        <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Posted</dt>
+        <dd class="font-semibold text-text">
+          <time datetime={publishDate.toISOString()}>{formattedPublishDate}</time>
+        </dd>
+      </div>
+    </div>
+
+    {closingDate && formattedClosingDate && (
+      <div class="flex items-start gap-3">
+        <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mt-0.5">
+          <Icon name="material-symbols:schedule-outline" style="width: 18px; height: 18px;" class="text-primary" aria-hidden="true" />
+        </div>
+        <div>
+          <dt class="text-text-muted text-xs uppercase tracking-wide font-medium">Apply By</dt>
+          <dd class="font-semibold text-text">
+            <time datetime={closingDate.toISOString()}>{formattedClosingDate}</time>
+          </dd>
+        </div>
+      </div>
+    )}
+
+  </dl>
+
+  <div class="border-t border-neutral-100 mt-6 pt-6">
+    {applyUrl ? (
+      <PrimaryButton
+        text="Apply Now"
+        href={applyUrl}
+        fullWidth={true}
+        icon="material-symbols:open-in-new"
+      />
+    ) : (
+      <PrimaryButton
+        text="Contact Us"
+        href="/contact/"
+        fullWidth={true}
+        icon="material-symbols:mail-outline"
+      />
+    )}
+  </div>
+
+</div>

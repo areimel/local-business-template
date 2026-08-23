@@ -1,0 +1,41 @@
+# Hero Section CTA
+hero:
+  heading: "Your Comfort Is Always Our Priority"
+  subheading: "Family-owned and operated since 1990, Your Company Name has been keeping Anytown and the local area cool and comfortable for over 35 years."
+  primaryButton:
+    text: "Get an Estimate"
+    url: "/contact/"
+  secondaryButton:
+    text: "Call Now"
+    url: "tel:5555555555"
+
+# Services Section CTA
+servicesCta:
+  heading: "Ready to Get Started?"
+  body: "From AC repair to attic insulation, our family-owned team has been delivering comfort and reliability to the local area since 1990. Schedule your service today."
+  buttonText: "Schedule Service"
+  buttonUrl: "/contact/"
+
+# Maintenance Plan CTA
+maintenancePlanCta:
+  eyebrow: "Year-Round Peace of Mind"
+  heading: "Join Our Maintenance Plan"
+  body: "Keep your HVAC system running at peak efficiency with seasonal tune-ups, priority scheduling, and fewer surprise breakdowns."
+  buttonText: "Ask About Our Plan"
+  buttonUrl: "/contact/"
+  disclaimer: "Maintenance plan members get regular tune-ups, faster service when you need help, and added confidence through every season."
+
+# Emergency CTA
+emergencyCta:
+  heading: "AC Emergency?"
+  body: "We offer same-day emergency repairs. Don't sweat it — help is on the way."
+  buttonText: "Call Now"
+  phone: "(555) 555-5555"
+  phoneRaw: "5555555555"
+
+# Footer CTA
+footerCta:
+  heading: "Need Help? We're Here."
+  body: "Your Company Name has been the local area's trusted comfort experts since 1990. Our family-owned team is standing by to help with any AC, heating, or home comfort need."
+  buttonText: "Contact Us"
+  buttonUrl: "/contact/"

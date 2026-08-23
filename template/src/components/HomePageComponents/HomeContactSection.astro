@@ -1,0 +1,56 @@
+---
+import { getCtas } from '@/utils/data';
+import { Icon } from 'astro-icon/components';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import ContactForm from '@/components/FormComponents/ContactForm.astro';
+import PhoneButton from '@/components/ButtonComponents/PhoneButton.astro';
+import Badge from '@/components/SharedComponents/Badge.astro';
+
+const { servicesCta } = getCtas();
+
+const trustIndicators = [
+  'Free Estimates',
+  'Same-Day Service',
+  'Licensed & Insured',
+];
+---
+
+<SectionWrapper background="alt" id="contact">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+    <!-- Left Column: CTA Content -->
+    <div data-animate="fade-up">
+      <Badge text="Get in Touch" variant="primary" size="md" />
+      <h2 class="heading-display text-text mt-4 mb-6">{servicesCta.heading}</h2>
+      <p class="text-lg text-text-muted mb-8 max-w-lg">{servicesCta.body}</p>
+
+      <div class="mb-8">
+        <p class="text-sm font-medium text-text-muted mb-3">
+          Prefer to talk? Give us a call:
+        </p>
+        <PhoneButton size="lg" variant="primary" />
+      </div>
+
+      <div class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-text-muted">
+        {trustIndicators.map((indicator) => (
+          <span class="flex items-center gap-1.5">
+            <Icon
+              name="material-symbols:check-circle-outline"
+              class="w-5 h-5 text-success shrink-0"
+            />
+            <span>{indicator}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form Card -->
+    <div
+      class="bg-bg rounded-(--radius-card) shadow-lg p-6 sm:p-8"
+      data-animate="fade-up"
+    >
+      <ContactForm heading="Request Service" showHeading={true} />
+    </div>
+
+  </div>
+</SectionWrapper>

@@ -1,0 +1,49 @@
+{
+  "name": "localbiz-site",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "images:optimize-general": "node scripts/optimize-general-images.mjs",
+    "test:screenshots": "npx playwright test tests/screenshots/ --project=desktop --project=tablet --project=mobile",
+    "test:screenshots:desktop": "npx playwright test tests/screenshots/ --project=desktop",
+    "test:forms": "npx playwright test tests/forms/ --project=desktop",
+    "test:lighthouse": "pnpm build && npx playwright test tests/lighthouse/ --project=desktop --workers=1",
+    "test:a11y": "npx playwright test tests/accessibility/ --project=desktop",
+    "test:all": "npx playwright test",
+    "test:report": "npx playwright show-report",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/netlify": "^6.6.4",
+    "@astrojs/sitemap": "^3.7.0",
+    "@fontsource-variable/outfit": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@iconify-json/material-symbols": "^1.2.56",
+    "@iconify-json/mdi": "^1.2.3",
+    "@sendgrid/mail": "^8.1.6",
+    "@tailwindcss/vite": "^4.2.0",
+    "animejs": "^4.5.0",
+    "astro": "^5.17.1",
+    "astro-icon": "^1.1.5",
+    "fuse.js": "^7.1.0",
+    "js-yaml": "^4.1.1",
+    "leaflet": "^1.9.4",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^4.2.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@playwright/test": "^1.58.2",
+    "@types/js-yaml": "^4.0.9",
+    "playwright-lighthouse": "^4.0.0",
+    "vitest": "^4.0.18"
+  }
+}

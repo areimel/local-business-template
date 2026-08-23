@@ -1,0 +1,49 @@
+---
+/**
+ * BusinessHoursCard.astro
+ *
+ * Card that renders the structured businessHours from branding.yaml
+ * (single source of truth) as readable day/time lines.
+ */
+import { Icon } from 'astro-icon/components';
+import { getBranding } from '@/utils/data';
+
+interface Props {
+  heading?: string;
+}
+
+const { heading = 'Hours' } = Astro.props;
+const branding = getBranding();
+
+const DAY_ABBR: Record<string, string> = {
+  Monday: 'Mon', Tuesday: 'Tue', Wednesday: 'Wed', Thursday: 'Thu',
+  Friday: 'Fri', Saturday: 'Sat', Sunday: 'Sun',
+};
+function formatTime(t: string): string {
+  const [h, m] = t.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  return m ? `${hour12}:${String(m).padStart(2, '0')} ${period}` : `${hour12} ${period}`;
+}
+function formatDays(days: string[]): string {
+  if (days.length === 7) return 'Mon–Sun';
+  return days.map((d) => DAY_ABBR[d] ?? d).join(', ');
+}
+const hoursLines = (branding.businessHours ?? []).map((spec) => ({
+  days: formatDays(spec.days),
+  time: `${formatTime(spec.opens)} – ${formatTime(spec.closes)}`,
+}));
+---
+
+<div
+  class="group bg-bg rounded-(--radius-card) p-6 text-center shadow-md transition-all hover:shadow-lg hover:-translate-y-1"
+  data-animate="fade-up"
+>
+  <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+    <Icon name="material-symbols:schedule-outline" class="w-7 h-7 text-primary" aria-hidden="true" />
+  </div>
+  <p class="font-heading font-bold text-sm uppercase tracking-wider text-text-muted mb-1">{heading}</p>
+  {hoursLines.map((line) => (
+    <p class="font-heading font-semibold text-text text-base">{line.days}: {line.time}</p>
+  ))}
+</div>

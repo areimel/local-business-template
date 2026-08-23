@@ -1,0 +1,55 @@
+---
+import TextInput from '../FormComponents/TextInput.astro';
+import TextArea from '../FormComponents/TextArea.astro';
+import SelectInput from '../FormComponents/SelectInput.astro';
+import Checkbox from '../FormComponents/Checkbox.astro';
+---
+
+<form onsubmit="return false;">
+  <!-- Text Inputs -->
+  <h3 class="font-heading font-bold text-lg mb-4">Text Input</h3>
+  <p class="text-sm text-text-muted mb-4">Labeled input fields with optional error state.</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <TextInput name="sg-name" label="Full Name" placeholder="John Smith" />
+    <TextInput name="sg-email" label="Email Address" type="email" placeholder="john@example.com" />
+    <TextInput name="sg-phone" label="Phone Number" type="tel" placeholder="(555) 555-0123" />
+    <TextInput name="sg-error" label="With Error State" error="This field is required" />
+  </div>
+
+  <!-- Text Area -->
+  <h3 class="font-heading font-bold text-lg mb-4">Text Area</h3>
+  <p class="text-sm text-text-muted mb-4">Multi-line text input with configurable rows.</p>
+  <div class="max-w-xl mb-8">
+    <TextArea name="sg-message" label="Message" placeholder="How can we help you?" rows={4} />
+  </div>
+
+  <!-- Select Input -->
+  <h3 class="font-heading font-bold text-lg mb-4">Select Input</h3>
+  <p class="text-sm text-text-muted mb-4">Dropdown select with custom styling.</p>
+  <div class="max-w-md mb-8">
+    <SelectInput
+      name="sg-service"
+      label="Service Needed"
+      options={[
+        { value: 'ac-repair', label: 'AC Repair' },
+        { value: 'ac-install', label: 'AC Installation' },
+        { value: 'heating', label: 'Heating Service' },
+        { value: 'electrical', label: 'Electrical' },
+      ]}
+      placeholder="Choose a service..."
+    />
+  </div>
+
+  <!-- Checkboxes -->
+  <h3 class="font-heading font-bold text-lg mb-4">Checkbox</h3>
+  <p class="text-sm text-text-muted mb-4">Checkbox with inline label.</p>
+  <div class="space-y-3 mb-8">
+    <Checkbox name="sg-terms" label="I agree to the terms and conditions" />
+    <Checkbox name="sg-newsletter" label="Subscribe to newsletter updates" checked={true} />
+    <Checkbox name="sg-required" label="Required checkbox example" required={true} />
+    <Checkbox name="sg-consent" required>
+      I consent to receive messages from Example Company.
+      <a href="/privacy-policy/" class="text-primary underline hover:text-primary-dark">Privacy Policy</a>.
+    </Checkbox>
+  </div>
+</form>

@@ -1,0 +1,105 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import InnerHero from '@/components/InnerPageComponents/InnerHero.astro';
+import ContentSection from '@/components/InnerPageComponents/ContentSection.astro';
+import CtaBanner from '@/components/InnerPageComponents/CtaBanner.astro';
+import SectionWrapper from '@/components/SharedComponents/SectionWrapper.astro';
+import BlogPostMeta from '@/components/BlogComponents/BlogPostMeta.astro';
+import RelatedPosts from '@/components/BlogComponents/RelatedPosts.astro';
+import { getBranding } from '@/utils/data';
+import { getBlogPostingJsonLd, getBreadcrumbJsonLd } from '@/utils/seo';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    slug: string;
+    seoTitle?: string;
+    seoDescription: string;
+    ogImage?: string;
+    publishDate: Date;
+    updatedDate?: Date;
+    author: string;
+    category: string;
+    tags: string[];
+    excerpt: string;
+    heroHeading?: string;
+    heroSubheading?: string;
+    readingTime?: number;
+    ctaHeading?: string;
+    ctaBody?: string;
+    ctaButtonText?: string;
+    schemaData?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const branding = getBranding();
+const siteUrl = branding.website;
+
+const blogPostingSchema = getBlogPostingJsonLd({
+  title: frontmatter.title,
+  description: frontmatter.seoDescription,
+  slug: frontmatter.slug,
+  publishDate: frontmatter.publishDate,
+  updatedDate: frontmatter.updatedDate,
+  author: frontmatter.author,
+  image: frontmatter.ogImage,
+});
+
+const breadcrumbSchema = getBreadcrumbJsonLd([
+  { name: 'Home', url: siteUrl },
+  { name: 'Blog', url: `${siteUrl}/blog/` },
+  { name: frontmatter.title, url: `${siteUrl}/blog/${frontmatter.slug}/` },
+]);
+
+const articleMeta = {
+  publishedTime: frontmatter.publishDate.toISOString(),
+  modifiedTime: frontmatter.updatedDate?.toISOString(),
+  section: frontmatter.category,
+  tag: frontmatter.tags,
+};
+---
+
+<PageLayout
+  title={frontmatter.seoTitle || `${frontmatter.title} | ${branding.companyName} Blog`}
+  description={frontmatter.seoDescription}
+  ogImage={frontmatter.ogImage}
+  ogType="article"
+  articleMeta={articleMeta}
+  schemaData={[blogPostingSchema, breadcrumbSchema]}
+  rawSchema={frontmatter.schemaData}
+>
+  <InnerHero
+    heading={frontmatter.heroHeading || frontmatter.title}
+    subheading={frontmatter.heroSubheading}
+    badge={frontmatter.category}
+  />
+
+  <SectionWrapper background="white">
+    <div class="max-w-3xl mx-auto">
+      <BlogPostMeta
+        publishDate={frontmatter.publishDate}
+        updatedDate={frontmatter.updatedDate}
+        author={frontmatter.author}
+        category={frontmatter.category}
+        readingTime={frontmatter.readingTime}
+      />
+    </div>
+  </SectionWrapper>
+
+  <ContentSection maxWidth="md">
+    <slot />
+  </ContentSection>
+
+  <RelatedPosts
+    currentSlug={frontmatter.slug}
+    category={frontmatter.category}
+    tags={frontmatter.tags}
+  />
+
+  <CtaBanner
+    heading={frontmatter.ctaHeading}
+    body={frontmatter.ctaBody}
+    buttonText={frontmatter.ctaButtonText}
+  />
+</PageLayout>
