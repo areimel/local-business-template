@@ -42,3 +42,4 @@ temp_images/
 
 # Git worktrees
 .worktrees/
+PUBLISHING_TODO.md
