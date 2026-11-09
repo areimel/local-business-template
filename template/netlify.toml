@@ -1,0 +1,9 @@
+# Netlify build config for this Astro site.
+#
+# Also read by `astro dev`: the @astrojs/netlify adapter's dev server looks for
+# netlify.toml here first. Without this file it walks up to a parent config
+# (e.g. the create-localbiz repo root, which sets `base = "template"`) and
+# fails with "Base directory does not exist: .../template/template".
+[build]
+  command = "pnpm run build"
+  publish = "dist"

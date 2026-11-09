@@ -1,13 +1,11 @@
 # Netlify build config for THIS template repo.
 #
 # The Astro site lives in `template/` (the repo root is the create-localbiz CLI
-# package). Point Netlify at that subdirectory so it runs the site's build there.
-# `publish` is resolved relative to `base`, i.e. template/dist.
+# package). Point Netlify at that subdirectory; Netlify then loads
+# `template/netlify.toml` for the build command and publish dir (template/dist).
 #
-# NOTE: this file governs only the template repo's own deploys. It is NOT copied
-# into scaffolded client projects — the CLI copies `template/`, and this file sits
-# at the repo root, above it.
+# NOTE: this file is NOT copied into scaffolded client projects (it sits above
+# `template/`). Client projects get `template/netlify.toml` instead, which is
+# also what `pnpm dev` reads locally.
 [build]
   base = "template"
-  command = "pnpm run build"
-  publish = "dist"
