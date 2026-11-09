@@ -1,0 +1,42 @@
+---
+/**
+ * Label + control + hint wrapper.
+ * With `for`, renders <label for>. Without it, renders <span id={id}> and the
+ * slotted control should use aria-labelledby={id}.
+ * Usage: <ToolField label="Font" for="font" hint="Applies live"><ToolSelect id="font" …/></ToolField>
+ */
+interface Props {
+  label: string;
+  hint?: string;
+  for?: string;
+  id?: string;
+}
+const { label, hint, for: forId, id } = Astro.props;
+---
+
+<div class="dmt-field">
+  {forId
+    ? <label class="dmt-field__label" for={forId} id={id}>{label}</label>
+    : <span class="dmt-field__label" id={id}>{label}</span>}
+  <slot />
+  {hint && <p class="dmt-field__hint">{hint}</p>}
+</div>
+
+<style>
+  .dmt-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .dmt-field__label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--dmt-paper);
+  }
+  .dmt-field__hint {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--dmt-fog);
+  }
+</style>

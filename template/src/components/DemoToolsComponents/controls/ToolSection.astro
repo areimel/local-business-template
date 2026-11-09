@@ -1,0 +1,73 @@
+---
+/**
+ * Collapsible group of tools (native <details>), styled like the Pages tab.
+ * Usage: <ToolSection title="Theme" description="Optional" open>…controls…</ToolSection>
+ */
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description?: string;
+  open?: boolean;
+}
+const { title, description, open = false } = Astro.props;
+---
+
+<details class="dmt-section" open={open}>
+  <summary>
+    <span class="dmt-section__title">{title}</span>
+    <Icon name="material-symbols:chevron-right-rounded" class="dmt-section__chevron" aria-hidden="true" />
+  </summary>
+  <div class="dmt-section__body">
+    {description && <p class="dmt-section__desc">{description}</p>}
+    <slot />
+  </div>
+</details>
+
+<style>
+  .dmt-section {
+    border-bottom: 1px solid var(--dmt-rule);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    cursor: pointer;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--dmt-paper);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    content: '';
+  }
+  summary:hover {
+    background: var(--dmt-slate);
+  }
+  .dmt-section :global(.dmt-section__chevron) {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--dmt-fog);
+    transition: transform 0.15s var(--dmt-ease);
+  }
+  .dmt-section[open] :global(.dmt-section__chevron) {
+    transform: rotate(90deg);
+  }
+  .dmt-section__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.25rem 0.75rem 0.875rem;
+  }
+  .dmt-section__desc {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--dmt-fog);
+  }
+</style>

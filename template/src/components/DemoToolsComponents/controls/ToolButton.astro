@@ -1,0 +1,49 @@
+---
+/**
+ * Button for tools. Extra attributes (data-*, aria-*) pass through to <button>.
+ * Usage: <ToolButton id="reset" data-action="reset" variant="quiet">Reset</ToolButton>
+ */
+interface Props {
+  variant?: 'default' | 'quiet';
+  type?: 'button' | 'submit' | 'reset';
+  id?: string;
+  [key: string]: unknown;
+}
+const { variant = 'default', type = 'button', id, class: className, ...rest } = Astro.props;
+---
+
+<button type={type} id={id} class:list={['dmt-btn', `dmt-btn--${variant}`, className]} {...rest}>
+  <slot />
+</button>
+
+<style>
+  .dmt-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.2;
+    border-radius: var(--dmt-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.12s var(--dmt-ease), color 0.12s var(--dmt-ease);
+  }
+  .dmt-btn--default {
+    background: var(--dmt-slate);
+    border: 1px solid var(--dmt-rule);
+    color: var(--dmt-paper);
+  }
+  .dmt-btn--default:hover {
+    background: var(--dmt-slate-hi);
+  }
+  .dmt-btn--quiet {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--dmt-fog);
+  }
+  .dmt-btn--quiet:hover {
+    color: var(--dmt-paper);
+  }
+</style>
