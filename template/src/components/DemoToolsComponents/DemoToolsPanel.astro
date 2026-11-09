@@ -1,14 +1,14 @@
 ---
 import { Icon } from 'astro-icon/components';
-import type { DemoNavConfig } from '@/utils/demo-nav';
+import type { DemoToolsConfig } from '@/utils/demo-tools';
 
 interface Props {
-  config: DemoNavConfig;
+  config: DemoToolsConfig;
 }
 
 const { config } = Astro.props;
 
-// Normalize to the trailing-slash convention used in demo-nav.yaml, then compare
+// Normalize to the trailing-slash convention used in demo-tools.yaml, then compare
 // with exact equality (not startsWith) so "/" only matches the homepage itself.
 const currentPath = Astro.url.pathname.endsWith('/')
   ? Astro.url.pathname
@@ -17,18 +17,18 @@ const isActive = (url: string) => url === currentPath;
 ---
 
 <div
-  id="demo-nav-panel"
+  id="demo-tools-panel"
   class="fixed inset-0 z-50 hidden"
   role="dialog"
   aria-modal="true"
   aria-label={config.panelTitle}
 >
   <!-- Overlay -->
-  <div id="demo-nav-overlay" class="absolute inset-0 bg-black/50"></div>
+  <div id="demo-tools-overlay" class="absolute inset-0 bg-black/50"></div>
 
   <!-- Drawer -->
   <div
-    id="demo-nav-drawer"
+    id="demo-tools-drawer"
     class="absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl overflow-y-auto transform -translate-x-full transition-transform duration-300"
   >
     <!-- Sticky Header -->
@@ -38,10 +38,10 @@ const isActive = (url: string) => url === currentPath;
         <p class="text-xs text-neutral-500">Internal preview routes — not part of the production nav.</p>
       </div>
       <button
-        id="demo-nav-close"
+        id="demo-tools-close"
         type="button"
         class="shrink-0 p-2 rounded-md text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100 transition-colors"
-        aria-label="Close demo navigation menu"
+        aria-label="Close Demo Mode Tools"
       >
         <Icon name="material-symbols:close" class="w-5 h-5" />
       </button>

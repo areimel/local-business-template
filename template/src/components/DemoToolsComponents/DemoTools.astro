@@ -1,21 +1,21 @@
 ---
-import { getDemoNav } from '@/utils/demo-nav';
-import DemoNavButton from './DemoNavButton.astro';
-import DemoNavMenu from './DemoNavMenu.astro';
+import { getDemoTools } from '@/utils/demo-tools';
+import DemoToolsButton from './DemoToolsButton.astro';
+import DemoToolsPanel from './DemoToolsPanel.astro';
 
-const config = getDemoNav();
+const config = getDemoTools();
 ---
 
-<DemoNavButton label={config.button.label} ariaLabel={config.button.ariaLabel} />
-<DemoNavMenu config={config} />
+<DemoToolsButton label={config.button.label} ariaLabel={config.button.ariaLabel} />
+<DemoToolsPanel config={config} />
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.getElementById('demo-nav-toggle');
-    const panel = document.getElementById('demo-nav-panel');
-    const drawer = document.getElementById('demo-nav-drawer');
-    const overlay = document.getElementById('demo-nav-overlay');
-    const closeBtn = document.getElementById('demo-nav-close');
+    const toggle = document.getElementById('demo-tools-toggle');
+    const panel = document.getElementById('demo-tools-panel');
+    const drawer = document.getElementById('demo-tools-drawer');
+    const overlay = document.getElementById('demo-tools-overlay');
+    const closeBtn = document.getElementById('demo-tools-close');
 
     function openMenu() {
       panel?.classList.remove('hidden');

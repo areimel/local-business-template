@@ -1,12 +1,12 @@
-# Internal demo navigation — lists preview/variant routes that are deliberately
+# Demo Mode Tools — lists preview/variant routes that are deliberately
 # excluded from the production nav. All of these routes are noindex.
 # Toggle the whole feature with `demoPages` in features.yaml.
 
 button:
-  label: "Demos"
-  ariaLabel: "Open demo page navigation"
+  label: "Demo Mode Tools"
+  ariaLabel: "Open Demo Mode Tools"
 
-panelTitle: "Demo Pages"
+panelTitle: "Demo Mode Tools"
 
 sections:
   - title: "Main Site"
