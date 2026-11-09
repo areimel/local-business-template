@@ -1,0 +1,14 @@
+---
+// Applies a saved Demo Mode Tools theme override before first paint, so a
+// reload doesn't flash the site theme. Tiny and import-free on purpose.
+// The key below must match PREFIX + 'theme-vars' in src/utils/demo-tools-storage.ts.
+---
+
+<script is:inline>
+  try {
+    var vars = JSON.parse(localStorage.getItem('demo-tools:theme-vars') || 'null');
+    if (vars) {
+      for (var k in vars) if (k.indexOf('--color-') === 0) document.documentElement.style.setProperty(k, vars[k]);
+    }
+  } catch (e) {}
+</script>

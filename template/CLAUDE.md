@@ -51,7 +51,7 @@ Service pages use Astro Content Collections with Markdown + YAML frontmatter:
 - **Rendering**: Standalone `render()` import from `astro:content` (NOT `entry.render()`)
 - **Content structure**: `src/content/services/{category}/{slug}.md`
 - **Two types**: `type: hub` (category landing pages, use `_hub.md`) and `type: service` (individual service pages)
-- **Internal docs**: `documentation` collection (`src/content/documentation/*.md`, schema `{title, description, order}`) renders 9 dev-facing guides at `/docs/` (hub) + `/docs/{slug}/` via `src/layouts/DocsLayout.astro`. Gated by the `devPages` feature flag (via `gatedPaths`), noindex, excluded from sitemap; not registered in `.pages.yml` (not client-editable). Linked from the demo nav (Internal / Dev) and the styleguide sidebar.
+- **Internal docs**: `documentation` collection (`src/content/documentation/*.md`, schema `{title, description, order}`) renders 9 dev-facing guides at `/docs/` (hub) + `/docs/{slug}/` via `src/layouts/DocsLayout.astro`. Gated by the `devPages` feature flag (via `gatedPaths`), noindex, excluded from sitemap; not registered in `.pages.yml` (not client-editable). Linked from the Demo Mode Tools Pages tab (Internal / dev section) and the styleguide sidebar.
 
 ## Feature Flags
 
@@ -76,18 +76,32 @@ for the full flag table and history.
   editing `features.yaml` for a change to take effect.
 - **Internal-tooling flags**: three flags gate internal/demo content rather
   than client-facing features —
-  - `devTools` — reserved for future dev-tool features (e.g. a site theme
-    picker); no consumer wired yet.
+  - `devTools` — gates the Demo Mode Tools Tools tab (theme picker) and the
+    head script that re-applies a saved preview theme.
   - `devPages` — internal-team pages: `/docs` (hub + `[slug]`), `/styleguide`,
     `/animation-examples`.
   - `demoPages` — client-facing demo/variant pages (home design variants,
     industry demo homes/inner pages, `/landing/*` variants) plus the floating
-    demo-page navigator. Replaces the old `demoNav` flag. **Set to `false`
-    before client handoff.**
+    Demo Mode Tools widget (Pages tab). Replaces the old `demoNav` flag. **Set
+    to `false` before client handoff.**
 
 ## Single-Page Landing Variants
 
 Five prebuilt single-page landing templates live at `src/pages/landing/`: **lead-gen.astro** (full conversion one-pager), **promo.astro** (single-offer ad-traffic page), **brochure.astro** (digital business-card one-pager), **profile.astro** (Google-Business-Profile-style hub), and **coming-soon.astro** (pre-launch placeholder). All use `src/layouts/LandingPageLayout.astro` (anchor-link header, minimal footer with legal links + configurable developer credit, optional sticky mobile CTA) and render as noindex preview routes. **Developer workflow**: Browse `/landing/*` with the `demoPages` flag enabled, select the variant that fits the client use case, copy its contents into `src/pages/index.astro`, then delete `src/pages/landing/` and any other unneeded template pages. All variants pull content from existing YAML config (`branding.yaml`, `ctas.yaml`, etc.) plus inline placeholder copy — zero component changes required to rebrand.
+
+## Demo Mode Tools
+
+Floating dev widget (button + native `popover` panel) for previewing pages and trying theme presets while building. Preview-only; never changes shipped config.
+
+- **Files**: `src/components/DemoToolsComponents/` — `DemoTools.astro` (orchestrator), `DemoToolsButton.astro`, `DemoToolsPanel.astro` (Pages / Tools tabs), `DemoToolsHead.astro` (re-applies saved preview theme before paint), `demo-tools.css` (`--dmt-*` palette, never site colors), `controls/` (ToolSection, ToolField, ToolButton, ToolSwatchGroup, ToolSelect, ToolToggle), `tools/` (one file per tool; `ThemePicker.astro` first).
+- **Config**: `src/data/demo-tools.yaml` (button, panel title, Pages link sections; the section holding the current page opens automatically), `src/data/demo-themes.yaml` (presets mirrored from `bin/themes.mjs` — keep in sync), `src/utils/demo-tools.ts`, `src/utils/demo-tools-storage.ts` (localStorage, `demo-tools:` prefix), `src/utils/theme-derive.ts`.
+- **Gating**: whole widget = `demoPages`; Tools tab + head theme script = `devTools`.
+- **Theme picker**: previews the 5 CLI presets or a custom primary color by setting `--color-*` on `<html>`. Saved per browser; "Reset to site theme" clears it. Does not change `global.css`.
+- **Adding a tool**:
+  1. Create `src/components/DemoToolsComponents/tools/MyTool.astro` and wrap its content in `<ToolSection>`.
+  2. Build the UI from `controls/` primitives, using only `--dmt-*` colors.
+  3. Persist state through `demo-tools-storage.ts` if needed.
+  4. Import and render it in the Tools tabpanel of `DemoToolsPanel.astro`.
 
 ## Source Layout
 
@@ -111,6 +125,7 @@ src/
 │   ├── PopUpComponents/      # StickyPhoneBar
 │   ├── HomePageComponents/   # HeroSection, ServicesOverview, WhyChooseUs, TestimonialsSlider, HomeContactSection
 │   ├── InnerPageComponents/  # InnerHero, FaqAccordion, CtaBanner, ContentSection, ServiceGrid, ProcessSteps, FeatureCards, RelatedServices
+│   ├── DemoToolsComponents/  # Demo Mode Tools widget (see "Demo Mode Tools")
 │   └── SharedComponents/     # SectionWrapper, Card, Badge, Divider, StarRating
 ├── content/services/         # Markdown content (organized by category subdirectories)
 ├── data/                     # YAML config files

@@ -1,0 +1,106 @@
+---
+/**
+ * Radio group of color swatches (1-3 hex colors per option, shown as a split circle).
+ * Native radios: arrow keys and form semantics come free. Wire behaviour via
+ * a <script> listening for `change` on input[name].
+ * Usage: <ToolSwatchGroup name="theme" legend="Theme" value="a" options={[{value:'a',label:'Red',colors:['#f00','#0cf']}]} />
+ */
+interface Option {
+  value: string;
+  label: string;
+  colors: string[];
+}
+interface Props {
+  name: string;
+  legend: string;
+  options: Option[];
+  value?: string;
+}
+const { name, legend, options, value } = Astro.props;
+
+// Hard-stop conic gradient: equal slices per color.
+const swatchBg = (colors: string[]) => {
+  const n = colors.length;
+  if (n === 1) return colors[0];
+  const stops = colors.map((c, i) => `${c} ${(i / n) * 100}% ${((i + 1) / n) * 100}%`);
+  return `conic-gradient(from 90deg, ${stops.join(', ')})`;
+};
+---
+
+<fieldset class="dmt-swatches">
+  <legend>{legend}</legend>
+  <div class="dmt-swatches__grid">
+    {options.map((o) => (
+      <div class="dmt-swatch">
+        <input type="radio" name={name} id={`${name}-${o.value}`} value={o.value} checked={o.value === value} />
+        <label for={`${name}-${o.value}`}>
+          <span class="dmt-swatch__chip" style={`background:${swatchBg(o.colors)}`}></span>
+          <span class="dmt-swatch__text">{o.label}</span>
+        </label>
+      </div>
+    ))}
+  </div>
+</fieldset>
+
+<style>
+  .dmt-swatches {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+  legend {
+    padding: 0;
+    margin-bottom: 0.375rem;
+    font-size: 12px;
+    color: var(--dmt-fog);
+  }
+  .dmt-swatches__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+    gap: 0.5rem;
+  }
+  .dmt-swatch {
+    position: relative;
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--dmt-fog);
+    cursor: pointer;
+  }
+  label:hover {
+    color: var(--dmt-paper);
+  }
+  .dmt-swatch__chip {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px var(--dmt-rule);
+    transition: box-shadow 0.12s var(--dmt-ease);
+  }
+  input:checked + label {
+    color: var(--dmt-paper);
+  }
+  input:checked + label .dmt-swatch__chip {
+    box-shadow: 0 0 0 2px var(--dmt-graphite), 0 0 0 4px var(--dmt-signal);
+  }
+  input:focus-visible + label {
+    outline: 2px solid var(--dmt-signal);
+    outline-offset: 1px;
+    border-radius: var(--dmt-radius-sm);
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+/**
+ * Switch (checkbox with role="switch") with its label beside it.
+ * Usage: <ToolToggle id="grid" name="grid" label="Show grid" checked />
+ */
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  checked?: boolean;
+}
+const { id, name, label, checked = false } = Astro.props;
+---
+
+<div class="dmt-toggle">
+  <input type="checkbox" role="switch" id={id} name={name} checked={checked} />
+  <label for={id}>{label}</label>
+</div>
+
+<style>
+  .dmt-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  input {
+    appearance: none;
+    position: relative;
+    flex: none;
+    width: 2rem;
+    height: 1.125rem;
+    margin: 0;
+    background: var(--dmt-edge);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.15s var(--dmt-ease);
+  }
+  input::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(1.125rem - 4px);
+    height: calc(1.125rem - 4px);
+    background: var(--dmt-paper);
+    border-radius: 50%;
+    transition: transform 0.15s var(--dmt-ease);
+  }
+  input:checked {
+    background: var(--dmt-signal);
+  }
+  input:checked::after {
+    transform: translateX(0.875rem);
+  }
+  label {
+    font-size: 13px;
+    color: var(--dmt-paper);
+    cursor: pointer;
+  }
+</style>

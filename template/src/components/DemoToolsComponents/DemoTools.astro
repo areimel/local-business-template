@@ -1,0 +1,64 @@
+---
+import './demo-tools.css';
+import { getDemoTools } from '@/utils/demo-tools';
+import DemoToolsButton from './DemoToolsButton.astro';
+import DemoToolsPanel from './DemoToolsPanel.astro';
+
+const config = getDemoTools();
+---
+
+<DemoToolsButton label={config.button.label} ariaLabel={config.button.ariaLabel} />
+<DemoToolsPanel config={config} />
+
+<script>
+  // Tabs only. Open/close, Escape, light-dismiss and focus return are handled
+  // natively by the popover attribute.
+  const STORAGE_KEY = 'demo-tools:tab';
+  const root = document.getElementById('demo-tools-panel');
+  const tabs = Array.from(root?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []);
+
+  const store = {
+    get: () => {
+      try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+    },
+    set: (v: string) => {
+      try { localStorage.setItem(STORAGE_KEY, v); } catch { /* storage unavailable */ }
+    },
+  };
+
+  function select(tab: HTMLElement, focus = false) {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      const panelId = t.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (panel) panel.hidden = !on;
+    }
+    if (focus) tab.focus();
+    store.set(tab.dataset.tab ?? '');
+  }
+
+  if (tabs.length) {
+    const saved = store.get();
+    const initial = tabs.find((t) => t.dataset.tab === saved);
+    if (initial) select(initial);
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === 'ArrowRight' ? tabs[i === last ? 0 : i + 1]
+          : e.key === 'ArrowLeft' ? tabs[i === 0 ? last : i - 1]
+          : e.key === 'Home' ? tabs[0]
+          : e.key === 'End' ? tabs[last]
+          : null;
+        if (next) {
+          e.preventDefault();
+          select(next, true);
+        }
+      });
+    });
+  }
+</script>

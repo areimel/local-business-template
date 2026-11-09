@@ -1,21 +1,22 @@
-# Internal demo navigation — lists preview/variant routes that are deliberately
-# excluded from the production nav. All of these routes are noindex.
-# Toggle the whole feature with `demoPages` in features.yaml.
+# Demo Mode Tools — configures the Pages tab of the Demo Mode Tools panel:
+# preview/variant routes that are deliberately excluded from the production nav.
+# All of these routes are noindex. Toggle the whole widget with `demoPages` in
+# features.yaml. To add a tool to the Tools tab, see "Demo Mode Tools" in CLAUDE.md.
 
 button:
-  label: "Demos"
-  ariaLabel: "Open demo page navigation"
+  label: "Demo Mode Tools"
+  ariaLabel: "Open Demo Mode Tools"
 
-panelTitle: "Demo Pages"
+panelTitle: "Demo Mode Tools"
 
 sections:
-  - title: "Main Site"
+  - title: "Main site"
     links:
       - label: "Production Home"
         url: "/"
         description: "The canonical homepage"
 
-  - title: "Home Page Designs"
+  - title: "Home page designs"
     links:
       - label: "Original"
         url: "/home-original/"
@@ -26,7 +27,7 @@ sections:
       - label: "Bold Modern"
         url: "/home-alt3/"
 
-  - title: "Industry Home Variants"
+  - title: "Industry home variants"
     links:
       - label: "Auto Repair"
         url: "/home-autorepair/"
@@ -41,7 +42,7 @@ sections:
       - label: "Salon"
         url: "/home-salon/"
 
-  - title: "Industry Inner Pages"
+  - title: "Industry inner pages"
     links:
       - label: "Auto Repair — About"
         url: "/autorepair-about/"
@@ -56,7 +57,7 @@ sections:
       - label: "Salon — Gallery"
         url: "/salon-gallery/"
 
-  - title: "Landing Page Variants"
+  - title: "Landing page variants"
     links:
       - label: "Lead Gen"
         url: "/landing/lead-gen/"
@@ -74,7 +75,7 @@ sections:
         url: "/landing/coming-soon/"
         description: "Pre-launch placeholder"
 
-  - title: "Internal / Dev"
+  - title: "Internal / dev"
     links:
       - label: "Styleguide"
         url: "/styleguide/"
