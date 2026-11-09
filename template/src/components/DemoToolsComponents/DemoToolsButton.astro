@@ -12,11 +12,53 @@ const { label, ariaLabel } = Astro.props;
 <button
   id="demo-tools-toggle"
   type="button"
-  aria-expanded="false"
-  aria-controls="demo-tools-panel"
+  popovertarget="demo-tools-panel"
   aria-label={ariaLabel}
-  class="fixed bottom-[4.5rem] left-4 lg:left-6 z-50 flex items-center gap-2 rounded-(--radius-full) bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white shadow-lg transition-colors hover:bg-neutral-800 active:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+  class="dmt dmt-button fixed bottom-[4.5rem] left-4 lg:left-6 z-50 flex items-stretch"
 >
-  <Icon name="material-symbols:space-dashboard-outline" class="w-5 h-5 shrink-0" />
-  <span>{label}</span>
+  <span class="dmt-button__cap" aria-hidden="true"></span>
+  <span class="dmt-button__body">
+    <Icon name="material-symbols:construction-rounded" class="dmt-button__icon" />
+    <span>{label}</span>
+  </span>
 </button>
+
+<style>
+  .dmt-button {
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--dmt-graphite);
+    color: var(--dmt-paper);
+    border: 1px solid var(--dmt-rule);
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.28);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1;
+    transition: background-color 120ms var(--dmt-ease);
+  }
+  .dmt-button:hover {
+    background: var(--dmt-slate);
+  }
+  .dmt-button__cap {
+    flex: none;
+    width: 14px;
+    background: repeating-linear-gradient(
+      135deg,
+      var(--dmt-signal) 0 5px,
+      var(--dmt-graphite) 5px 10px
+    );
+  }
+  .dmt-button__body {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem 0.6rem 0.7rem;
+  }
+  .dmt-button__body :global(.dmt-button__icon) {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    color: var(--dmt-fog);
+  }
+</style>

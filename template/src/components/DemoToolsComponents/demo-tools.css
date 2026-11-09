@@ -1,0 +1,43 @@
+/*
+ * Demo Mode Tools — shared design tokens.
+ *
+ * The tool deliberately uses its own fixed palette ("staging tag": graphite
+ * panel + one signal-yellow accent) instead of the site's --color-* tokens,
+ * so it never reads as a production element and so the theme picker can
+ * recolor the site without recoloring the tool itself.
+ *
+ * Every Demo Mode Tools root element (button, popover) carries `.dmt`.
+ * Components inside use var(--dmt-*) only — never Tailwind brand colors.
+ */
+.dmt {
+  --dmt-graphite: #24272d; /* panel surface */
+  --dmt-slate: #30343b;    /* raised rows, controls, hover */
+  --dmt-slate-hi: #3a3f47; /* control hover / pressed */
+  --dmt-rule: #474d57;     /* borders, dividers */
+  --dmt-paper: #eceae4;    /* primary text */
+  --dmt-fog: #9ba2ac;      /* muted text, hints, counts */
+  --dmt-signal: #f2c230;   /* the one accent: hazard stripe, current page, focus, selected */
+  --dmt-signal-ink: #24272d; /* text on signal */
+
+  --dmt-radius-sm: 6px;
+  --dmt-radius: 10px;
+  --dmt-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --dmt-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  font-family: var(--dmt-font);
+  color: var(--dmt-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dmt :focus-visible {
+  outline: 2px solid var(--dmt-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dmt,
+  .dmt * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1,4 +1,5 @@
 ---
+import './demo-tools.css';
 import { getDemoTools } from '@/utils/demo-tools';
 import DemoToolsButton from './DemoToolsButton.astro';
 import DemoToolsPanel from './DemoToolsPanel.astro';
@@ -10,47 +11,54 @@ const config = getDemoTools();
 <DemoToolsPanel config={config} />
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.getElementById('demo-tools-toggle');
-    const panel = document.getElementById('demo-tools-panel');
-    const drawer = document.getElementById('demo-tools-drawer');
-    const overlay = document.getElementById('demo-tools-overlay');
-    const closeBtn = document.getElementById('demo-tools-close');
+  // Tabs only. Open/close, Escape, light-dismiss and focus return are handled
+  // natively by the popover attribute.
+  const STORAGE_KEY = 'demo-tools:tab';
+  const root = document.getElementById('demo-tools-panel');
+  const tabs = Array.from(root?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []);
 
-    function openMenu() {
-      panel?.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        drawer?.classList.remove('-translate-x-full');
-        drawer?.classList.add('translate-x-0');
+  const store = {
+    get: () => {
+      try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+    },
+    set: (v: string) => {
+      try { localStorage.setItem(STORAGE_KEY, v); } catch { /* storage unavailable */ }
+    },
+  };
+
+  function select(tab: HTMLElement, focus = false) {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      const panelId = t.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (panel) panel.hidden = !on;
+    }
+    if (focus) tab.focus();
+    store.set(tab.dataset.tab ?? '');
+  }
+
+  if (tabs.length) {
+    const saved = store.get();
+    const initial = tabs.find((t) => t.dataset.tab === saved);
+    if (initial) select(initial);
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === 'ArrowRight' ? tabs[i === last ? 0 : i + 1]
+          : e.key === 'ArrowLeft' ? tabs[i === 0 ? last : i - 1]
+          : e.key === 'Home' ? tabs[0]
+          : e.key === 'End' ? tabs[last]
+          : null;
+        if (next) {
+          e.preventDefault();
+          select(next, true);
+        }
       });
-      toggle?.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-      drawer?.classList.remove('translate-x-0');
-      drawer?.classList.add('-translate-x-full');
-      toggle?.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-      setTimeout(() => {
-        panel?.classList.add('hidden');
-      }, 300);
-      toggle?.focus();
-    }
-
-    toggle?.addEventListener('click', () => {
-      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-      isOpen ? closeMenu() : openMenu();
     });
-
-    // ponytail: no focus trap — Escape + overlay-click + focus-restore covers this internal tool; lift the trap from PopUpComponents/Modal.astro if it ever matters
-    closeBtn?.addEventListener('click', closeMenu);
-    overlay?.addEventListener('click', closeMenu);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
-        closeMenu();
-      }
-    });
-  });
+  }
 </script>
