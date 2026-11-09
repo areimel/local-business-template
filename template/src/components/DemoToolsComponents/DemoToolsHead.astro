@@ -8,7 +8,7 @@
   try {
     var vars = JSON.parse(localStorage.getItem('demo-tools:theme-vars') || 'null');
     if (vars) {
-      for (var k in vars) document.documentElement.style.setProperty(k, vars[k]);
+      for (var k in vars) if (k.indexOf('--color-') === 0) document.documentElement.style.setProperty(k, vars[k]);
     }
   } catch (e) {}
 </script>

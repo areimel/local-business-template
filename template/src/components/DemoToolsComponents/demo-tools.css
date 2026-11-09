@@ -13,7 +13,8 @@
   --dmt-graphite: #24272d; /* panel surface */
   --dmt-slate: #30343b;    /* raised rows, controls, hover */
   --dmt-slate-hi: #3a3f47; /* control hover / pressed */
-  --dmt-rule: #474d57;     /* borders, dividers */
+  --dmt-rule: #474d57;     /* dividers (decorative) */
+  --dmt-edge: #7a818c;     /* control boundaries — ≥3:1 on graphite (WCAG 1.4.11) */
   --dmt-paper: #eceae4;    /* primary text */
   --dmt-fog: #9ba2ac;      /* muted text, hints, counts */
   --dmt-signal: #f2c230;   /* the one accent: hazard stripe, current page, focus, selected */

@@ -28,6 +28,7 @@ const tabs = [
 <div
   id="demo-tools-panel"
   popover="auto"
+  role="dialog"
   class="dmt dmt-panel"
   aria-label="Demo Mode Tools"
 >
@@ -65,7 +66,11 @@ const tabs = [
   )}
 
   <div class="dmt-body">
-    <div id="dmt-tabpanel-pages" role="tabpanel" aria-labelledby="dmt-tab-pages">
+    <div
+      id="dmt-tabpanel-pages"
+      role={showTools ? 'tabpanel' : undefined}
+      aria-labelledby={showTools ? 'dmt-tab-pages' : undefined}
+    >
       <nav aria-label="Demo and preview pages">
         {config.sections.map((section) => (
           <details class="dmt-section" open={section.links.some((l) => isActive(l.url))}>
@@ -112,7 +117,8 @@ const tabs = [
     left: 1rem;
     bottom: 8rem;
     width: min(22rem, calc(100vw - 2rem));
-    max-height: min(70vh, 36rem);
+    max-height: min(36rem, calc(100vh - 9rem));
+    max-height: min(36rem, calc(100dvh - 9rem));
     flex-direction: column;
     background: var(--dmt-graphite);
     border: 1px solid var(--dmt-rule);

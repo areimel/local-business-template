@@ -24,7 +24,7 @@ const options = presets.map((p) => ({
     <ToolField label="Custom primary" for="dmt-theme-custom">
       <div class="dmt-color">
         <input type="color" id="dmt-theme-custom" class="dmt-color__input" value="#000000" />
-        <output class="dmt-color__hex" for="dmt-theme-custom" data-hex></output>
+        <output class="dmt-color__hex" for="dmt-theme-custom" aria-live="off" data-hex></output>
       </div>
     </ToolField>
 
@@ -52,7 +52,7 @@ const options = presets.map((p) => ({
     height: 2.25rem;
     padding: 2px;
     background: var(--dmt-slate);
-    border: 1px solid var(--dmt-rule);
+    border: 1px solid var(--dmt-edge);
     border-radius: var(--dmt-radius-sm);
     cursor: pointer;
   }
@@ -163,6 +163,15 @@ const options = presets.map((p) => ({
     color.addEventListener('input', () => apply({ kind: 'custom', primary: normalizeHex(color.value) }));
     resetBtn.addEventListener('click', reset);
 
-    paint(getItem<Selection>('theme'));
+    // Trust nothing from storage: an unknown preset or bad hex (stale shape,
+    // partial write) would leave the head-script colors applied while the UI
+    // says "site theme" — reset instead so UI and page always agree.
+    const saved = getItem<Selection>('theme');
+    const valid =
+      (saved?.kind === 'preset' && presets.some((p) => p.slug === saved.slug)) ||
+      (saved?.kind === 'custom' && /^#[0-9a-f]{6}$/i.test(saved.primary ?? ''));
+    if (saved && !valid) reset();
+    else if (!saved && getItem('theme-vars')) reset();
+    else paint(saved);
   }
 </script>
