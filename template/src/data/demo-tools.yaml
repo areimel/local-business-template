@@ -1,6 +1,7 @@
-# Demo Mode Tools — lists preview/variant routes that are deliberately
-# excluded from the production nav. All of these routes are noindex.
-# Toggle the whole feature with `demoPages` in features.yaml.
+# Demo Mode Tools — configures the Pages tab of the Demo Mode Tools panel:
+# preview/variant routes that are deliberately excluded from the production nav.
+# All of these routes are noindex. Toggle the whole widget with `demoPages` in
+# features.yaml. To add a tool to the Tools tab, see "Demo Mode Tools" in CLAUDE.md.
 
 button:
   label: "Demo Mode Tools"

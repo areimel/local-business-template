@@ -61,7 +61,7 @@ pnpm dev                  # http://localhost:4321
   `src/data/*.yaml` and `src/content/**` files. See the template's own `CLAUDE.md` and
   `FORM_SETUP_README.md` (both copied into the new project) for the full guide.
 - **Demo / dev pages** (internal docs, styleguide, animation examples, home-design
-  variants, industry demos, `/landing/*` one-pagers, and the floating demo navigator)
+  variants, industry demos, `/landing/*` one-pagers, and the floating Demo Mode Tools widget)
   ship **disabled**. To browse them while building, flip `devPages` / `demoPages` to
   `true` in `src/data/features.yaml` and restart `pnpm dev`. Leave them `false` for the
   client's production site.

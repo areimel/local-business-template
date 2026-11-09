@@ -210,10 +210,10 @@ const shadowTokens = [
   <!-- Section: Feature Flags -->
   <StyleguideSection id="feature-flags" title="Feature Flags" description="Internal-team and demo content is gated at build time via src/data/features.yaml — no runtime toggle. This whole styleguide is itself a flag-gated route.">
     <p class="text-text-muted">
-      Three flags cover internal tooling: <code>devTools</code> (reserved for future dev tools,
-      like a site theme picker — no consumer wired yet), <code>devPages</code> (internal-team
+      Three flags cover internal tooling: <code>devTools</code> (the Tools tab of
+      Demo Mode Tools, e.g. the theme picker), <code>devPages</code> (internal-team
       pages: <code>/docs</code>, <code>/styleguide</code>, <code>/animation-examples</code>), and
-      <code>demoPages</code> (client-facing demo/variant pages plus the floating demo navigator).
+      <code>demoPages</code> (client-facing demo/variant pages plus the floating Demo Mode Tools widget).
       When a flag is off, the page or section simply isn't built — the URL 404s. There is no
       runtime toggle to flip it back on.
     </p>

@@ -30,9 +30,9 @@ Single source of truth for the feature-flag rollout. Update checkboxes as work l
 | `floatingContactButton` | Floating contact widget | ✅ |
 | `analytics` | GTM head/body scripts (still requires `gtm.id` in analytics-config.yaml) — defaults `false` (placeholder id) | ✅ |
 | `emergencyCta` | EmergencyCtaBanner sections sitewide (self-gating). 24/7 copy in ctas.yaml/branding/heroes is content — manual edits still needed | ✅ |
-| `devTools` | Reserved for future dev-tool features (e.g. a site theme picker). No consumer wired yet | ✅ |
+| `devTools` | Demo Mode Tools Tools tab (theme picker) + head script that re-applies a saved preview theme. First consumer | ✅ |
 | `devPages` | Internal-team pages: `/docs` (hub + `[slug]`), `/styleguide`, `/animation-examples` | ✅ |
-| `demoPages` | All client-facing demo/variant pages (home design variants, industry demo homes + inner pages, `/landing/*` variants) plus the floating demo-page navigator. Renamed from `demoNav` and broadened to cover the demo/variant routes themselves, not just the navigator. Internal tool — turn OFF before client handoff | ✅ |
+| `demoPages` | All client-facing demo/variant pages (home design variants, industry demo homes + inner pages, `/landing/*` variants) plus the floating Demo Mode Tools widget (Pages tab). Renamed from `demoNav` and broadened to cover the demo/variant routes themselves, not just the widget. Internal tool — turn OFF before client handoff | ✅ |
 
 ## Commits
 
@@ -57,7 +57,7 @@ The former standalone "Dev Mode" system — `PUBLIC_DEV_MODE` build-time env var
 entirely and merged into this build-time flag system. `devPages` now gates the
 internal-team pages it used to guard (`/docs`, `/styleguide`,
 `/animation-examples`), and `demoPages` (renamed from `demoNav`) covers the
-client-facing demo/variant routes plus the floating demo navigator. Gating is
+client-facing demo/variant routes plus the floating Demo Mode Tools widget. Gating is
 now 100% build-time via `gatedPaths()` — there is no runtime toggle or
 `localStorage` state anymore.
 

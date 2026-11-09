@@ -24,6 +24,6 @@ emergencyCta: true # hides EmergencyCtaBanner sections; 24/7 copy in ctas.yaml/b
 # Internal tooling flags (consolidated from the old "Dev Mode" system — build-time only).
 # Scaffolded projects ship with these OFF. Flip any to `true` locally to browse the
 # internal docs, styleguide, animation examples, or demo/variant pages, then restart dev.
-devTools: true # reserved for future dev-tool features (e.g. a site theme picker); no consumer wired yet
+devTools: true # Demo Mode Tools "Tools" tab (theme picker etc.) + its head theme script; needs demoPages on
 devPages: true # internal-team pages: /docs, /styleguide, /animation-examples — off = not built (404)
-demoPages: true # client-facing demo/variant pages + floating demo navigator
+demoPages: true # client-facing demo/variant pages + floating Demo Mode Tools widget
