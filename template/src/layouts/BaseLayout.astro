@@ -10,6 +10,7 @@ import GtmHead from '@/components/LayoutComponents/GtmHead.astro';
 import GtmBody from '@/components/LayoutComponents/GtmBody.astro';
 import FeatureFlag from '@/components/SharedComponents/FeatureFlag.astro';
 import JsonLd from '@/components/SeoComponents/JsonLd.astro';
+import DemoToolsHead from '@/components/DemoToolsComponents/DemoToolsHead.astro';
 import DemoTools from '@/components/DemoToolsComponents/DemoTools.astro';
 import { getSchemaConfig } from '@/utils/data';
 import { normalizeRawSchema } from '@/utils/seo';
@@ -83,6 +84,7 @@ const pageRawSchema = normalizeRawSchema(rawSchema);
     {globalRawSchema && <Fragment set:html={globalRawSchema} />}
     {pageRawSchema && <Fragment set:html={pageRawSchema} />}
     <FeatureFlag name="analytics"><GtmHead /></FeatureFlag>
+    <FeatureFlag name="demoPages"><FeatureFlag name="devTools"><DemoToolsHead /></FeatureFlag></FeatureFlag>
   </head>
   <body>
     <FeatureFlag name="analytics"><GtmBody /></FeatureFlag>

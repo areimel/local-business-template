@@ -1,0 +1,168 @@
+---
+import { getDemoThemes } from '@/utils/demo-tools';
+import ToolSection from '../controls/ToolSection.astro';
+import ToolField from '../controls/ToolField.astro';
+import ToolButton from '../controls/ToolButton.astro';
+import ToolSwatchGroup from '../controls/ToolSwatchGroup.astro';
+
+const presets = getDemoThemes();
+const options = presets.map((p) => ({
+  value: p.slug,
+  label: p.label,
+  colors: [p.colors.primary, p.colors.secondary, p.colors.accent],
+}));
+---
+
+<ToolSection
+  title="Theme"
+  description="Preview the site in another color preset. Saved in this browser only."
+  open
+>
+  <div data-dmt-theme data-presets={JSON.stringify(presets)}>
+    <ToolSwatchGroup name="dmt-theme" legend="Color preset" options={options} />
+
+    <ToolField label="Custom primary" for="dmt-theme-custom">
+      <div class="dmt-color">
+        <input type="color" id="dmt-theme-custom" class="dmt-color__input" value="#000000" />
+        <output class="dmt-color__hex" for="dmt-theme-custom" data-hex></output>
+      </div>
+    </ToolField>
+
+    <div class="dmt-theme__foot">
+      <ToolButton variant="quiet" data-reset>Reset to site theme</ToolButton>
+      <p class="dmt-theme__status" aria-live="polite" data-status>Using site theme</p>
+    </div>
+  </div>
+</ToolSection>
+
+<style>
+  [data-dmt-theme] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .dmt-color {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dmt-color__input {
+    appearance: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 2px;
+    background: var(--dmt-slate);
+    border: 1px solid var(--dmt-rule);
+    border-radius: var(--dmt-radius-sm);
+    cursor: pointer;
+  }
+  .dmt-color__input::-webkit-color-swatch-wrapper { padding: 0; }
+  .dmt-color__input::-webkit-color-swatch {
+    border: 0;
+    border-radius: calc(var(--dmt-radius-sm) - 2px);
+  }
+  .dmt-color__input::-moz-color-swatch {
+    border: 0;
+    border-radius: calc(var(--dmt-radius-sm) - 2px);
+  }
+  .dmt-color__input:focus-visible {
+    outline: 2px solid var(--dmt-signal);
+    outline-offset: 1px;
+  }
+  .dmt-color__hex {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--dmt-fog);
+  }
+  .dmt-theme__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .dmt-theme__status {
+    margin: 0;
+    font-size: 12px;
+    color: var(--dmt-fog);
+  }
+</style>
+
+<script>
+  import { getItem, setItem, removeItem } from '@/utils/demo-tools-storage';
+  import { deriveThemeFromPrimary, normalizeHex, themeToCssVars } from '@/utils/theme-derive';
+  import type { ThemeColors } from '@/utils/theme-derive';
+
+  type Preset = { slug: string; label: string; colors: ThemeColors };
+  type Selection = { kind: 'preset'; slug: string } | { kind: 'custom'; primary: string };
+
+  const root = document.querySelector<HTMLElement>('[data-dmt-theme]');
+  if (root) {
+    const presets: Preset[] = JSON.parse(root.dataset.presets ?? '[]');
+    const radios = Array.from(root.querySelectorAll<HTMLInputElement>('input[name="dmt-theme"]'));
+    const color = root.querySelector<HTMLInputElement>('#dmt-theme-custom')!;
+    const hexOut = root.querySelector<HTMLElement>('[data-hex]')!;
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const resetBtn = root.querySelector<HTMLElement>('[data-reset]')!;
+    const style = document.documentElement.style;
+    const PRIMARY = '--color-primary';
+
+    // Remember the site's own primary (ignoring any override the head script applied).
+    const applied = style.getPropertyValue(PRIMARY);
+    style.removeProperty(PRIMARY);
+    let sitePrimary = '#000000';
+    try {
+      sitePrimary = normalizeHex(getComputedStyle(document.documentElement).getPropertyValue(PRIMARY));
+    } catch { /* keep fallback */ }
+    if (applied) style.setProperty(PRIMARY, applied);
+
+    const showColor = (hex: string) => {
+      color.value = hex;
+      hexOut.textContent = hex;
+    };
+
+    function paint(sel: Selection | null) {
+      radios.forEach((r) => (r.checked = sel?.kind === 'preset' && r.value === sel.slug));
+      if (sel?.kind === 'preset') {
+        const preset = presets.find((p) => p.slug === sel.slug);
+        status.textContent = `Previewing: ${preset?.label ?? sel.slug}`;
+        if (preset) showColor(preset.colors.primary);
+      } else if (sel?.kind === 'custom') {
+        showColor(sel.primary);
+        status.textContent = `Previewing: custom ${sel.primary}`;
+      } else {
+        showColor(sitePrimary);
+        status.textContent = 'Using site theme';
+      }
+    }
+
+    function apply(sel: Selection) {
+      let colors: ThemeColors | undefined;
+      try {
+        colors =
+          sel.kind === 'preset'
+            ? presets.find((p) => p.slug === sel.slug)?.colors
+            : deriveThemeFromPrimary(sel.primary);
+      } catch { /* invalid hex */ }
+      if (!colors) return;
+      const vars = themeToCssVars(colors);
+      for (const [k, v] of Object.entries(vars)) style.setProperty(k, v);
+      setItem('theme', sel);
+      setItem('theme-vars', vars);
+      paint(sel);
+    }
+
+    function reset() {
+      for (const k of Object.keys(themeToCssVars(presets[0].colors))) style.removeProperty(k);
+      removeItem('theme');
+      removeItem('theme-vars');
+      paint(null);
+    }
+
+    radios.forEach((r) => r.addEventListener('change', () => r.checked && apply({ kind: 'preset', slug: r.value })));
+    color.addEventListener('input', () => apply({ kind: 'custom', primary: normalizeHex(color.value) }));
+    resetBtn.addEventListener('click', reset);
+
+    paint(getItem<Selection>('theme'));
+  }
+</script>

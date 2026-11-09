@@ -1,0 +1,67 @@
+# Mirrors bin/themes.mjs presets — keep in sync. Used only by the Demo Mode Tools theme picker.
+
+- slug: red-cyan
+  label: "Red / Cyan (default)"
+  hint: "Bold red and cyan for high contrast"
+  colors:
+    primary: "#ff1100"
+    primaryDark: "#cc0e00"
+    primaryLight: "#ff4433"
+    secondary: "#02c0f3"
+    secondaryDark: "#0299c2"
+    secondaryLight: "#33d4ff"
+    accent: "#ff8707"
+    accentDark: "#cc6c05"
+    accentLight: "#ffa940"
+- slug: cool-blue
+  label: "Cool Blue"
+  hint: "Trust and professionalism in a cool palette"
+  colors:
+    primary: "#0066cc"
+    primaryDark: "#0052a3"
+    primaryLight: "#2e82d5"
+    secondary: "#00aaff"
+    secondaryDark: "#0088cc"
+    secondaryLight: "#33bbff"
+    accent: "#ff9900"
+    accentDark: "#cc7a00"
+    accentLight: "#ffb333"
+- slug: forest-green
+  label: "Forest Green"
+  hint: "Eco-friendly natural tones"
+  colors:
+    primary: "#2d6a4f"
+    primaryDark: "#1b4332"
+    primaryLight: "#40916c"
+    secondary: "#52796f"
+    secondaryDark: "#354f45"
+    secondaryLight: "#6fa899"
+    accent: "#d4a574"
+    accentDark: "#aa8459"
+    accentLight: "#e6c8a0"
+- slug: slate-navy
+  label: "Slate & Navy"
+  hint: "Modern corporate with depth"
+  colors:
+    primary: "#1a2845"
+    primaryDark: "#0f1829"
+    primaryLight: "#2d4570"
+    secondary: "#546b7c"
+    secondaryDark: "#3d4d5e"
+    secondaryLight: "#748a99"
+    accent: "#ff6b35"
+    accentDark: "#cc5629"
+    accentLight: "#ff8855"
+- slug: warm-orange
+  label: "Warm Orange"
+  hint: "Energetic and approachable"
+  colors:
+    primary: "#f77f00"
+    primaryDark: "#cc6600"
+    primaryLight: "#fcaa2f"
+    secondary: "#004e89"
+    secondaryDark: "#002c52"
+    secondaryLight: "#2d7aa6"
+    accent: "#ffd60a"
+    accentDark: "#cc9d08"
+    accentLight: "#ffe338"
